@@ -1,0 +1,499 @@
+/* Bonds.css - Dedicated styles for Bonds, Certificates, and Plan Details */
+
+/* =========================================
+   Variables & Theme Overrides
+   ========================================= */
+:root {
+    --bond-primary: #1e3a8a;
+    /* Deep Blue */
+    --bond-secondary: #db2777;
+    /* Pink/Red Accent */
+    --bond-bg: #f8fafc;
+    /* Light Gray Background */
+    --bond-card-bg: #ffffff;
+    --bond-text-main: #0f172a;
+    --bond-text-sub: #64748b;
+    --bond-border: #e2e8f0;
+    --bond-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --bond-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* =========================================
+   Bonds Grid Page
+   ========================================= */
+.bonds-page-container {
+    padding: 24px;
+    background-color: var(--bond-bg);
+    min-height: 100vh;
+}
+
+.bonds-page-header {
+    margin-bottom: 32px;
+    text-align: left;
+}
+
+.bonds-title {
+    color: var(--bond-text-main);
+    font-weight: 700 !important;
+    margin-bottom: 8px !important;
+}
+
+.bonds-subtitle {
+    color: var(--bond-text-sub);
+    font-size: 16px;
+}
+
+.bonds-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.empty-bonds-container {
+    background: var(--bond-card-bg);
+    border-radius: 12px;
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: var(--bond-shadow);
+    max-width: 500px;
+    margin: 100px auto;
+}
+
+/* =========================================
+   Bond Card
+   ========================================= */
+.bond-card-v4 {
+    background: var(--bond-card-bg);
+    border-radius: 16px;
+    border: 1px solid var(--bond-border);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--bond-shadow);
+}
+
+.bond-card-v4:hover {
+    box-shadow: var(--bond-shadow-hover);
+    transform: translateY(-4px);
+    border-color: var(--bond-primary);
+}
+
+/* ... Header Styles ... */
+.bond-card-header {
+    padding: 20px;
+    background: #fff;
+    /* Clean white header */
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    align-items: flex-start;
+    /* Align top roughly */
+    gap: 12px;
+}
+
+.bond-icon-container {
+    width: 42px;
+    height: 42px;
+    background: #eff6ff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bond-primary);
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.bond-title-group {
+    flex: 1;
+    overflow: hidden;
+    /* Prevent text overflow */
+}
+
+.bond-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+    line-height: 1.3;
+}
+
+.bond-id {
+    font-size: 12px;
+    color: #94a3b8;
+    display: block;
+}
+
+/* Status Badge - Fixed size and no cutoff */
+.bond-status-active {
+    background-color: #d1fae5;
+    color: #059669;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.bond-body {
+    padding: 20px;
+    flex: 1;
+}
+
+.bond-info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed #e2e8f0;
+    padding-bottom: 16px;
+}
+
+.bond-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #94a3b8;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.bond-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.bond-value-highlight {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--bond-primary);
+}
+
+.bond-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--bond-border);
+    display: flex;
+    gap: 12px;
+}
+
+.btn-bond-action {
+    flex: 1;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    height: 36px !important;
+}
+
+.btn-bond-primary {
+    background-color: var(--bond-primary) !important;
+    border-color: var(--bond-primary) !important;
+    color: white !important;
+}
+
+.btn-bond-primary:hover {
+    background-color: #1e40af !important;
+    border-color: #1e40af !important;
+}
+
+.btn-bond-secondary {
+    border-color: var(--bond-border) !important;
+    color: var(--bond-text-main) !important;
+    background: white !important;
+}
+
+.btn-bond-secondary:hover {
+    border-color: var(--bond-primary) !important;
+    color: var(--bond-primary) !important;
+}
+
+
+/* =========================================
+   Certificate Modal & Print
+   ========================================= */
+
+/* The visual modal on screen */
+.cert-modal .ant-modal-content {
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.cert-preview-container {
+    padding: 30px;
+    background: white;
+    position: relative;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+
+/* The actual certificate layout (shared by preview and PDF) */
+.certificate-layout {
+    width: 800px;
+    min-height: 1120px;
+    /* A4 Ratioish */
+    margin: 0 auto;
+    background: white;
+    padding: 60px;
+    position: relative;
+    font-family: 'Times New Roman', serif;
+    /* Classic cert font */
+    color: #1a1a1a;
+    box-sizing: border-box;
+    /* Optional: Add a subtle border pattern image if available, or CSS border */
+    border: 10px double #1e3a8a;
+}
+
+/* Background/Watermark */
+.cert-bg-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 120px;
+    font-weight: 900;
+    color: rgba(30, 58, 138, 0.05);
+    /* Very faint blue */
+    z-index: 0;
+    pointer-events: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.cert-content-layer {
+    position: relative;
+    z-index: 1;
+}
+
+.cert-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.cert-logo {
+    height: 80px;
+    width: auto;
+    margin-bottom: 20px;
+}
+
+.cert-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--bond-primary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cert-subtitle {
+    font-size: 18px;
+    color: #555;
+    font-style: italic;
+}
+
+.cert-body-text {
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: justify;
+    margin-bottom: 40px;
+}
+
+.cert-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 50px;
+    font-family: sans-serif;
+    /* Cleaner font for data */
+}
+
+.cert-details-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+}
+
+.cert-details-table tr:first-child td {
+    border-top: 1px solid #1e3a8a;
+    border-top-width: 2px;
+}
+
+.cert-details-table tr:last-child td {
+    border-bottom: 1px solid #1e3a8a;
+    border-bottom-width: 2px;
+}
+
+.cert-label {
+    font-weight: 600;
+    color: #555;
+    width: 40%;
+}
+
+.cert-val {
+    font-weight: 700;
+    color: #000;
+}
+
+.cert-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 60px;
+    padding-top: 20px;
+}
+
+.cert-sig-block {
+    text-align: center;
+}
+
+.cert-sig-line {
+    width: 200px;
+    border-bottom: 1px solid #000;
+    margin-bottom: 8px;
+}
+
+.cert-sig-name {
+    font-weight: 700;
+    display: block;
+}
+
+.cert-sig-title {
+    font-size: 12px;
+    color: #666;
+}
+
+.cert-system-note {
+    text-align: center;
+    font-size: 10px;
+    color: #999;
+    margin-top: 40px;
+}
+
+/* =========================================
+   Plan Details Modal
+   ========================================= */
+.plan-details-modal .ant-modal-content {
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.plan-details-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.plan-detail-title {
+    font-size: 24px;
+    color: var(--bond-primary);
+    font-weight: 700;
+}
+
+.plan-info-grid {
+    background: #f1f5f9;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+}
+
+.plan-terms-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.plan-terms-list li {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 12px;
+    color: var(--bond-text-main);
+    font-size: 14px;
+}
+
+.plan-terms-list li::before {
+    content: "✓";
+    position: absolute;
+}
+
+.issuer-block {
+    margin-bottom: 4px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #000;
+}
+
+.issuer-sub {
+    font-size: 14px;
+    color: #334155;
+}
+
+/* Mobile Responsiveness for Bonds Page */
+@media (max-width: 768px) {
+    .bonds-page-container {
+        padding: 16px;
+    }
+
+    .bonds-title {
+        font-size: 24px !important;
+    }
+
+    /* Bond Card Mobile Tweaks */
+    .bond-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .bond-icon-container {
+        margin-bottom: 4px;
+    }
+
+    .bond-body {
+        padding: 16px;
+    }
+
+    .bond-info-row {
+        flex-wrap: wrap;
+        /* Allow wrapping */
+        gap: 12px;
+    }
+
+    .bond-info-item {
+        flex: 1 1 45%;
+        /* Take up approx half width, allows wrap */
+        min-width: 100px;
+        /* Prevent being squeezed too small */
+    }
+
+    .bond-value,
+    .bond-value-highlight {
+        font-size: 13px;
+        /* Slightly smaller font */
+        word-break: break-word;
+        /* Prevent overflow */
+    }
+
+    .bond-footer {
+        padding: 12px 16px;
+        flex-direction: column;
+        /* Stack buttons on very small screens */
+    }
+
+    .btn-bond-action {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .btn-bond-action:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Certificate Preview */
+    .cert-preview-container {
+        padding: 10px;
+    }
+
+    .certificate-layout {
+        padding: 20px;
+        /* Scale down for mobile preview if needed, or handle via overflow */
+        transform-origin: top left;
+    }
+}

@@ -1,0 +1,30 @@
+.admin-overview {
+    padding: 24px 0;
+}
+
+.admin-overview .ant-card {
+    margin-bottom: 24px;
+}
+
+.admin-investors .ant-input-affix-wrapper {
+    margin-bottom: 16px;
+}
+
+.admin-reports .ant-picker-range {
+    width: 100%;
+}
+
+.admin-reports .ant-select {
+    width: 100%;
+}
+
+.activity-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}

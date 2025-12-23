@@ -1,0 +1,177 @@
+.auth-layout-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-color);
+    padding: 60px 20px;
+}
+
+.auth-header-logo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo-icon-circle {
+    width: 64px;
+    height: 64px;
+    background: var(--primary-color);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 16px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.premium-brand-text {
+    margin: 0 !important;
+    color: var(--primary-color) !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.5px;
+}
+
+.auth-content-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.auth-layout-container {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth-card-premium {
+    width: 100%;
+    max-width: 500px;
+    background: #ffffff;
+    border-radius: var(--border-radius-lg) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05) !important;
+    border: none !important;
+}
+
+.auth-card-premium .ant-card-body {
+    padding: 48px 40px !important;
+}
+
+.auth-header-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.auth-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    background: #eff6ff;
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 20px;
+}
+
+.auth-form .ant-form-item-label>label {
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+}
+
+.auth-form .ant-input,
+.auth-form .ant-input-password {
+    height: 48px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+.auth-form .ant-input:hover,
+.auth-form .ant-input:focus {
+    border-color: var(--primary-color);
+    background: #fff;
+}
+
+.btn-auth-primary {
+    height: 52px !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    background: var(--primary-color) !important;
+    margin-top: 24px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-footer-links {
+    text-align: center;
+    margin-top: 24px;
+    color: var(--text-secondary);
+}
+
+.auth-footer-links a {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.role-selection-card {
+    text-align: center;
+    padding: 32px;
+    height: 100%;
+    transition: all 0.3s ease;
+    border-radius: var(--border-radius-lg) !important;
+    border: 2px solid #eef2f6 !important;
+    cursor: pointer;
+}
+
+.role-selection-card:hover {
+    border-color: var(--primary-color) !important;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.1) !important;
+}
+
+.role-icon-wrapper {
+    font-size: 48px;
+    color: var(--primary-color);
+    margin-bottom: 24px;
+}
+
+.otp-input-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 32px 0;
+}
+
+.otp-digit {
+    width: 48px !important;
+    height: 54px !important;
+    font-size: 24px !important;
+    text-align: center !important;
+    border-radius: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    font-weight: 700 !important;
+    padding: 0 !important;
+}
+
+.customer-id-display {
+    background: #f0f9ff;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px dashed #0ea5e9;
+    margin: 24px 0;
+    text-align: center;
+}
+
+@media (max-width: 576px) {
+    .auth-card-premium .ant-card-body {
+        padding: 32px 24px !important;
+    }
+}
