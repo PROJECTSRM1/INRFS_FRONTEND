@@ -1,23 +1,25 @@
 /* Base Layout */
 .investor-dashboard-refined {
-    padding: 24px 40px;
+    padding: 32px 48px;
     background: #f8fafc;
     min-height: calc(100vh - 70px);
 }
 
 .welcome-header {
-    margin-bottom: 32px;
+    margin-bottom: 36px;
 }
 
 .greeting-text {
-    margin-bottom: 4px !important;
-    font-weight: 800 !important;
+    margin-bottom: 8px !important;
+    font-weight: 700 !important;
+    font-size: 28px !important;
     color: #0f172a !important;
 }
 
 .id-highlight {
-    color: #64748b !important;
+    color: #2563eb !important;
     font-size: 14px !important;
+    font-weight: 500 !important;
 }
 
 .section-header-margin {
@@ -34,65 +36,72 @@
     margin-bottom: 40px;
 }
 
-/* KPI Cards Refined */
+/* KPI Cards Refined - Larger Size */
 .stat-card-refined {
-    border-radius: 12px !important;
-    padding: 20px !important;
-    display: flex !important;
-    align-items: center;
-    gap: 16px;
+    border-radius: 16px !important;
+    padding: 28px !important;
     background: #fff !important;
     border: 1px solid #f1f5f9 !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+    height: 140px !important;
 }
 
 .stat-card-content {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    gap: 16px;
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    width: 100% !important;
+    gap: 16px !important;
 }
 
 .stat-icon-box {
-    width: 48px;
-    height: 48px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 22px !important;
+    flex-shrink: 0 !important;
 }
 
 .stat-details {
-    flex: 1;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    flex: 1 !important;
+    min-width: 0 !important;
 }
 
 .stat-label {
     font-size: 13px !important;
     color: #64748b !important;
-    margin-bottom: 2px !important;
-    display: block;
+    margin: 0 !important;
+    margin-bottom: 6px !important;
+    font-weight: 500 !important;
+    display: block !important;
 }
 
 .stat-value {
-    font-size: 20px !important;
-    font-weight: 700 !important;
-    color: #1e293b !important;
+    font-size: 32px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
     margin: 0 !important;
-    line-height: 1.2 !important;
+    line-height: 1 !important;
 }
 
 .stat-trend-v2 {
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    padding: 2px 8px;
-    border-radius: 6px;
-    margin-left: auto;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    padding: 4px 10px !important;
+    border-radius: 8px !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
 }
 
 .stat-trend-positive {
-    background: #ecfdf5;
-    color: #10b981;
+    background: #ecfdf5 !important;
+    color: #10b981 !important;
 }
 
 /* Color Variants */
@@ -225,36 +234,57 @@
     margin-top: 24px;
 }
 
-/* Quick Actions Refined */
+/* Quick Actions Refined - Exact Image 3 Match */
 .quick-action-card-white {
     background: #fff !important;
-    border-radius: 12px !important;
-    padding: 24px !important;
+    border-radius: 16px !important;
+    padding: 32px 24px !important;
     text-align: center;
     cursor: pointer;
     transition: all 0.2s ease;
     border: 1px solid #f1f5f9 !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 12px rgba(0, 0, 0, 0.03) !important;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .quick-action-card-white:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08) !important;
-    border-color: #2563eb !important;
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.08) !important;
+    border-color: #e2e8f0 !important;
 }
 
-.quick-action-icon {
+.quick-action-icon-wrapper {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.stat-icon-box .anticon {
     font-size: 28px;
-    margin-bottom: 12px;
-    color: #2563eb;
-    display: block;
+}
+
+/* Specific Wrapper Colors - All Black for Reference Match */
+.wrapper-blue,
+.wrapper-blue-light,
+.wrapper-grey,
+.wrapper-black {
+    background-color: #0f172a !important;
+    color: #fff !important;
 }
 
 .quick-action-text {
-    font-weight: 600 !important;
-    font-size: 14px !important;
-    color: #1e293b !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    color: #0f172a !important;
+    letter-spacing: -0.01em;
 }
 
 /* Table Refined */
@@ -284,19 +314,37 @@
 
 .table-id-link {
     color: #2563eb !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
+}
+
+.table-plan-text {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+    font-size: 14px;
+}
+
+.table-amount-text {
+    color: #0f172a !important;
+    font-weight: 800 !important;
+    font-size: 14px;
 }
 
 .table-returns-green {
     color: #10b981 !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
 }
 
 .status-tag-v2 {
-    border-radius: 6px !important;
-    padding: 2px 10px !important;
+    border-radius: 8px !important;
+    padding: 2px 12px !important;
     border: none !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+}
+
+.table-date-grey {
+    color: #94a3b8 !important;
+    font-weight: 500 !important;
 }
 
 /* Responsiveness */
@@ -313,5 +361,104 @@
 
     .stat-value {
         font-size: 18px !important;
+    }
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .investor-dashboard-refined {
+        padding: 20px 24px;
+    }
+
+    .greeting-text {
+        font-size: 24px !important;
+    }
+
+    .kpi-row {
+        margin-bottom: 28px;
+    }
+
+    .stat-card-refined {
+        height: auto !important;
+        padding: 24px !important;
+    }
+
+    .stat-icon-box {
+        width: 48px;
+        height: 48px;
+    }
+
+    .stat-icon-box .anticon {
+        font-size: 24px;
+    }
+
+    .stat-value {
+        font-size: 28px !important;
+    }
+
+    .quick-actions-section {
+        margin-bottom: 28px;
+    }
+
+    .quick-action-card-white {
+        padding: 28px 20px;
+    }
+
+    .section-header-margin {
+        font-size: 18px !important;
+    }
+
+    .recent-table-card {
+        padding: 24px;
+        overflow-x: auto;
+    }
+
+    .refined-table-v2 {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .investor-dashboard-refined {
+        padding: 16px 20px;
+    }
+
+    .greeting-text {
+        font-size: 22px !important;
+    }
+
+    .id-highlight {
+        font-size: 13px !important;
+    }
+
+    .stat-card-refined {
+        padding: 20px !important;
+    }
+
+    .stat-icon-box {
+        width: 44px;
+        height: 44px;
+    }
+
+    .stat-icon-box .anticon {
+        font-size: 22px;
+    }
+
+    .stat-value {
+        font-size: 24px !important;
+    }
+
+    .quick-action-icon-wrapper {
+        width: 52px;
+        height: 52px;
+        font-size: 22px;
+    }
+
+    .quick-action-text {
+        font-size: 14px !important;
+    }
+
+    .section-header-margin {
+        font-size: 17px !important;
     }
 }

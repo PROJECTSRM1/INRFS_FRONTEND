@@ -1,0 +1,93 @@
+/* Auth Pages Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .auth-layout-wrapper {
+        padding: 20px 16px;
+    }
+
+    .auth-card-mini {
+        padding: 32px 24px;
+        max-width: 100%;
+    }
+
+    .auth-avatar-styled {
+        width: 56px !important;
+        height: 56px !important;
+        font-size: 24px !important;
+    }
+
+    .auth-title-text {
+        font-size: 24px !important;
+    }
+
+    .auth-form-v2 .ant-form-item-label>label {
+        font-size: 14px;
+    }
+
+    .minimal-input {
+        font-size: 15px;
+    }
+
+    .auth-options-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .btn-hero-primary {
+        height: 48px !important;
+        font-size: 16px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-layout-wrapper {
+        padding: 16px 12px;
+    }
+
+    .auth-card-mini {
+        padding: 28px 20px;
+        border-radius: 12px !important;
+    }
+
+    .auth-avatar-styled {
+        width: 48px !important;
+        height: 48px !important;
+        font-size: 20px !important;
+    }
+
+    .auth-title-text {
+        font-size: 22px !important;
+    }
+
+    .auth-header-section {
+        margin-bottom: 24px;
+    }
+
+    .auth-form-v2 {
+        margin-top: 20px;
+    }
+
+    .auth-form-v2 .ant-form-item {
+        margin-bottom: 20px;
+    }
+
+    .minimal-input,
+    .ant-input-password {
+        height: 44px;
+        font-size: 15px;
+    }
+
+    .btn-hero-primary {
+        height: 46px !important;
+        font-size: 15px !important;
+    }
+
+    .auth-footer-section {
+        margin-top: 24px;
+        font-size: 14px;
+    }
+
+    .brand-link {
+        font-size: 14px !important;
+    }
+}

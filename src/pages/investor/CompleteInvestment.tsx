@@ -7,6 +7,7 @@ import { INVESTMENT_PLANS } from '../../data/mockData';
 import { fintechService } from '../../services/fintechService';
 import PaymentModal from '../../components/PaymentModal';
 import '../../styles/theme.css';
+import '../../styles/complete-investment.css';
 
 const { Title, Text } = Typography;
 

@@ -1,12 +1,14 @@
 import React from 'react';
 import { Row, Col, Typography, Card, Button, Space } from 'antd';
 import {
-    CheckCircleFilled
+    CheckCircleFilled,
+    ArrowLeftOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { INVESTMENT_PLANS } from '../../data/mockData';
 import type { InvestmentPlan } from '../../types';
 import '../../styles/theme.css';
+import '../../styles/investment-plans.css';
 
 const { Title, Text } = Typography;
 
@@ -19,6 +21,14 @@ const InvestmentPlans: React.FC = () => {
 
     return (
         <div className="plans-page-wrapper">
+            <Button
+                icon={<ArrowLeftOutlined />}
+                onClick={() => navigate('/dashboard')}
+                style={{ marginBottom: 24 }}
+            >
+                Back to Dashboard
+            </Button>
+
             <div className="section-header-centered">
                 <Title level={2} className="plans-page-title">Choose Your Investment Plan</Title>
                 <Text type="secondary" className="plans-page-subtitle">Select the plan that best fits your financial goals</Text>
@@ -65,8 +75,7 @@ const InvestmentPlans: React.FC = () => {
                                 type="primary"
                                 block
                                 size="large"
-                                className="register-btn-solid"
-                                style={{ height: '48px', borderRadius: '12px', background: 'var(--accent-color)' }}
+                                className="plan-select-btn"
                                 onClick={() => handleInvest(plan)}
                             >
                                 Select Plan

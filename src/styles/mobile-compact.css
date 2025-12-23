@@ -1,0 +1,91 @@
+/* Mobile Small Cards Fix - Compact Design */
+
+/* Small Mobile (≤480px) - Smaller Cards */
+@media (max-width: 480px) {
+    .investor-dashboard-refined {
+        padding: 14px 10px;
+    }
+
+    .welcome-header {
+        margin-bottom: 18px;
+        padding-bottom: 10px;
+    }
+
+    .greeting-text {
+        font-size: 19px !important;
+    }
+
+    .id-highlight {
+        font-size: 11px !important;
+    }
+
+    .section-header-margin {
+        font-size: 17px !important;
+        margin-bottom: 14px !important;
+    }
+
+    .kpi-row {
+        margin-bottom: 18px;
+    }
+
+    /* Compact Stat Cards */
+    .stat-card-refined {
+        padding: 12px !important;
+        height: 80px !important;
+        margin-bottom: 10px;
+        border-radius: 12px !important;
+    }
+
+    .stat-card-content {
+        gap: 8px !important;
+    }
+
+    .stat-icon-box {
+        width: 34px !important;
+        height: 34px !important;
+        font-size: 13px !important;
+        border-radius: 10px !important;
+    }
+
+    .stat-value {
+        font-size: 19px !important;
+    }
+
+    .stat-label {
+        font-size: 10px !important;
+        margin-bottom: 2px !important;
+    }
+
+    .stat-trend-v2 {
+        font-size: 9px !important;
+        padding: 2px 4px !important;
+    }
+
+    /* Compact Quick Actions */
+    .quick-actions-section {
+        margin-bottom: 18px;
+    }
+
+    .quick-action-card-white {
+        padding: 12px !important;
+        height: 80px !important;
+        border-radius: 10px !important;
+    }
+
+    .quick-action-icon {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 13px !important;
+        margin-bottom: 5px !important;
+        padding: 5px !important;
+    }
+
+    .quick-action-text {
+        font-size: 10px !important;
+    }
+
+    .recent-table-card {
+        padding: 10px !important;
+        border-radius: 10px !important;
+    }
+}

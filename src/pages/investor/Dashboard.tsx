@@ -15,6 +15,8 @@ import { useAppContext } from '../../context/AppContext';
 import StatMiniCard from '../../components/StatMiniCard';
 import { fintechService } from '../../services/fintechService';
 import '../../styles/theme.css';
+import '../../styles/dashboard-critical-fix-v2.css';
+import '../../styles/customer-id-style.css';
 
 const { Title, Text } = Typography;
 
@@ -39,13 +41,13 @@ const Dashboard: React.FC = () => {
             title: 'Plan',
             dataIndex: 'planName',
             key: 'planName',
-            render: (text: string) => <Text strong>{text}</Text>
+            render: (text: string) => <Text className="table-plan-text">{text}</Text>
         },
         {
             title: 'Amount',
             dataIndex: 'amount',
             key: 'amount',
-            render: (val: number) => <Text strong>{fintechService.formatCurrency(val)}</Text>
+            render: (val: number) => <Text className="table-amount-text">{fintechService.formatCurrency(val)}</Text>
         },
         {
             title: 'Returns',
@@ -67,7 +69,7 @@ const Dashboard: React.FC = () => {
             title: 'Maturity',
             dataIndex: 'date',
             key: 'date',
-            render: (text: string) => <Text type="secondary" className="compact-text">{text}</Text>
+            render: (text: string) => <Text className="table-date-grey">{text}</Text>
         }
     ];
 
@@ -78,7 +80,8 @@ const Dashboard: React.FC = () => {
                 <div>
                     <Title level={2} className="greeting-text">Welcome Back, {user?.name || 'John Doe'}</Title>
                     <div className="id-details">
-                        <Text className="id-highlight">Customer ID: {user?.customerId || 'I1234'}</Text>
+                        <Text className="id-label">Customer ID: </Text>
+                        <Text className="id-highlight">{user?.customerId || 'I4829'}</Text>
                     </div>
                 </div>
             </div>
@@ -127,25 +130,33 @@ const Dashboard: React.FC = () => {
                 <Row gutter={[24, 24]}>
                     <Col xs={24} sm={12} md={6}>
                         <div className="quick-action-card-white" onClick={() => navigate('/dashboard/plans')}>
-                            <PlusCircleFilled className="quick-action-icon" />
+                            <div className="quick-action-icon">
+                                <PlusCircleFilled />
+                            </div>
                             <Text className="quick-action-text">New Investment</Text>
                         </div>
                     </Col>
                     <Col xs={24} sm={12} md={6}>
                         <div className="quick-action-card-white" onClick={() => navigate('/dashboard/my-investments')}>
-                            <UnorderedListOutlined className="quick-action-icon" />
+                            <div className="quick-action-icon">
+                                <UnorderedListOutlined />
+                            </div>
                             <Text className="quick-action-text">My Investments</Text>
                         </div>
                     </Col>
                     <Col xs={24} sm={12} md={6}>
                         <div className="quick-action-card-white" onClick={() => navigate('/dashboard/bonds')}>
-                            <CloudDownloadOutlined className="quick-action-icon" />
+                            <div className="quick-action-icon">
+                                <CloudDownloadOutlined />
+                            </div>
                             <Text className="quick-action-text">Download Bonds</Text>
                         </div>
                     </Col>
                     <Col xs={24} sm={12} md={6}>
                         <div className="quick-action-card-white">
-                            <UserOutlined className="quick-action-icon" />
+                            <div className="quick-action-icon">
+                                <UserOutlined />
+                            </div>
                             <Text className="quick-action-text">Profile</Text>
                         </div>
                     </Col>

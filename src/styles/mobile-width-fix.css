@@ -1,0 +1,44 @@
+/* Mobile Horizontal Width Fix - Single Column Layout */
+
+@media (max-width: 480px) {
+
+    /* Force single column layout */
+    .kpi-row .ant-col,
+    .quick-actions-section .ant-col {
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+
+    /* Ensure cards don't overflow */
+    .stat-card-refined,
+    .quick-action-card-white {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Prevent horizontal scroll */
+    .investor-dashboard-refined {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+    }
+
+    /* Ensure content fits */
+    .stat-card-content {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Adjust row gutters for mobile */
+    .kpi-row,
+    .quick-actions-section .ant-row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .kpi-row>.ant-col,
+    .quick-actions-section .ant-row>.ant-col {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}

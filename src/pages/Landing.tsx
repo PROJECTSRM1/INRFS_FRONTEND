@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Typography, Button, Row, Col, Space, Card, Modal, Result } from 'antd';
+import React, { useState, useRef } from 'react';
+import { Typography, Button, Row, Col, Space, Card, Modal, Form, Input, Carousel } from 'antd';
 import { useOutletContext, Link, useNavigate } from 'react-router-dom';
 import {
     SafetyOutlined,
@@ -12,14 +12,20 @@ import {
     LockOutlined,
     HeartOutlined,
     TeamOutlined,
-    GlobalOutlined
+    GlobalOutlined,
+    UserOutlined,
+    LeftOutlined,
+    RightOutlined
 } from '@ant-design/icons';
 import { INVESTMENT_PLANS } from '../data/mockData';
-import { fintechService } from '../services/fintechService';
 import { useAppContext } from '../context/AppContext';
 import Logo from '../components/Logo';
-import type { InvestmentPlan, Investment } from '../types';
+import type { InvestmentPlan } from '../types';
 import '../styles/theme.css';
+import '../styles/landing.css';
+import '../styles/image-carousel.css';
+import '../styles/hero-carousel.css';
+
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -29,29 +35,23 @@ interface PublicContext {
 
 const Landing: React.FC = () => {
     const { openRegister } = useOutletContext<PublicContext>();
-    const { addInvestment, investments } = useAppContext();
+    const { setUser } = useAppContext();
     const navigate = useNavigate();
-    const [showSuccess, setShowSuccess] = useState(false);
+    const [loginModalVisible, setLoginModalVisible] = useState(false);
+    const [loginForm] = Form.useForm();
+    const carouselRef = useRef<any>(null);
 
-    const handleInvestInPlan = (plan: InvestmentPlan) => {
-        const returnsData = fintechService.calculateReturns(plan.minAmount, plan.roi, plan.duration);
-
-        const dummyInvestment: Investment = {
-            id: fintechService.generateInvestmentId(investments.length),
-            planId: plan.id,
-            planName: plan.name,
-            amount: plan.minAmount,
-            returns: returnsData.interest,
-            maturityAmount: returnsData.maturityAmount,
-            tenure: plan.duration,
-            status: 'Active',
-            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-            startDate: new Date().toISOString(),
-            infrcNumber: `${plan.infrcPrefix}-${Math.floor(100000 + Math.random() * 900000)}`
-        };
-
-        addInvestment(dummyInvestment);
-        setShowSuccess(true);
+    const handleLogin = async (values: { email: string; password: string }) => {
+        // Reuse existing login logic
+        setUser({
+            id: '1',
+            name: 'John Doe',
+            email: values.email,
+            role: 'investor',
+            customerId: 'I4829'
+        });
+        setLoginModalVisible(false);
+        navigate('/dashboard');
     };
 
     const scrollToSection = (id: string) => {
@@ -61,30 +61,87 @@ const Landing: React.FC = () => {
         }
     };
 
+    const getPlanFeatures = (plan: InvestmentPlan) => {
+        const features = [];
+        if (plan.duration <= 3) {
+            features.push('Quick returns', 'Low risk investment', 'Flexible amount', 'Digital bond issued');
+        } else if (plan.duration === 6) {
+            features.push('High returns', 'Best value', 'Recommended plan', 'Digital bond issued');
+        } else {
+            features.push('Maximum returns', 'Long term growth', 'Wealth building', 'Digital bond issued');
+        }
+        return features;
+    };
+
+    const carouselImages = [
+        {
+            src: '/images/growth.png',
+            title: 'Grow Your Wealth',
+            description: 'Watch your investments flourish with guaranteed returns'
+        },
+        {
+            src: '/images/trading.png',
+            title: 'Smart Investment Platform',
+            description: 'Advanced tools and real-time tracking for your portfolio'
+        },
+        {
+            src: '/images/nature.jpg',
+            title: 'Sustainable Growth',
+            description: 'Building a secure financial future for generations'
+        }
+    ];
+
     return (
         <div className="landing-page-wrapper">
-            {/* Hero Section */}
-            <section className="hero-v3">
-                <div className="hero-v3-overlay" />
-                <div className="hero-v3-content">
-                    <Title className="hero-title-v3">
-                        Secure Your Financial Future
-                    </Title>
-                    <Text className="hero-subtitle-v3">
-                        Invest with confidence in diversified portfolios. Earn guaranteed returns with INRFS.
-                    </Text>
-                    <div className="hero-btns-v3">
-                        <Button className="btn-hero-primary" onClick={openRegister}>
-                            Get Started
-                        </Button>
-                        <Button
-                            className="btn-hero-ghost"
-                            onClick={() => scrollToSection('plans')}
-                        >
-                            View Plans
-                        </Button>
-                    </div>
-                </div>
+            {/* Hero Section with Background Carousel */}
+            <section className="hero-carousel-section">
+                <Carousel
+                    ref={carouselRef}
+                    autoplay
+                    autoplaySpeed={5000}
+                    effect="fade"
+                    dots={false}
+                >
+                    {carouselImages.map((image, index) => (
+                        <div key={index}>
+                            <div className="hero-slide" style={{ backgroundImage: `url(${image.src})` }}>
+                                <div className="hero-overlay" />
+                                <div className="hero-content-wrapper">
+                                    <Title className="hero-title-main">
+                                        Secure Your Financial Future
+                                    </Title>
+                                    <Text className="hero-subtitle-main">
+                                        Invest with confidence in diversified portfolios. Earn guaranteed returns with INRFS.
+                                    </Text>
+                                    <div className="hero-buttons">
+                                        <Button className="btn-hero-primary" onClick={openRegister}>
+                                            Get Started
+                                        </Button>
+                                        <Button
+                                            className="btn-hero-ghost"
+                                            onClick={() => scrollToSection('plans')}
+                                        >
+                                            View Plans
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </Carousel>
+
+                <button
+                    className="hero-carousel-arrow hero-carousel-arrow-left"
+                    onClick={() => carouselRef.current?.prev()}
+                >
+                    <LeftOutlined />
+                </button>
+                <button
+                    className="hero-carousel-arrow hero-carousel-arrow-right"
+                    onClick={() => carouselRef.current?.next()}
+                >
+                    <RightOutlined />
+                </button>
             </section>
 
             {/* Why Choose Section */}
@@ -197,58 +254,46 @@ const Landing: React.FC = () => {
                 </div>
             </section>
 
-            {/* Investment Plans Section */}
-            <section id="plans" className="section-padding bg-light-gray">
-                <div className="dashboard-container">
-                    <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-                        <Title level={2} style={{ fontSize: '2.5rem', fontWeight: 800 }}>Investment Plans</Title>
-                        <div className="section-underline" />
+            {/* Modern Investment Plans Section */}
+            <section id="plans" className="modern-plans-section">
+                <div className="modern-plans-container">
+                    <div className="modern-plans-header">
+                        <Title className="modern-plans-title">Choose Your Investment Plan</Title>
+                        <Text className="modern-plans-subtitle">Select the plan that best fits your financial goals</Text>
                     </div>
                     <Row gutter={[24, 24]}>
                         {INVESTMENT_PLANS.map((plan) => (
                             <Col xs={24} sm={12} lg={6} key={plan.id}>
-                                <Card
-                                    className={`plan-card-v3 ${plan.duration === 6 ? 'plan-card-featured' : ''}`}
-                                    bordered={false}
-                                >
+                                <div className={`modern-plan-card ${plan.duration === 6 ? 'modern-plan-card-featured' : ''}`}>
                                     {plan.duration === 6 && (
-                                        <div className="popular-tag-v3">POPULAR</div>
+                                        <div className="modern-plan-popular-badge">MOST POPULAR</div>
                                     )}
-                                    <div style={{ marginBottom: '20px' }}>
-                                        <Text strong style={{ color: 'var(--primary-color)', fontSize: '13px' }}>{plan.name}</Text>
-                                        <Title level={2} style={{ margin: '12px 0 4px', fontWeight: 800 }}>{plan.roi}% Returns</Title>
-                                    </div>
-                                    <div style={{ marginBottom: '24px' }}>
-                                        <Space direction="vertical" size={10} style={{ width: '100%' }}>
-                                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                                                <CheckCircleFilled style={{ color: 'var(--accent-color)', fontSize: '12px' }} />
-                                                <Text type="secondary" style={{ fontSize: '13px' }}>{plan.duration <= 3 ? 'Quick returns' : 'High returns'}</Text>
-                                            </div>
-                                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                                                <CheckCircleFilled style={{ color: 'var(--accent-color)', fontSize: '12px' }} />
-                                                <Text type="secondary" style={{ fontSize: '13px' }}>Low risk coverage</Text>
-                                            </div>
-                                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                                                <CheckCircleFilled style={{ color: 'var(--accent-color)', fontSize: '12px' }} />
-                                                <Text type="secondary" style={{ fontSize: '13px' }}>Asset backed</Text>
-                                            </div>
-                                        </Space>
-                                    </div>
+                                    <Text className="modern-plan-name">{plan.name}</Text>
+                                    <Title className="modern-plan-roi">{plan.roi}%</Title>
+                                    <Text className="modern-plan-duration">Returns in {plan.duration * 30} days</Text>
+
+                                    <ul className="modern-plan-features">
+                                        {getPlanFeatures(plan).map((feature, index) => (
+                                            <li key={index} className="modern-plan-feature">
+                                                <CheckCircleFilled className="modern-plan-feature-icon" />
+                                                <span>{feature}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+
                                     <Button
-                                        type="primary"
-                                        block
-                                        className="register-btn-solid"
-                                        style={{ height: '44px', borderRadius: '8px', background: 'var(--accent-color)' }}
-                                        onClick={() => handleInvestInPlan(plan)}
+                                        className="modern-plan-select-btn"
+                                        onClick={() => setLoginModalVisible(true)}
                                     >
-                                        Invest Now
+                                        Select Plan
                                     </Button>
-                                </Card>
+                                </div>
                             </Col>
                         ))}
                     </Row>
                 </div>
             </section>
+
 
             {/* Dark Footer -> Now Light Green Accented Deep Green */}
             <footer className="footer-dark-main">
@@ -265,8 +310,8 @@ const Landing: React.FC = () => {
                         <Col xs={12} md={5}>
                             <Title level={5} className="footer-col-title">Quick Links</Title>
                             <ul className="footer-links-list">
-                                <li><Link to="/">About Us</Link></li>
-                                <li><Link to="/#plans" onClick={() => scrollToSection('plans')}>Investment Plans</Link></li>
+                                <li><a href="#about" onClick={() => scrollToSection('about')}>About Us</a></li>
+                                <li><a href="#plans" onClick={() => scrollToSection('plans')}>Investment Plans</a></li>
                                 <li><Link to="/">How It Works</Link></li>
                                 <li><Link to="/">Contact</Link></li>
                             </ul>
@@ -308,28 +353,72 @@ const Landing: React.FC = () => {
                 </div>
             </footer>
 
+            {/* Login Modal */}
             <Modal
-                visible={showSuccess}
-                onCancel={() => setShowSuccess(false)}
+                title={<Title level={3} style={{ margin: 0 }}>Login to Continue</Title>}
+                open={loginModalVisible}
+                onCancel={() => setLoginModalVisible(false)}
                 footer={null}
                 centered
+                width={400}
+                className="login-modal"
             >
-                <Result
-                    status="success"
-                    title="Investment Successful!"
-                    subTitle="Login to your dashboard to view your new certificate."
-                    extra={[
+                <Form
+                    form={loginForm}
+                    layout="vertical"
+                    onFinish={handleLogin}
+                    requiredMark={false}
+                >
+                    <Form.Item
+                        label="Email or Customer ID"
+                        name="email"
+                        rules={[{ required: true, message: 'Please enter your email or ID' }]}
+                    >
+                        <Input
+                            prefix={<UserOutlined />}
+                            placeholder="john.doe@example.com or I1234"
+                            size="large"
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Password"
+                        name="password"
+                        rules={[{ required: true, message: 'Please enter your password' }]}
+                    >
+                        <Input.Password
+                            prefix={<LockOutlined />}
+                            placeholder="Enter your password"
+                            size="large"
+                        />
+                    </Form.Item>
+
+                    <Form.Item>
                         <Button
                             type="primary"
-                            key="login"
-                            className="register-btn-solid"
-                            style={{ background: 'var(--primary-color)' }}
-                            onClick={() => navigate('/auth/login')}
+                            htmlType="submit"
+                            block
+                            size="large"
+                            className="btn-hero-primary"
                         >
-                            Login to Dashboard
+                            Login
                         </Button>
-                    ]}
-                />
+                    </Form.Item>
+
+                    <div style={{ textAlign: 'center' }}>
+                        <Text type="secondary">Don't have an account? </Text>
+                        <Button
+                            type="link"
+                            onClick={() => {
+                                setLoginModalVisible(false);
+                                openRegister();
+                            }}
+                            style={{ padding: 0 }}
+                        >
+                            Register here
+                        </Button>
+                    </div>
+                </Form>
             </Modal>
         </div>
     );

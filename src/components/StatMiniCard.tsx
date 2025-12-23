@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Typography } from 'antd';
 import '../styles/theme.css';
+import '../styles/dashboard-critical-fix-v2.css';
 
 const { Text, Title } = Typography;
 
@@ -8,7 +9,7 @@ interface StatMiniCardProps {
     title: string;
     value: string | number;
     icon: React.ReactNode;
-    colorClass: string; // Using class instead of hex color string
+    colorClass: string;
     trend?: string;
 }
 
@@ -24,7 +25,7 @@ const StatMiniCard: React.FC<StatMiniCardProps> = ({ title, value, icon, colorCl
                     <Title level={3} className="stat-value">{value}</Title>
                 </div>
                 {trend && (
-                    <div className="stat-trend-v2 stat-trend-positive">
+                    <div className="stat-trend-v2">
                         {trend}
                     </div>
                 )}

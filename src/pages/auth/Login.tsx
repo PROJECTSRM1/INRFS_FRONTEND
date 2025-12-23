@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button, Card, Typography, message, Checkbox, Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
 import '../../styles/theme.css';
+import '../../styles/auth-mobile.css';
 
 const { Title, Text } = Typography;
 
@@ -13,28 +14,17 @@ const Login: React.FC = () => {
     const [searchParams] = useSearchParams();
     const [loading, setLoading] = useState(false);
 
-    // Default to investor role
-    const [role, setRole] = useState<'investor' | 'vendor'>('investor');
-
-    useEffect(() => {
-        const roleParam = searchParams.get('role');
-        if (roleParam === 'vendor') {
-            setRole('vendor');
-        }
-    }, [searchParams]);
-
     const onFinish = (values: any) => {
         setLoading(true);
         setTimeout(() => {
-            // Fix: Logic to derive a consistent ID even if email is used
             const derivedId = values.id.includes('@') ? 'I4829' : values.id;
 
             setUser({
                 id: '1',
-                name: role === 'investor' ? 'Alex Johnson' : 'Partner Vendor',
+                name: 'Alex Johnson',
                 email: 'user@investpro.com',
-                role: role,
-                customerId: role === 'investor' ? derivedId : undefined
+                role: 'investor',
+                customerId: derivedId
             });
             message.success('Authenticated Successfully');
             navigate('/dashboard');
@@ -53,7 +43,7 @@ const Login: React.FC = () => {
                         />
                     </div>
                     <Title level={2} className="auth-title-text">
-                        {role === 'investor' ? 'Investor Login' : 'Vendor Portal'}
+                        Investor Login
                     </Title>
                     <Text type="secondary">Access your investment portfolio</Text>
                 </div>

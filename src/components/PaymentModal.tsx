@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Typography, message } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { fintechService } from '../services/fintechService';
-import '../styles/Bonds.css';
+import '../styles/payment-modal.css';
 
 const { Title } = Typography;
 
@@ -37,29 +37,29 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
             open={visible}
             onCancel={onClose}
             footer={null}
-            width={450}
+            width={500}
             className="payment-modal"
             centered
             closeIcon={<CloseOutlined />}
         >
             <div className="payment-modal-header">
-                <Title level={3} style={{ margin: 0, textAlign: 'left' }}>Complete Payment</Title>
+                <Title level={3} className="payment-modal-title">Complete Payment</Title>
             </div>
 
             <div className="payment-card-summary">
                 <div className="payment-summary-row">
-                    <span>Plan Type:</span>
+                    <span className="payment-summary-label">Plan Type:</span>
                     <span className="payment-summary-value">{planName}</span>
                 </div>
                 <div className="payment-summary-row">
-                    <span>Amount to Pay:</span>
-                    <span className="payment-summary-value" style={{ fontWeight: 800 }}>
+                    <span className="payment-summary-label">Amount to Pay:</span>
+                    <span className="payment-summary-value payment-amount-bold">
                         {fintechService.formatCurrency(amount)}
                     </span>
                 </div>
                 <div className="payment-summary-row">
-                    <span>Expected Returns:</span>
-                    <span className="payment-summary-value highlight">
+                    <span className="payment-summary-label">Expected Returns:</span>
+                    <span className="payment-summary-value payment-returns-highlight">
                         {fintechService.formatCurrency(returns)}
                     </span>
                 </div>
@@ -67,15 +67,13 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
             <div className="payment-options-list">
                 <button className="payment-option-btn" onClick={() => handlePayment('Stripe')}>
-                    <img src="/assets/stripe-logo.png" alt="" className="payment-logo-icon" onError={(e) => e.currentTarget.style.display = 'none'} />
-                    <span>Pay with Stripe</span>
+                    <span className="payment-btn-text">💳 Pay with Stripe</span>
                 </button>
                 <button className="payment-option-btn" onClick={() => handlePayment('PayPal')}>
-                    <img src="/assets/paypal-logo.png" alt="" className="payment-logo-icon" onError={(e) => e.currentTarget.style.display = 'none'} />
-                    <span>Pay with PayPal</span>
+                    <span className="payment-btn-text">💰 Pay with PayPal</span>
                 </button>
                 <button className="payment-option-btn" onClick={() => handlePayment('Bank Transfer')}>
-                    <span>🏛️ Bank Transfer</span>
+                    <span className="payment-btn-text">🏛️ Bank Transfer</span>
                 </button>
             </div>
 

@@ -1,20 +1,0 @@
-import axios from 'axios';
-
-// This is a dummy client since we don't have a backend
-const apiClient = axios.create({
-    baseURL: '/api',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
-
-// Mocking axios adapter to simulate backend calls if needed
-// But for this project we'll mostly use services with hardcoded delay
-
-export default apiClient;
-
-
-
-
-
-

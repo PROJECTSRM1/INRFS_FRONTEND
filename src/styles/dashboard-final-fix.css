@@ -1,0 +1,116 @@
+/* FINAL DASHBOARD FIX - Complete Override */
+
+/* Force Ant Design Card to have no padding */
+.stat-card-refined.ant-card .ant-card-body {
+    padding: 28px !important;
+    height: 140px !important;
+}
+
+/* Desktop/Laptop - Horizontal Layout (Default) */
+.stat-card-content {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 16px !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.stat-icon-box {
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 14px !important;
+    background: #eff6ff !important;
+    color: #2563eb !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 22px !important;
+    flex-shrink: 0 !important;
+}
+
+.stat-details {
+    flex: 1 !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+}
+
+.stat-label {
+    font-size: 13px !important;
+    color: #64748b !important;
+    font-weight: 500 !important;
+    margin: 0 0 6px 0 !important;
+    text-align: left !important;
+    display: block !important;
+}
+
+.stat-value {
+    font-size: 32px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+    text-align: left !important;
+}
+
+.stat-trend-v2 {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    padding: 4px 10px !important;
+    border-radius: 8px !important;
+    background: #ecfdf5 !important;
+    color: #10b981 !important;
+    flex-shrink: 0 !important;
+    margin-left: auto !important;
+}
+
+/* Mobile Only - Square Grid */
+@media (max-width: 480px) {
+    .stat-card-refined.ant-card .ant-card-body {
+        padding: 12px !important;
+        height: 110px !important;
+    }
+
+    .kpi-row .ant-col {
+        max-width: 50% !important;
+        flex: 0 0 50% !important;
+        padding: 0 5px !important;
+    }
+
+    .stat-card-content {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 6px !important;
+    }
+
+    .stat-icon-box {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 14px !important;
+    }
+
+    .stat-details {
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    .stat-label {
+        font-size: 10px !important;
+        text-align: center !important;
+    }
+
+    .stat-value {
+        font-size: 18px !important;
+        text-align: center !important;
+    }
+
+    .stat-trend-v2 {
+        font-size: 8px !important;
+        margin-left: 0 !important;
+    }
+}

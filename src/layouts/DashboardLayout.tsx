@@ -1,20 +1,29 @@
-import React from 'react';
-import { Layout, Button, Space } from 'antd';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Layout, Button, Space, Drawer } from 'antd';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { MenuOutlined } from '@ant-design/icons';
 import { useAppContext } from '../context/AppContext';
 import Logo from '../components/Logo';
 import '../styles/theme.css';
+import '../styles/mobile-menu-fix.css';
+import '../styles/mobile-header-fix.css';
 
 const { Header, Content } = Layout;
 
 const DashboardLayout: React.FC = () => {
     const location = useLocation();
-    const navigate = useNavigate();
     const { logout } = useAppContext();
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     const handleLogout = () => {
         logout();
-        navigate('/');
+        setMobileMenuOpen(false);
+        // Force navigation to home page
+        window.location.href = '/';
+    };
+
+    const handleNavClick = () => {
+        setMobileMenuOpen(false);
     };
 
     return (
@@ -26,7 +35,8 @@ const DashboardLayout: React.FC = () => {
                     </Link>
                 </div>
 
-                <div className="dashboard-header-right">
+                {/* Desktop Navigation */}
+                <div className="dashboard-header-right desktop-nav">
                     <Space size={32} className="nav-links-right">
                         <Link to="/dashboard" className={`nav-text-link ${location.pathname === '/dashboard' ? 'active' : ''}`}>
                             Dashboard
@@ -46,6 +56,55 @@ const DashboardLayout: React.FC = () => {
                         </Button>
                     </Space>
                 </div>
+
+                {/* Mobile Menu Toggle */}
+                <Button
+                    className="mobile-menu-toggle"
+                    icon={<MenuOutlined />}
+                    onClick={() => setMobileMenuOpen(true)}
+                />
+
+                {/* Mobile Drawer Menu */}
+                <Drawer
+                    title="Menu"
+                    placement="right"
+                    onClose={() => setMobileMenuOpen(false)}
+                    open={mobileMenuOpen}
+                    className="mobile-nav-drawer"
+                >
+                    <div className="mobile-nav-links">
+                        <Link
+                            to="/dashboard"
+                            className={`mobile-nav-link ${location.pathname === '/dashboard' ? 'active' : ''}`}
+                            onClick={handleNavClick}
+                        >
+                            Dashboard
+                        </Link>
+                        <Link
+                            to="/dashboard/my-investments"
+                            className={`mobile-nav-link ${location.pathname === '/dashboard/my-investments' ? 'active' : ''}`}
+                            onClick={handleNavClick}
+                        >
+                            My Investments
+                        </Link>
+                        <Link
+                            to="/dashboard/bonds"
+                            className={`mobile-nav-link ${location.pathname === '/dashboard/bonds' ? 'active' : ''}`}
+                            onClick={handleNavClick}
+                        >
+                            Bonds
+                        </Link>
+                        <Button
+                            type="primary"
+                            danger
+                            block
+                            onClick={handleLogout}
+                            className="mobile-logout-btn"
+                        >
+                            Logout
+                        </Button>
+                    </div>
+                </Drawer>
             </Header>
             <Content className="dashboard-main-content">
                 <div className="dashboard-container">

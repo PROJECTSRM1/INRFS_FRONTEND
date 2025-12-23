@@ -1,0 +1,175 @@
+/* Login Modal Styles */
+
+.login-modal .ant-modal-content {
+    border-radius: 16px !important;
+    padding: 0 !important;
+}
+
+.login-modal .ant-modal-body {
+    padding: 0 !important;
+}
+
+.login-modal-content {
+    padding: 40px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.login-icon {
+    font-size: 48px;
+    color: #3b82f6;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.login-title {
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    margin: 0 0 8px 0 !important;
+    color: #0f172a !important;
+}
+
+.login-subtitle {
+    font-size: 15px !important;
+    color: #64748b !important;
+}
+
+.login-form {
+    margin-top: 32px;
+}
+
+.login-form .ant-form-item-label>label {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+}
+
+.login-input {
+    height: 48px !important;
+    border-radius: 8px !important;
+    font-size: 15px !important;
+}
+
+.login-input .ant-input {
+    font-size: 15px !important;
+}
+
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.forgot-link {
+    color: #3b82f6 !important;
+    font-size: 14px !important;
+}
+
+.forgot-link:hover {
+    color: #2563eb !important;
+}
+
+.login-button {
+    height: 50px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    background: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+}
+
+.login-button:hover {
+    background: #2563eb !important;
+    border-color: #2563eb !important;
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.footer-text {
+    font-size: 14px !important;
+    color: #64748b !important;
+}
+
+.signup-link {
+    color: #3b82f6 !important;
+    font-weight: 600 !important;
+}
+
+.signup-link:hover {
+    color: #2563eb !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .login-modal {
+        max-width: 90% !important;
+    }
+
+    .login-modal-content {
+        padding: 32px 24px;
+    }
+
+    .login-icon {
+        font-size: 40px;
+    }
+
+    .login-title {
+        font-size: 24px !important;
+    }
+
+    .login-input {
+        height: 46px !important;
+    }
+
+    .login-button {
+        height: 48px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-modal {
+        max-width: 95% !important;
+    }
+
+    .login-modal-content {
+        padding: 28px 20px;
+    }
+
+    .login-icon {
+        font-size: 36px;
+        margin-bottom: 12px;
+    }
+
+    .login-title {
+        font-size: 22px !important;
+    }
+
+    .login-subtitle {
+        font-size: 14px !important;
+    }
+
+    .login-input {
+        height: 44px !important;
+        font-size: 14px !important;
+    }
+
+    .login-button {
+        height: 46px !important;
+        font-size: 15px !important;
+    }
+
+    .login-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}

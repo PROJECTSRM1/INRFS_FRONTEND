@@ -1,0 +1,64 @@
+/* Desktop/Laptop Horizontal Card Layout - Override Mobile Styles */
+
+/* Desktop and Tablet - Horizontal Layout */
+@media (min-width: 481px) {
+
+    /* Horizontal layout for stat cards */
+    .stat-card-content {
+        flex-direction: row !important;
+        align-items: center !important;
+        text-align: left !important;
+        gap: 16px !important;
+    }
+
+    .stat-details {
+        text-align: left !important;
+        align-items: flex-start !important;
+    }
+
+    .stat-label {
+        text-align: left !important;
+    }
+
+    .stat-value {
+        text-align: left !important;
+    }
+
+    /* 4 columns for desktop */
+    .kpi-row .ant-col {
+        max-width: 25% !important;
+        flex: 0 0 25% !important;
+    }
+
+    /* 4 columns for quick actions */
+    .quick-actions-section .ant-col {
+        max-width: 25% !important;
+        flex: 0 0 25% !important;
+    }
+}
+
+/* Tablet - 2 columns */
+@media (min-width: 481px) and (max-width: 768px) {
+    .kpi-row .ant-col {
+        max-width: 50% !important;
+        flex: 0 0 50% !important;
+    }
+
+    .quick-actions-section .ant-col {
+        max-width: 50% !important;
+        flex: 0 0 50% !important;
+    }
+}
+
+/* Desktop - 4 columns */
+@media (min-width: 769px) {
+    .kpi-row .ant-col {
+        max-width: 25% !important;
+        flex: 0 0 25% !important;
+    }
+
+    .quick-actions-section .ant-col {
+        max-width: 25% !important;
+        flex: 0 0 25% !important;
+    }
+}

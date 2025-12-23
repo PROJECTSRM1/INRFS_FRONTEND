@@ -17,12 +17,9 @@ const BondCard: React.FC<BondCardProps> = ({ investment, userName }) => {
     const [isCertModalVisible, setIsCertModalVisible] = useState(false);
     const [isPlanModalVisible, setIsPlanModalVisible] = useState(false);
 
-    // Prepare data for modals
-    // Note: Assuming ROI is fixed or available in investment object. If not, defaulting to 18 as per earlier mock.
-    // In a real app, investment would have an ROI field.
     const bondData = {
         ...investment,
-        roi: 18 // Default fallback if not present, should conceptually come from investment
+        roi: 18
     };
 
     return (
@@ -47,11 +44,11 @@ const BondCard: React.FC<BondCardProps> = ({ investment, userName }) => {
                     <div className="bond-info-row">
                         <div className="bond-info-item">
                             <span className="bond-label">Invested Amount</span>
-                            <span className="bond-value-highlight" style={{ color: '#1e3a8a' }}>{fintechService.formatCurrency(investment.amount)}</span>
+                            <span className="bond-value-highlight bond-value-blue">{fintechService.formatCurrency(investment.amount)}</span>
                         </div>
-                        <div className="bond-info-item" style={{ alignItems: 'flex-start' }}>
+                        <div className="bond-info-item">
                             <span className="bond-label">Maturity Value</span>
-                            <span className="bond-value-highlight" style={{ color: '#166534' }}>
+                            <span className="bond-value-highlight bond-value-green">
                                 {fintechService.formatCurrency(investment.maturityAmount)}
                             </span>
                         </div>
@@ -61,13 +58,13 @@ const BondCard: React.FC<BondCardProps> = ({ investment, userName }) => {
                         <Col span={12}>
                             <div className="bond-info-item">
                                 <span className="bond-label">Tenure</span>
-                                <span className="bond-value" style={{ fontSize: '15px' }}>{investment.tenure} Months</span>
+                                <span className="bond-value bond-value-medium">{investment.tenure} Months</span>
                             </div>
                         </Col>
                         <Col span={12}>
                             <div className="bond-info-item">
                                 <span className="bond-label">Interest</span>
-                                <span className="bond-value" style={{ fontSize: '15px' }}>18% p.a.</span>
+                                <span className="bond-value bond-value-medium">18% p.a.</span>
                             </div>
                         </Col>
                         <Col span={12}>
@@ -79,7 +76,7 @@ const BondCard: React.FC<BondCardProps> = ({ investment, userName }) => {
                         <Col span={12}>
                             <div className="bond-info-item">
                                 <span className="bond-label">INFRC No.</span>
-                                <span className="bond-value" style={{ wordBreak: 'break-all', fontSize: '13px' }}>{investment.infrcNumber}</span>
+                                <span className="bond-value bond-value-small">{investment.infrcNumber}</span>
                             </div>
                         </Col>
                     </Row>
@@ -87,18 +84,16 @@ const BondCard: React.FC<BondCardProps> = ({ investment, userName }) => {
 
                 <div className="bond-footer">
                     <Button
-                        className="btn-bond-action btn-bond-secondary"
+                        className="btn-bond-action btn-bond-secondary btn-see-plan"
                         icon={<EyeOutlined />}
                         onClick={() => setIsPlanModalVisible(true)}
-                        style={{ flex: 4 }}
                     >
                         See Plan
                     </Button>
                     <Button
-                        className="btn-bond-action btn-bond-primary"
+                        className="btn-bond-action btn-bond-primary btn-download-icon"
                         icon={<DownloadOutlined />}
                         onClick={() => setIsCertModalVisible(true)}
-                        style={{ flex: 1, minWidth: '40px' }}
                     />
                 </div>
             </div>
