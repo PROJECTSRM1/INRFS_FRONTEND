@@ -50,14 +50,8 @@ const PublicLayout: React.FC = () => {
 
     const menuItems = [
         { key: '/', label: <Link to="/">Home</Link> },
-        {
-            key: '/#plans',
-            label: <a onClick={(e) => { e.preventDefault(); handleScrollToSection('plans'); }}>Plans</a>
-        },
-        {
-            key: '/#about',
-            label: <a onClick={(e) => { e.preventDefault(); handleScrollToSection('about'); }}>About</a>
-        },
+        { key: '/#plans', label: <Link to="/plans">Plans</Link> },
+        { key: '/#about', label: <Link to="/about">About</Link> },
     ];
 
     return (

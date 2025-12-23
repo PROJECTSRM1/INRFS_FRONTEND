@@ -93,55 +93,28 @@ const Landing: React.FC = () => {
 
     return (
         <div className="landing-page-wrapper">
-            {/* Hero Section with Background Carousel */}
-            <section className="hero-carousel-section">
-                <Carousel
-                    ref={carouselRef}
-                    autoplay
-                    autoplaySpeed={5000}
-                    effect="fade"
-                    dots={false}
-                >
-                    {carouselImages.map((image, index) => (
-                        <div key={index}>
-                            <div className="hero-slide" style={{ backgroundImage: `url(${image.src})` }}>
-                                <div className="hero-overlay" />
-                                <div className="hero-content-wrapper">
-                                    <Title className="hero-title-main">
-                                        Secure Your Financial Future
-                                    </Title>
-                                    <Text className="hero-subtitle-main">
-                                        Invest with confidence in diversified portfolios. Earn guaranteed returns with INRFS.
-                                    </Text>
-                                    <div className="hero-buttons">
-                                        <Button className="btn-hero-primary" onClick={openRegister}>
-                                            Get Started
-                                        </Button>
-                                        <Button
-                                            className="btn-hero-ghost"
-                                            onClick={() => scrollToSection('plans')}
-                                        >
-                                            View Plans
-                                        </Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </Carousel>
-
-                <button
-                    className="hero-carousel-arrow hero-carousel-arrow-left"
-                    onClick={() => carouselRef.current?.prev()}
-                >
-                    <LeftOutlined />
-                </button>
-                <button
-                    className="hero-carousel-arrow hero-carousel-arrow-right"
-                    onClick={() => carouselRef.current?.next()}
-                >
-                    <RightOutlined />
-                </button>
+            {/* Hero Section */}
+            <section className="hero-v3">
+                <div className="hero-v3-overlay" />
+                <div className="hero-v3-content">
+                    <Title className="hero-title-v3">
+                        Secure Your Financial Future
+                    </Title>
+                    <Text className="hero-subtitle-v3">
+                        Invest with confidence. Earn guaranteed returns.
+                    </Text>
+                    <div className="hero-btns-v3">
+                        <Button className="btn-hero-primary" onClick={openRegister}>
+                            Get Started
+                        </Button>
+                        <Button
+                            className="btn-hero-ghost"
+                            onClick={() => scrollToSection('plans')}
+                        >
+                            View Plans
+                        </Button>
+                    </div>
+                </div>
             </section>
 
             {/* Why Choose Section */}
@@ -159,7 +132,7 @@ const Landing: React.FC = () => {
                                 </div>
                                 <Title level={4}>Secure & Regulated</Title>
                                 <Paragraph type="secondary">
-                                    Our platform uses bank-grade encryption and is fully compliant with modern financial regulations.
+                                    Your investments are protected with bank-grade security and full regulatory compliance.
                                 </Paragraph>
                             </div>
                         </Col>
@@ -170,7 +143,7 @@ const Landing: React.FC = () => {
                                 </div>
                                 <Title level={4}>Guaranteed Returns</Title>
                                 <Paragraph type="secondary">
-                                    We offer fixed-rate investment plans backed by solid institutional assets and prudent risk management.
+                                    Earn fixed returns with transparent calculations and no hidden fees.
                                 </Paragraph>
                             </div>
                         </Col>
@@ -181,7 +154,7 @@ const Landing: React.FC = () => {
                                 </div>
                                 <Title level={4}>Digital Bonds</Title>
                                 <Paragraph type="secondary">
-                                    Every investment triggers the immediate issuance of a verifiable digital bond certificate.
+                                    Receive instant digital bonds for all your investments with complete documentation.
                                 </Paragraph>
                             </div>
                         </Col>
@@ -254,45 +227,76 @@ const Landing: React.FC = () => {
                 </div>
             </section>
 
-            {/* Modern Investment Plans Section */}
-            <section id="plans" className="modern-plans-section">
-                <div className="modern-plans-container">
-                    <div className="modern-plans-header">
-                        <Title className="modern-plans-title">Choose Your Investment Plan</Title>
-                        <Text className="modern-plans-subtitle">Select the plan that best fits your financial goals</Text>
+            {/* Investment Plans Section */}
+            {/* Investment Plans Section */}
+            <section id="plans" className="plans-section-final">
+                <div className="dashboard-container">
+                    <div style={{ textAlign: "center", marginBottom: "48px" }}>
+                        <Title
+                            level={2}
+                            style={{ fontSize: "2.4rem", fontWeight: 800, marginBottom: 8 }}
+                        >
+                            Investment Plans
+                        </Title>
+                        <p style={{ color: "#6b7280", fontSize: "15px", margin: 0 }}>
+                            Choose a plan that fits your investment horizon.
+                        </p>
                     </div>
-                    <Row gutter={[24, 24]}>
-                        {INVESTMENT_PLANS.map((plan) => (
-                            <Col xs={24} sm={12} lg={6} key={plan.id}>
-                                <div className={`modern-plan-card ${plan.duration === 6 ? 'modern-plan-card-featured' : ''}`}>
-                                    {plan.duration === 6 && (
-                                        <div className="modern-plan-popular-badge">MOST POPULAR</div>
-                                    )}
-                                    <Text className="modern-plan-name">{plan.name}</Text>
-                                    <Title className="modern-plan-roi">{plan.roi}%</Title>
-                                    <Text className="modern-plan-duration">Returns in {plan.duration * 30} days</Text>
 
-                                    <ul className="modern-plan-features">
-                                        {getPlanFeatures(plan).map((feature, index) => (
-                                            <li key={index} className="modern-plan-feature">
-                                                <CheckCircleFilled className="modern-plan-feature-icon" />
-                                                <span>{feature}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
+                    <Row gutter={[24, 24]} justify="center">
+                        {INVESTMENT_PLANS.map((plan) => {
+                            const getFeatures = (duration: number) => {
+                                if (duration === 1) return ["Quick returns", "Low risk", "Flexible amount"];
+                                if (duration === 3) return ["Better returns", "Balanced risk", "Popular choice"];
+                                if (duration === 6) return ["High returns", "Best value", "Recommended"];
+                                return ["Maximum returns", "Long term", "Wealth building"];
+                            };
 
-                                    <Button
-                                        className="modern-plan-select-btn"
-                                        onClick={() => setLoginModalVisible(true)}
+                            const isPopular = plan.duration === 6;
+
+                            function handleInvestInPlan(plan: InvestmentPlan): void {
+                                throw new Error('Function not implemented.');
+                            }
+
+                            return (
+                                <Col xs={24} sm={12} lg={6} key={plan.id}>
+                                    <Card
+                                        bordered={false}
+                                        className={`plan-card-final ${isPopular ? "plan-card-featured-final" : ""
+                                            }`}
                                     >
-                                        Select Plan
-                                    </Button>
-                                </div>
-                            </Col>
-                        ))}
+                                        {isPopular && (
+                                            <div className="popular-badge-final">POPULAR</div>
+                                        )}
+
+                                        <div className="plan-name-final">{plan.name}</div>
+
+                                        <div className="plan-roi-final">{plan.roi}% Returns</div>
+
+                                        <ul className="plan-features-final">
+                                            {getFeatures(plan.duration).map((feature, idx) => (
+                                                <li key={idx}>
+                                                    <CheckCircleFilled />
+                                                    <span>{feature}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+
+                                        <Button
+                                            block
+                                            className="invest-btn-final"
+                                            onClick={() => handleInvestInPlan(plan)}
+                                        >
+                                            Invest Now
+                                        </Button>
+                                    </Card>
+                                </Col>
+                            );
+                        })}
                     </Row>
                 </div>
             </section>
+
 
 
             {/* Dark Footer -> Now Light Green Accented Deep Green */}
@@ -344,10 +348,10 @@ const Landing: React.FC = () => {
                         </Col>
                     </Row>
                     <div className="footer-bottom">
-                        <Text style={{ color: 'inherit' }}>© 2024 INRFS. All rights reserved. Regulated by Universal Financial Authority.</Text>
+                        <Text style={{ color: 'inherit' }}>© 2024 INRFS. All rights reserved. Regulated by Financial Authority.</Text>
                         <Link to="/admin" className="footer-admin-link">
                             <LockOutlined />
-                            <Text style={{ color: 'inherit', fontSize: '11px' }}>Admin Portal Access</Text>
+                            <Text style={{ color: 'inherit', fontSize: '12px', marginLeft: '4px' }}>Admin Access</Text>
                         </Link>
                     </div>
                 </div>
