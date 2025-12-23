@@ -255,61 +255,6 @@
     .premium-footer {
         padding: 60px 20px 20px;
     }
-<<<<<<< HEAD
-}
-
-/* Modern Plans Section - Reference Image Match */
-.modern-plans-section {
-    padding: 80px 0;
-    background: #f8fafc;
-}
-
-.modern-plans-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-}
-
-.modern-plans-header {
-    text-align: center;
-    margin-bottom: 60px;
-}
-
-.modern-plans-title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #0f172a;
-    margin-bottom: 12px !important;
-}
-
-.modern-plans-subtitle {
-    font-size: 1.1rem;
-    color: #64748b;
-}
-
-.modern-plan-card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 32px 24px;
-    border: 2px solid #f1f5f9;
-    transition: all 0.3s ease;
-    height: 100%;
-    position: relative;
-}
-
-.modern-plan-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-    border-color: #e2e8f0;
-}
-
-.modern-plan-card-featured {
-    border-color: #2563eb;
-    box-shadow: 0 8px 16px rgba(37, 99, 235, 0.12);
-}
-
-.modern-plan-popular-badge {
-=======
     
     .plans-section-redesign,
     .plans-section-simple {
@@ -344,44 +289,10 @@
 }
 
 .popular-badge-redesign {
->>>>>>> c1433c69b83f8d0d3cd5eeb6291b5fb52f3ce943
     position: absolute;
     top: -12px;
     left: 50%;
     transform: translateX(-50%);
-<<<<<<< HEAD
-    background: #0f172a;
-    color: #fff;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
-
-.modern-plan-name {
-    color: #2563eb;
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 12px !important;
-}
-
-.modern-plan-roi {
-    font-size: 3rem;
-    font-weight: 800;
-    color: #0f172a;
-    margin-bottom: 8px !important;
-    line-height: 1;
-}
-
-.modern-plan-duration {
-    color: #64748b;
-    font-size: 0.95rem;
-    margin-bottom: 24px !important;
-}
-
-.modern-plan-features {
-=======
     background: #111111;
     color: #ffffff;
     padding: 4px 16px;
@@ -410,59 +321,11 @@
 }
 
 .plan-features-redesign {
->>>>>>> c1433c69b83f8d0d3cd5eeb6291b5fb52f3ce943
     list-style: none;
     padding: 0;
     margin: 0 0 32px 0;
 }
 
-<<<<<<< HEAD
-.modern-plan-feature {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-    color: #475569;
-    font-size: 0.95rem;
-}
-
-.modern-plan-feature-icon {
-    color: #2563eb;
-    font-size: 16px;
-    flex-shrink: 0;
-}
-
-.modern-plan-select-btn {
-    width: 100%;
-    height: 48px !important;
-    background: #0f172a !important;
-    color: #fff !important;
-    border: none !important;
-    border-radius: 8px !important;
-    font-size: 1rem !important;
-    font-weight: 600 !important;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.modern-plan-select-btn:hover {
-    background: #1e293b !important;
-    transform: translateY(-2px);
-}
-
-@media (max-width: 768px) {
-    .modern-plans-section {
-        padding: 60px 0;
-    }
-
-    .modern-plans-title {
-        font-size: 2rem !important;
-    }
-
-    .modern-plan-roi {
-        font-size: 2.5rem !important;
-    }
-=======
 .plan-features-redesign li {
     display: flex;
     align-items: flex-start;
@@ -634,5 +497,4 @@
     margin-top: 16px;
     font-size: 14px !important;
     line-height: 1.6 !important;
->>>>>>> c1433c69b83f8d0d3cd5eeb6291b5fb52f3ce943
 }

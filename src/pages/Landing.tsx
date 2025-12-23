@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Typography, Button, Row, Col, Space, Card, Modal, Form, Input, Carousel } from 'antd';
+import React, { useState } from 'react';
+import { Typography, Button, Row, Col, Space, Card, Modal, Result } from 'antd';
 import { useOutletContext, Link, useNavigate } from 'react-router-dom';
 import {
     SafetyOutlined,
@@ -12,19 +12,15 @@ import {
     LockOutlined,
     HeartOutlined,
     TeamOutlined,
-    GlobalOutlined,
-    UserOutlined,
-    LeftOutlined,
-    RightOutlined
+    GlobalOutlined
 } from '@ant-design/icons';
 import { INVESTMENT_PLANS } from '../data/mockData';
+import { fintechService } from '../services/fintechService';
 import { useAppContext } from '../context/AppContext';
 import Logo from '../components/Logo';
-import type { InvestmentPlan } from '../types';
+import type { InvestmentPlan, Investment } from '../types';
 import '../styles/theme.css';
 import '../styles/landing.css';
-import '../styles/image-carousel.css';
-import '../styles/hero-carousel.css';
 
 
 const { Title, Text, Paragraph } = Typography;
@@ -35,23 +31,29 @@ interface PublicContext {
 
 const Landing: React.FC = () => {
     const { openRegister } = useOutletContext<PublicContext>();
-    const { setUser } = useAppContext();
+    const { addInvestment, investments } = useAppContext();
     const navigate = useNavigate();
-    const [loginModalVisible, setLoginModalVisible] = useState(false);
-    const [loginForm] = Form.useForm();
-    const carouselRef = useRef<any>(null);
+    const [showSuccess, setShowSuccess] = useState(false);
 
-    const handleLogin = async (values: { email: string; password: string }) => {
-        // Reuse existing login logic
-        setUser({
-            id: '1',
-            name: 'John Doe',
-            email: values.email,
-            role: 'investor',
-            customerId: 'I4829'
-        });
-        setLoginModalVisible(false);
-        navigate('/dashboard');
+    const handleInvestInPlan = (plan: InvestmentPlan) => {
+        const returnsData = fintechService.calculateReturns(plan.minAmount, plan.roi, plan.duration);
+
+        const dummyInvestment: Investment = {
+            id: fintechService.generateInvestmentId(investments.length),
+            planId: plan.id,
+            planName: plan.name,
+            amount: plan.minAmount,
+            returns: returnsData.interest,
+            maturityAmount: returnsData.maturityAmount,
+            tenure: plan.duration,
+            status: 'Active',
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            startDate: new Date().toISOString(),
+            infrcNumber: `${plan.infrcPrefix}-${Math.floor(100000 + Math.random() * 900000)}`
+        };
+
+        addInvestment(dummyInvestment);
+        setShowSuccess(true);
     };
 
     const scrollToSection = (id: string) => {
@@ -60,36 +62,6 @@ const Landing: React.FC = () => {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
-
-    const getPlanFeatures = (plan: InvestmentPlan) => {
-        const features = [];
-        if (plan.duration <= 3) {
-            features.push('Quick returns', 'Low risk investment', 'Flexible amount', 'Digital bond issued');
-        } else if (plan.duration === 6) {
-            features.push('High returns', 'Best value', 'Recommended plan', 'Digital bond issued');
-        } else {
-            features.push('Maximum returns', 'Long term growth', 'Wealth building', 'Digital bond issued');
-        }
-        return features;
-    };
-
-    const carouselImages = [
-        {
-            src: '/images/growth.png',
-            title: 'Grow Your Wealth',
-            description: 'Watch your investments flourish with guaranteed returns'
-        },
-        {
-            src: '/images/trading.png',
-            title: 'Smart Investment Platform',
-            description: 'Advanced tools and real-time tracking for your portfolio'
-        },
-        {
-            src: '/images/nature.jpg',
-            title: 'Sustainable Growth',
-            description: 'Building a secure financial future for generations'
-        }
-    ];
 
     return (
         <div className="landing-page-wrapper">
@@ -229,74 +201,70 @@ const Landing: React.FC = () => {
 
             {/* Investment Plans Section */}
             {/* Investment Plans Section */}
-            <section id="plans" className="plans-section-final">
-                <div className="dashboard-container">
-                    <div style={{ textAlign: "center", marginBottom: "48px" }}>
-                        <Title
-                            level={2}
-                            style={{ fontSize: "2.4rem", fontWeight: 800, marginBottom: 8 }}
-                        >
-                            Investment Plans
-                        </Title>
-                        <p style={{ color: "#6b7280", fontSize: "15px", margin: 0 }}>
-                            Choose a plan that fits your investment horizon.
-                        </p>
-                    </div>
+<section id="plans" className="plans-section-final">
+  <div className="dashboard-container">
+    <div style={{ textAlign: "center", marginBottom: "48px" }}>
+      <Title
+        level={2}
+        style={{ fontSize: "2.4rem", fontWeight: 800, marginBottom: 8 }}
+      >
+        Investment Plans
+      </Title>
+      <p style={{ color: "#6b7280", fontSize: "15px", margin: 0 }}>
+        Choose a plan that fits your investment horizon.
+      </p>
+    </div>
 
-                    <Row gutter={[24, 24]} justify="center">
-                        {INVESTMENT_PLANS.map((plan) => {
-                            const getFeatures = (duration: number) => {
-                                if (duration === 1) return ["Quick returns", "Low risk", "Flexible amount"];
-                                if (duration === 3) return ["Better returns", "Balanced risk", "Popular choice"];
-                                if (duration === 6) return ["High returns", "Best value", "Recommended"];
-                                return ["Maximum returns", "Long term", "Wealth building"];
-                            };
+    <Row gutter={[24, 24]} justify="center">
+      {INVESTMENT_PLANS.map((plan) => {
+        const getFeatures = (duration: number) => {
+          if (duration === 1) return ["Quick returns", "Low risk", "Flexible amount"];
+          if (duration === 3) return ["Better returns", "Balanced risk", "Popular choice"];
+          if (duration === 6) return ["High returns", "Best value", "Recommended"];
+          return ["Maximum returns", "Long term", "Wealth building"];
+        };
 
-                            const isPopular = plan.duration === 6;
+        const isPopular = plan.duration === 6;
 
-                            function handleInvestInPlan(plan: InvestmentPlan): void {
-                                throw new Error('Function not implemented.');
-                            }
+        return (
+          <Col xs={24} sm={12} lg={6} key={plan.id}>
+            <Card
+              bordered={false}
+              className={`plan-card-final ${
+                isPopular ? "plan-card-featured-final" : ""
+              }`}
+            >
+              {isPopular && (
+                <div className="popular-badge-final">POPULAR</div>
+              )}
 
-                            return (
-                                <Col xs={24} sm={12} lg={6} key={plan.id}>
-                                    <Card
-                                        bordered={false}
-                                        className={`plan-card-final ${isPopular ? "plan-card-featured-final" : ""
-                                            }`}
-                                    >
-                                        {isPopular && (
-                                            <div className="popular-badge-final">POPULAR</div>
-                                        )}
+              <div className="plan-name-final">{plan.name}</div>
 
-                                        <div className="plan-name-final">{plan.name}</div>
+              <div className="plan-roi-final">{plan.roi}% Returns</div>
 
-                                        <div className="plan-roi-final">{plan.roi}% Returns</div>
+              <ul className="plan-features-final">
+                {getFeatures(plan.duration).map((feature, idx) => (
+                  <li key={idx}>
+                    <CheckCircleFilled />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
 
-                                        <ul className="plan-features-final">
-                                            {getFeatures(plan.duration).map((feature, idx) => (
-                                                <li key={idx}>
-                                                    <CheckCircleFilled />
-                                                    <span>{feature}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-
-                                        <Button
-                                            block
-                                            className="invest-btn-final"
-                                            onClick={() => handleInvestInPlan(plan)}
-                                        >
-                                            Invest Now
-                                        </Button>
-                                    </Card>
-                                </Col>
-                            );
-                        })}
-                    </Row>
-                </div>
-            </section>
-
+              <Button
+                block
+                className="invest-btn-final"
+                onClick={() => handleInvestInPlan(plan)}
+              >
+                Invest Now
+              </Button>
+            </Card>
+          </Col>
+        );
+      })}
+    </Row>
+  </div>
+</section>
 
 
             {/* Dark Footer -> Now Light Green Accented Deep Green */}
@@ -314,8 +282,8 @@ const Landing: React.FC = () => {
                         <Col xs={12} md={5}>
                             <Title level={5} className="footer-col-title">Quick Links</Title>
                             <ul className="footer-links-list">
-                                <li><a href="#about" onClick={() => scrollToSection('about')}>About Us</a></li>
-                                <li><a href="#plans" onClick={() => scrollToSection('plans')}>Investment Plans</a></li>
+                                <li><Link to="/">About Us</Link></li>
+                                <li><Link to="/#plans" onClick={() => scrollToSection('plans')}>Investment Plans</Link></li>
                                 <li><Link to="/">How It Works</Link></li>
                                 <li><Link to="/">Contact</Link></li>
                             </ul>
@@ -357,72 +325,28 @@ const Landing: React.FC = () => {
                 </div>
             </footer>
 
-            {/* Login Modal */}
             <Modal
-                title={<Title level={3} style={{ margin: 0 }}>Login to Continue</Title>}
-                open={loginModalVisible}
-                onCancel={() => setLoginModalVisible(false)}
+                visible={showSuccess}
+                onCancel={() => setShowSuccess(false)}
                 footer={null}
                 centered
-                width={400}
-                className="login-modal"
             >
-                <Form
-                    form={loginForm}
-                    layout="vertical"
-                    onFinish={handleLogin}
-                    requiredMark={false}
-                >
-                    <Form.Item
-                        label="Email or Customer ID"
-                        name="email"
-                        rules={[{ required: true, message: 'Please enter your email or ID' }]}
-                    >
-                        <Input
-                            prefix={<UserOutlined />}
-                            placeholder="john.doe@example.com or I1234"
-                            size="large"
-                        />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="Password"
-                        name="password"
-                        rules={[{ required: true, message: 'Please enter your password' }]}
-                    >
-                        <Input.Password
-                            prefix={<LockOutlined />}
-                            placeholder="Enter your password"
-                            size="large"
-                        />
-                    </Form.Item>
-
-                    <Form.Item>
+                <Result
+                    status="success"
+                    title="Investment Successful!"
+                    subTitle="Login to your dashboard to view your new certificate."
+                    extra={[
                         <Button
                             type="primary"
-                            htmlType="submit"
-                            block
-                            size="large"
-                            className="btn-hero-primary"
+                            key="login"
+                            className="register-btn-solid"
+                            style={{ background: 'var(--primary-color)' }}
+                            onClick={() => navigate('/auth/login')}
                         >
-                            Login
+                            Login to Dashboard
                         </Button>
-                    </Form.Item>
-
-                    <div style={{ textAlign: 'center' }}>
-                        <Text type="secondary">Don't have an account? </Text>
-                        <Button
-                            type="link"
-                            onClick={() => {
-                                setLoginModalVisible(false);
-                                openRegister();
-                            }}
-                            style={{ padding: 0 }}
-                        >
-                            Register here
-                        </Button>
-                    </div>
-                </Form>
+                    ]}
+                />
             </Modal>
         </div>
     );
