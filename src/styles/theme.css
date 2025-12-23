@@ -42,10 +42,23 @@ body {
     margin: 0 auto;
 }
 
+/* Hero Background Slideshow Animation */
+@keyframes heroSlideshow {
+    0%, 33% {
+        background-image: url('../assets/1st.jpg');
+    }
+    34%, 66% {
+        background-image: url('../assets/2nd.jpg');
+    }
+    67%, 100% {
+        background-image: url('../assets/3rd.jpg');
+    }
+}
+
 /* Hero Section (Pixel Perfect Match) */
 .hero-v3 {
     position: relative;
-    background: url('https://images.unsplash.com/photo-1579621909532-445fd8f9ef62?q=80&w=2070&auto=format&fit=crop') center center / cover no-repeat;
+    background: url('../assets/1st.jpg') center center / cover no-repeat;
     min-height: 85vh;
     display: flex;
     align-items: center;
@@ -53,6 +66,9 @@ body {
     text-align: center;
     padding: 80px 20px;
     overflow: hidden;
+    animation: heroSlideshow 15s infinite;
+    background-size: cover;
+    background-position: center;
 }
 
 .hero-v3-overlay {
@@ -298,10 +314,9 @@ body {
     font-size: 28px;
 }
 
-/* Dark Footer -> Now Light Green Accented Footer */
+/* Dark Footer - Black Background */
 .footer-dark-main {
-    background: #064e3b;
-    /* Deep Green instead of Black */
+    background: #111111;
     color: rgba(255, 255, 255, 0.8);
     padding: 80px 40px 40px;
 }

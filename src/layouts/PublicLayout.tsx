@@ -16,8 +16,8 @@ const PublicLayout: React.FC = () => {
 
     const menuItems = [
         { key: '/', label: <Link to="/">Home</Link> },
-        { key: '/#plans', label: <Link to="/#plans">Plans</Link> },
-        { key: '/#about', label: <Link to="/#about">About</Link> },
+        { key: '/#plans', label: <Link to="/plans">Plans</Link> },
+        { key: '/#about', label: <Link to="/about">About</Link> },
     ];
 
     return (
