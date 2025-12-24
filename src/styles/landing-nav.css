@@ -1,0 +1,36 @@
+/* Add to landing-nav.css */
+
+.nav-link-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    padding: 8px 16px;
+    transition: color 0.2s;
+    font-family: inherit;
+}
+
+.nav-link-btn:hover {
+    color: var(--primary-gold);
+}
+
+.btn-pill.small {
+    padding: 8px 24px;
+    font-size: 0.9rem;
+    height: auto;
+}
+
+.btn-pill.outline {
+    background: transparent;
+    border: 1px solid var(--primary-gold);
+    color: var(--primary-gold);
+}
+
+.btn-pill.outline:hover {
+    background: var(--primary-gold-dark);
+    /* Slightly darker on hover or just gold */
+    border-color: var(--primary-gold-dark);
+    color: white;
+}

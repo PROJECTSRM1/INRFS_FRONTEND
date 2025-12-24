@@ -1,0 +1,120 @@
+/* Rich Footer Styles */
+.aesth-footer {
+    background-color: #2C3E50;
+    /* Dark premium background to ground the page */
+    color: #ecf0f1;
+    padding-top: 80px;
+    margin-top: 80px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 40px;
+    padding-bottom: 60px;
+}
+
+.footer-brand .nav-brand {
+    color: white;
+}
+
+.footer-desc {
+    color: #bdc3c7;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    max-width: 300px;
+}
+
+.social-links {
+    display: flex;
+    gap: 16px;
+}
+
+.social-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+    background: var(--primary-gold);
+    transform: translateY(-3px);
+}
+
+.footer-heading {
+    color: var(--primary-gold);
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+    font-weight: 600;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-links a {
+    color: #bdc3c7;
+    text-decoration: none;
+    transition: color 0.2s;
+    cursor: pointer;
+}
+
+.footer-links a:hover {
+    color: var(--primary-gold);
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #bdc3c7;
+    margin-bottom: 16px;
+}
+
+.contact-item .anticon {
+    color: var(--primary-gold);
+    font-size: 1.1rem;
+}
+
+.footer-bottom {
+    background: rgba(0, 0, 0, 0.2);
+    text-align: center;
+    padding: 24px;
+    color: #95a5a6;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 992px) {
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .footer-brand,
+    .footer-links,
+    .footer-contact {
+        align-items: center;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+
+    .contact-item {
+        justify-content: center;
+    }
+}
