@@ -25,7 +25,7 @@ const PlansPage: React.FC = () => {
                         <Col xs={24} sm={12} lg={6} key={plan.id}>
                             <PlanMiniCard
                                 plan={plan}
-                                onInvest={() => navigate(`/auth/login?role=investor`)}
+                                onInvest={() => navigate(`/dashboard`)}
                                 isPopular={idx === 2} // 6 Month plan as popular
                             />
                         </Col>

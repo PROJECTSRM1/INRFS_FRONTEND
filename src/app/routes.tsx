@@ -14,9 +14,7 @@ const PlansPage = lazy(() => import('../pages/public/PlansPage'));
 const AboutPage = lazy(() => import('../pages/public/AboutPage'));
 
 // Auth Pages
-const Login = lazy(() => import('../pages/auth/Login'));
 const Register = lazy(() => import('../pages/auth/Register'));
-const RoleSelection = lazy(() => import('../pages/auth/RoleSelection'));
 
 // Investor Pages
 const InvestorDashboard = lazy(() => import('../pages/investor/Dashboard'));
@@ -50,10 +48,9 @@ const AppRoutes: React.FC = () => {
 
                 {/* Auth Routes */}
                 <Route path="/auth" element={<AuthLayout />}>
-                    <Route path="role-selection" element={<RoleSelection />} />
-                    <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
                 </Route>
+
 
                 {/* New Admin Routes (Unprotected for demo purposes as requested for development) */}
                 <Route path="/admin/login" element={<AdminLogin />} />
@@ -71,7 +68,7 @@ const AppRoutes: React.FC = () => {
                 {/* Dashboard Routes (Original) */}
                 <Route
                     path="/dashboard"
-                    element={user ? <DashboardLayout /> : <Navigate to="/auth/role-selection" />}
+                    element={user ? <DashboardLayout /> : <Navigate to="/" />}
                 >
                     {user?.role === 'admin' ? (
                         <>

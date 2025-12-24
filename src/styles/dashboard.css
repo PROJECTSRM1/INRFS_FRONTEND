@@ -1,50 +1,1978 @@
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 24px;
-    margin-bottom: 24px;
-}
-
-.stat-card {
-    padding: 24px;
-    border-radius: 12px;
-    background: #fff;
-    border: 1px solid var(--border-color);
-    transition: box-shadow 0.3s ease;
-}
-
-.stat-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.stat-value {
-    font-size: 28px;
-    font-weight: 700;
-    margin-top: 8px;
-}
-
-.stat-label {
-    color: var(--text-secondary);
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.chart-container {
-    background: #fff;
-    padding: 24px;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    margin-bottom: 24px;
-}
-
-.data-table-container {
-    background: #fff;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    overflow: hidden;
-}
-
-
-
-
+/* ==========================================================================
+   DASHBOARD CONSOLIDATED STYLES
+   Includes: v3 Design, Customer ID styling, Critical Fixes, and Mobile Responsiveness
+   ========================================================================== */
 
+/* --- Global Dashboard Fixes --- */
+:root {
+    --bond-card-bg: #fff;
+    --bond-border: #e2e8f0;
+    --bond-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --bond-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --bond-primary: #2563eb;
+    --bond-text-main: #1e293b;
+    --text-main: #333;
+    --brand-light-blue: #f0f7ff;
+    --bg-light: #f8fafc;
+}
+
+.investor-dashboard-refined *,
+.investor-dashboard-refined *::before,
+.investor-dashboard-refined *::after {
+    box-sizing: border-box;
+    word-break: normal;
+    overflow-wrap: normal;
+}
+
+.stat-value,
+.stat-label,
+.stat-trend-v2 {
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+}
+
+/* --- Container & Layout --- */
+.investor-dashboard-refined {
+    padding: 40px 80px;
+    background: linear-gradient(135deg, var(--brand-light-blue) 0%, var(--brand-light-blue) 50%, #ffffff 50%, #ffffff 100%);
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* --- Welcome Header & Customer ID --- */
+.welcome-header {
+    margin-bottom: 40px;
+}
+
+.greeting-text {
+    font-size: 32px !important;
+    font-weight: 700 !important;
+    color: #1a1a1a !important;
+    margin: 0 0 8px 0 !important;
+    line-height: 1.2 !important;
+}
+
+.greeting-text span {
+    color: var(--brand-gold) !important;
+}
+
+.id-details {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.id-label {
+    font-size: 14px !important;
+    color: #0f172a !important;
+    font-weight: 500 !important;
+}
+
+.id-highlight {
+    font-size: 14px !important;
+    color: var(--brand-gold) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* --- KPI Stat Cards --- */
+.kpi-row {
+    margin-bottom: 48px !important;
+}
+
+.stat-card-refined {
+    border-radius: 12px !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+    transition: all 0.2s ease !important;
+    background: white !important;
+    border: 1px solid #e5e7eb !important;
+    height: 100% !important;
+}
+
+.stat-card-refined:hover {
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-1px);
+}
+
+.stat-card-refined .ant-card-body {
+    padding: 24px !important;
+    min-height: 160px !important;
+    height: auto !important;
+    display: flex;
+    align-items: flex-start;
+}
+
+.stat-card-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.stat-header-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+.stat-icon-box {
+    width: 56px !important;
+    height: 56px !important;
+    min-width: 56px !important;
+    border-radius: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 22px !important;
+    flex-shrink: 0 !important;
+    margin-top: 5px;
+}
+
+/* Color Variants */
+.stat-blue .stat-icon-box {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.stat-green .stat-icon-box {
+    background: #ecfdf5;
+    color: #10b981;
+}
+
+.stat-purple .stat-icon-box {
+    background: #f5f3ff;
+    color: #8b5cf6;
+}
+
+.stat-orange .stat-icon-box {
+    background: #fff7ed;
+    color: #f97316;
+}
+
+/* Dashboard V3 specific fallback if needed */
+.stat-blue .stat-icon-box.v3 {
+    background: #926132;
+    color: #ffffff;
+}
+
+.stat-body {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    gap: 4px !important;
+    margin-top: 24px !important;
+}
+
+.stat-label {
+    font-size: 13px !important;
+    color: #64748b !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+}
+
+.stat-value {
+    font-size: 32px !important;
+    font-weight: 800 !important;
+    color: #1a1a1a !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+}
+
+.stat-trend-v2 {
+    background: #d1fae5;
+    color: #059669;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+/* --- Quick Actions Section --- */
+.quick-actions-section {
+    margin-bottom: 48px !important;
+}
+
+.section-header-margin {
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    color: #1a1a1a !important;
+    margin: 0 0 24px 0 !important;
+}
+
+.quick-action-card-white {
+    background: white !important;
+    border-radius: 12px !important;
+    padding: 24px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+    border: 1px solid #e5e7eb !important;
+    height: 140px !important;
+}
+
+.quick-action-card-white:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-4px);
+}
+
+.quick-action-icon {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 50% !important;
+    background: #926132 !important;
+    color: white !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 24px !important;
+    margin-bottom: 16px !important;
+}
+
+.quick-action-text {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #1a1a1a !important;
+    text-align: center !important;
+    line-height: 1.4 !important;
+}
+
+/* --- Recent Investments Table --- */
+.recent-table-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.refined-table-v2 .ant-table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.refined-table-v2 .ant-table-thead>tr>th {
+    background: #f9fafb !important;
+    color: #6b7280 !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    border-bottom: 2px solid #e5e7eb !important;
+    padding: 14px !important;
+}
+
+.refined-table-v2 .ant-table-tbody>tr>td {
+    padding: 16px 14px !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+    font-size: 14px !important;
+}
+
+.table-id-link {
+    color: #3b82f6 !important;
+    font-weight: 600 !important;
+}
+
+.table-plan-text {
+    color: #1a1a1a !important;
+    font-weight: 500 !important;
+}
+
+.table-amount-text {
+    color: #1a1a1a !important;
+    font-weight: 600 !important;
+}
+
+.table-returns-green {
+    color: #10b981 !important;
+    font-weight: 600 !important;
+}
+
+.table-date-grey {
+    color: #6b7280 !important;
+}
+
+.status-tag-v2 {
+    border-radius: 6px !important;
+    padding: 4px 12px !important;
+    font-weight: 600 !important;
+    border: none !important;
+}
+
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Tablet & Smaller (≤1200px) */
+@media (max-width: 1200px) {
+    .investor-dashboard-refined {
+        padding: 36px 48px;
+    }
+
+    .greeting-text {
+        font-size: 28px !important;
+    }
+}
+
+/* Tablet (≤992px) */
+@media (max-width: 992px) {
+    .investor-dashboard-refined {
+        padding: 32px 40px;
+    }
+
+    .stat-card-refined .ant-card-body {
+        padding: 20px !important;
+        height: 120px !important;
+    }
+
+    .stat-icon-box {
+        width: 48px !important;
+        height: 48px !important;
+        min-width: 48px !important;
+        font-size: 18px !important;
+    }
+
+    .stat-value {
+        font-size: 24px !important;
+    }
+}
+
+/* Landscape Mobile (≤768px) */
+@media (max-width: 768px) {
+    .investor-dashboard-refined {
+        padding: 95px 24px 24px 24px !important;
+    }
+
+    .welcome-header {
+        margin-bottom: 32px;
+    }
+
+    .greeting-text {
+        font-size: 24px !important;
+    }
+
+    .kpi-row .ant-col {
+        max-width: 50% !important;
+        flex: 0 0 50% !important;
+    }
+
+    .stat-card-refined .ant-card-body {
+        padding: 18px !important;
+        height: 110px !important;
+    }
+}
+
+/* Mobile Portait (≤480px) - 2 Column Grid */
+@media (max-width: 480px) {
+    .investor-dashboard-refined {
+        padding: 85px 12px 24px 12px !important;
+        background: linear-gradient(135deg, var(--brand-light-blue) 0%, var(--brand-light-blue) 50%, #ffffff 50%, #ffffff 100%);
+    }
+
+    .kpi-row {
+        margin-left: -5px !important;
+        margin-right: -5px !important;
+    }
+
+    .kpi-row .ant-col {
+        max-width: 50% !important;
+        flex: 0 0 50% !important;
+        padding: 0 5px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .stat-card-refined .ant-card-body {
+        padding: 12px !important;
+        min-height: 110px !important;
+        height: auto !important;
+    }
+
+    .stat-card-content {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 8px !important;
+    }
+
+    .stat-icon-box {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        font-size: 14px !important;
+    }
+
+    .stat-body {
+        align-items: center !important;
+    }
+
+    .stat-label {
+        font-size: 9px !important;
+        margin-bottom: 2px !important;
+        text-align: center !important;
+    }
+
+    .stat-value {
+        font-size: 15px !important;
+        text-align: center !important;
+    }
+
+    .stat-trend-v2 {
+        font-size: 7px !important;
+        padding: 2px 4px !important;
+        margin-left: 0 !important;
+        margin-top: 2px !important;
+    }
+
+    .quick-actions-section .ant-row {
+        margin-left: -5px !important;
+        margin-right: -5px !important;
+    }
+
+    .quick-actions-section .ant-col {
+        max-width: 50% !important;
+        flex: 0 0 50% !important;
+        padding: 0 5px !important;
+    }
+
+    .quick-action-card-white {
+        height: 85px !important;
+        padding: 10px !important;
+    }
+
+    .quick-action-icon {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 12px !important;
+        margin-bottom: 6px !important;
+    }
+
+    .quick-action-text {
+        font-size: 10px !important;
+    }
+
+    .recent-table-card {
+        padding: 12px !important;
+        border-radius: 12px !important;
+    }
+
+    .refined-table-v2 .ant-table-thead>tr>th,
+    .refined-table-v2 .ant-table-tbody>tr>td {
+        padding: 8px !important;
+        font-size: 11px !important;
+    }
+}
+
+/* Small devices (≤375px) */
+@media (max-width: 375px) {
+    .stat-value {
+        font-size: 14px !important;
+    }
+
+    .stat-label {
+        font-size: 8px !important;
+    }
+}
+
+/* ========================================
+   REFINED LAYOUT FIXES
+   ======================================== */
+
+/* Desktop/Laptop - Horizontal Layout (Default) */
+@media (min-width: 481px) {
+    .stat-card-content {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        text-align: left !important;
+        gap: 0 !important;
+    }
+}
+
+/* Tablet - 2 columns */
+@media (min-width: 481px) and (max-width: 768px) {
+
+    .kpi-row .ant-col,
+    .quick-actions-section .ant-col {
+        max-width: 50% !important;
+        flex: 0 0 50% !important;
+    }
+}
+
+/* Mobile Portait (≤480px) - Specific Width & Grid Fixes */
+@media (max-width: 480px) {
+
+    /* Prevent horizontal scroll */
+    .investor-dashboard-refined {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+        padding: 85px 12px 24px 12px !important;
+        background: linear-gradient(135deg, var(--brand-light-blue) 0%, var(--brand-light-blue) 50%, #ffffff 50%, #ffffff 100%) !important;
+    }
+
+    /* Force single column if needed or keep 2 col grid */
+    /* User seems to prefer 2x2 grid for stats on mobile */
+    .kpi-row .ant-col,
+    .quick-actions-section .ant-col {
+        max-width: 50% !important;
+        flex: 0 0 50% !important;
+        padding: 0 5px !important;
+    }
+
+    .kpi-row,
+    .quick-actions-section .ant-row {
+        margin-left: -5px !important;
+        margin-right: -5px !important;
+    }
+
+    /* Square cards vertically aligned */
+    .stat-card-refined {
+        padding: 0 !important;
+        min-height: 140px !important;
+        height: auto !important;
+        margin-bottom: 15px !important;
+    }
+
+    .stat-card-content {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 0 !important;
+    }
+
+    .stat-icon-box {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 14px !important;
+        margin-bottom: 4px !important;
+    }
+
+    .stat-body {
+        text-align: center !important;
+        align-items: center !important;
+        margin-top: 12px !important;
+        width: 100% !important;
+    }
+
+    .stat-label {
+        font-size: 10px !important;
+        text-align: center !important;
+    }
+
+    .stat-value {
+        font-size: 18px !important;
+        text-align: center !important;
+    }
+
+    .quick-action-card-white {
+        padding: 12px !important;
+        height: 100px !important;
+    }
+
+    .quick-action-icon {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 14px !important;
+        margin-bottom: 6px !important;
+        padding: 8px !important;
+    }
+
+    .quick-action-text {
+        font-size: 10px !important;
+        line-height: 1.2 !important;
+    }
+}
+
+/* =========================================
+   Bonds Grid Page
+   ========================================= */
+.bonds-page-container {
+    padding: 40px 48px;
+    background: linear-gradient(135deg, #f5e6d3 0%, #e8d4bb 100%);
+    min-height: calc(100vh - 70px);
+    width: 100%;
+}
+
+.bonds-page-header {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.bonds-title {
+    color: var(--bond-text-main);
+    font-size: 32px !important;
+    font-weight: 800 !important;
+    margin-bottom: 12px !important;
+}
+
+.bonds-subtitle {
+    color: var(--bond-text-sub);
+    font-size: 16px;
+}
+
+/* Table Card */
+.bonds-table-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+/* Bonds Table Styles */
+.bonds-table .ant-table {
+    background: transparent;
+}
+
+.bonds-table .ant-table-thead>tr>th {
+    background: #f8fafc;
+    color: #64748b;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e2e8f0;
+    padding: 16px 12px;
+}
+
+.bonds-table .ant-table-tbody>tr>td {
+    color: #0f172a;
+    font-size: 14px;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 16px 12px;
+}
+
+.bonds-table .ant-table-tbody>tr:hover>td {
+    background: #f8fafc;
+}
+
+/* Bond Table Text Styles */
+.bond-id-text {
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.bond-plan-text {
+    color: #0f172a;
+    font-weight: 600;
+}
+
+.bond-amount-text {
+    color: #1e3a8a;
+    font-weight: 700;
+}
+
+.bond-maturity-text {
+    color: #166534;
+    font-weight: 800;
+    font-size: 15px;
+}
+
+.infrc-text {
+    font-size: 12px;
+    color: #64748b;
+    word-break: break-all;
+}
+
+.bond-status-tag-active {
+    background: #d1fae5;
+    color: #059669;
+    border: none;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 6px;
+}
+
+/* Bond Action Buttons */
+.bond-action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.bond-action-btn-view {
+    border-color: #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+.bond-action-btn-view:hover {
+    border-color: #2563eb !important;
+    color: #2563eb !important;
+}
+
+.bond-action-btn-download {
+    background: #2563eb !important;
+    border-color: #2563eb !important;
+}
+
+.bond-action-btn-download:hover {
+    background: #1d4ed8 !important;
+}
+
+.bonds-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.empty-bonds-container {
+    background: var(--bond-card-bg);
+    border-radius: 12px;
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: var(--bond-shadow);
+    max-width: 500px;
+    margin: 100px auto;
+}
+
+.empty-bonds-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.empty-bonds-title {
+    margin: 16px 0 8px;
+    color: #1e293b;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.empty-bonds-desc {
+    color: #64748b;
+    font-size: 15px;
+    margin: 0;
+}
+
+/* =========================================
+   Bond Card
+   ========================================= */
+.bond-card-v4 {
+    background: var(--bond-card-bg);
+    border-radius: 16px;
+    border: 1px solid var(--bond-border);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--bond-shadow);
+}
+
+.bond-card-v4:hover {
+    box-shadow: var(--bond-shadow-hover);
+    transform: translateY(-4px);
+    border-color: var(--bond-primary);
+}
+
+/* ... Header Styles ... */
+.bond-card-header {
+    padding: 20px;
+    background: #fff;
+    /* Clean white header */
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    align-items: flex-start;
+    /* Align top roughly */
+    gap: 12px;
+}
+
+.bond-icon-container {
+    width: 42px;
+    height: 42px;
+    background: #eff6ff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bond-primary);
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.bond-title-group {
+    flex: 1;
+    overflow: hidden;
+    /* Prevent text overflow */
+}
+
+.bond-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+    line-height: 1.3;
+}
+
+.bond-id {
+    font-size: 12px;
+    color: #94a3b8;
+    display: block;
+}
+
+/* Status Badge - Fixed size and no cutoff */
+.bond-status-active {
+    background-color: #d1fae5;
+    color: #059669;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.bond-body {
+    padding: 20px;
+    flex: 1;
+}
+
+.bond-info-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.bond-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.bond-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #94a3b8;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.bond-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.bond-value-highlight {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--bond-primary);
+}
+
+.bond-value-blue {
+    color: #1e3a8a !important;
+}
+
+.bond-value-green {
+    color: #166534 !important;
+}
+
+.bond-value-medium {
+    font-size: 15px !important;
+}
+
+.bond-value-small {
+    word-break: break-all;
+    font-size: 13px !important;
+}
+
+.bond-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--bond-border);
+    display: flex;
+    gap: 12px;
+}
+
+.btn-bond-action {
+    flex: 1;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    height: 36px !important;
+}
+
+.btn-see-plan {
+    flex: 4 !important;
+}
+
+.btn-download-icon {
+    flex: 1 !important;
+    min-width: 40px !important;
+}
+
+.btn-bond-primary {
+    background-color: var(--bond-primary) !important;
+    border-color: var(--bond-primary) !important;
+    color: white !important;
+}
+
+.btn-bond-primary:hover {
+    background-color: #1e40af !important;
+    border-color: #1e40af !important;
+}
+
+.btn-bond-secondary {
+    border-color: var(--bond-border) !important;
+    color: var(--bond-text-main) !important;
+    background: white !important;
+}
+
+.btn-bond-secondary:hover {
+    border-color: var(--bond-primary) !important;
+    color: var(--bond-primary) !important;
+}
+
+
+/* =========================================
+   Certificate Modal & Print
+   ========================================= */
+
+/* The visual modal on screen */
+.cert-modal .ant-modal-content {
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.cert-preview-container {
+    padding: 30px;
+    background: white;
+}
+
+.cert-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.cert-modal-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.cert-download-btn {
+    background: #2563eb !important;
+    border-color: #2563eb !important;
+}
+
+.cert-download-btn:hover {
+    background: #1d4ed8 !important;
+}
+
+.cert-preview-wrapper {
+    border: 1px solid #e2e8f0;
+    overflow: auto;
+    max-height: 70vh;
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+
+/* The actual certificate layout (shared by preview and PDF) */
+.certificate-layout {
+    width: 800px;
+    min-height: 1120px;
+    margin: 0 auto;
+    background: white;
+    padding: 60px;
+    position: relative;
+    font-family: 'Times New Roman', serif;
+    color: #1a1a1a;
+    box-sizing: border-box;
+    border: 8px double #1e3a8a;
+}
+
+/* Logo Watermark */
+.cert-logo-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.08;
+    width: 600px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cert-logo-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.cert-content-layer {
+    position: relative;
+    z-index: 1;
+}
+
+.cert-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.cert-logo {
+    height: 80px;
+    width: auto;
+    margin-bottom: 20px;
+}
+
+.cert-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin: 0 0 8px 0;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.cert-subtitle {
+    font-size: 16px;
+    color: #64748b;
+    margin: 0;
+}
+
+.cert-body-text {
+    font-size: 14px;
+    line-height: 1.8;
+    text-align: justify;
+    margin-bottom: 30px;
+    color: #334155;
+}
+
+.cert-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.cert-details-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 14px;
+}
+
+.cert-details-table tr:first-child td {
+    border-top: 2px solid #1e3a8a;
+}
+
+.cert-details-table tr:last-child td {
+    border-bottom: 2px solid #1e3a8a;
+}
+
+.cert-label {
+    font-weight: 600;
+    color: #64748b;
+    width: 45%;
+}
+
+.cert-val {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.cert-system-note {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.cert-footer {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.cert-sig-block {
+    display: inline-block;
+}
+
+.cert-sig-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.cert-sig-title {
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* =========================================
+   Plan Details Modal
+   ========================================= */
+.plan-details-modal .ant-modal-content {
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.plan-details-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.plan-detail-title {
+    font-size: 24px;
+    color: var(--bond-primary);
+    font-weight: 700;
+}
+
+.plan-info-grid {
+    background: #f1f5f9;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+}
+
+.plan-terms-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.plan-terms-list li {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 12px;
+    color: var(--bond-text-main);
+    font-size: 14px;
+}
+
+.plan-terms-list li::before {
+    content: "✓";
+    position: absolute;
+}
+
+.issuer-block {
+    margin-bottom: 4px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #000;
+}
+
+.issuer-sub {
+    font-size: 14px;
+    color: #334155;
+}
+
+/* Mobile Responsiveness for Bonds Page */
+@media (max-width: 768px) {
+    .bonds-page-container {
+        padding: 20px 16px;
+    }
+
+    .bonds-title {
+        font-size: 24px !important;
+    }
+
+    .bonds-subtitle {
+        font-size: 14px;
+    }
+
+    .bonds-table-card {
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    /* Make table scrollable on mobile */
+    .bonds-table .ant-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .bonds-table .ant-table-thead>tr>th,
+    .bonds-table .ant-table-tbody>tr>td {
+        font-size: 11px;
+        padding: 10px 6px;
+        white-space: nowrap;
+    }
+
+    .bond-action-buttons {
+        flex-direction: column;
+        gap: 4px;
+        min-width: 80px;
+    }
+
+    .bond-action-btn-view,
+    .bond-action-btn-download {
+        width: 100%;
+        font-size: 11px;
+        padding: 4px 8px;
+        height: auto;
+    }
+
+    .bond-id-text,
+    .bond-plan-text {
+        font-size: 11px;
+    }
+
+    .bond-amount-text,
+    .bond-maturity-text {
+        font-size: 12px;
+    }
+
+    .infrc-text {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bonds-page-container {
+        padding: 20px 16px;
+    }
+
+    .bonds-title {
+        font-size: 24px !important;
+    }
+
+    .bond-card-v4 {
+        margin-bottom: 16px;
+    }
+
+    .bond-info-row {
+        grid-template-columns: 1fr;
+    }
+
+    .bond-footer {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .btn-bond-action {
+        width: 100%;
+    }
+
+    .btn-see-plan,
+    .btn-download-icon {
+        flex: 1 !important;
+        min-width: auto !important;
+    }
+}
+
+.section-header-title {
+    font-size: 32px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    margin-bottom: 32px !important;
+}
+
+/* Table Card */
+.investments-table-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+/* Table Styles */
+.investments-table .ant-table {
+    background: transparent;
+}
+
+.investments-table .ant-table-thead>tr>th {
+    background: #f8fafc;
+    color: #64748b;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e2e8f0;
+    padding: 16px 12px;
+}
+
+.investments-table .ant-table-tbody>tr>td {
+    color: #0f172a;
+    font-size: 14px;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 16px 12px;
+}
+
+.investments-table .ant-table-tbody>tr:hover>td {
+    background: #f8fafc;
+}
+
+/* Text Styles */
+.investment-id-text {
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.plan-name-text {
+    color: #0f172a;
+    font-weight: 600;
+}
+
+.amount-text {
+    color: #1e3a8a;
+    font-weight: 700;
+}
+
+.returns-text {
+    color: #059669;
+    font-weight: 700;
+}
+
+.maturity-text {
+    color: #166534;
+    font-weight: 800;
+    font-size: 15px;
+}
+
+.status-tag-active {
+    background: #d1fae5;
+    color: #059669;
+    border: none;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 6px;
+}
+
+/* Action Buttons */
+.action-buttons-group {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn-view {
+    border-color: #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+.action-btn-view:hover {
+    border-color: #2563eb !important;
+    color: #2563eb !important;
+}
+
+.action-btn-download {
+    background: #2563eb !important;
+    border-color: #2563eb !important;
+}
+
+.action-btn-download:hover {
+    background: #1d4ed8 !important;
+}
+
+.empty-investments-container {
+    background: #fff;
+    border-radius: 12px;
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    max-width: 500px;
+    margin: 40px auto;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .portfolio-refined {
+        padding: 24px 20px;
+    }
+
+    .section-header-title {
+        font-size: 26px !important;
+    }
+
+    .investments-table-card {
+        padding: 16px;
+    }
+
+    .investments-table .ant-table-thead>tr>th,
+    .investments-table .ant-table-tbody>tr>td {
+        font-size: 12px;
+        padding: 12px 8px;
+    }
+
+    .action-buttons-group {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .action-btn-view,
+    .action-btn-download {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .portfolio-refined {
+        padding: 20px 16px;
+    }
+
+    .section-header-title {
+        font-size: 24px !important;
+    }
+
+    .investments-table-card {
+        padding: 12px;
+    }
+
+    .investments-table .ant-table-thead>tr>th,
+    .investments-table .ant-table-tbody>tr>td {
+        font-size: 11px;
+        padding: 10px 6px;
+    }
+}
+
+.section-header-centered {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.plans-page-title {
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    color: #1a1a1a !important;
+    margin-bottom: 8px !important;
+}
+
+.plans-page-subtitle {
+    font-size: 14px !important;
+    color: #6b7280 !important;
+}
+
+.plans-grid-row {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Plan Cards */
+.plan-card-v3 {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px 20px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+    height: 100%;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.plan-card-v3:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    border-color: #e2e8f0;
+}
+
+.plan-card-featured {
+    border-color: #926132;
+    box-shadow: 0 4px 12px rgba(146, 97, 50, 0.1);
+}
+
+.popular-tag-v3 {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #926132;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.plan-card-header-v3 {
+    margin-bottom: 20px;
+}
+
+.plan-name-themed {
+    color: #926132 !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+}
+
+.plan-roi-section {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.plan-roi-value-v3 {
+    font-size: 36px !important;
+    font-weight: 800 !important;
+    color: #1a1a1a !important;
+    margin: 0 0 4px 0 !important;
+    line-height: 1 !important;
+}
+
+.plan-features-section {
+    margin-bottom: 28px;
+}
+
+.feature-item-compact {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.feature-icon-green {
+    color: #10b981;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.plan-select-btn {
+    width: 100%;
+    height: 40px !important;
+    background: #926132 !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+}
+
+.plan-select-btn:hover {
+    background: #7d522a !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .plans-page-wrapper {
+        padding: 24px 20px;
+    }
+
+    .plans-page-title {
+        font-size: 26px !important;
+    }
+
+    .plan-roi-value-v3 {
+        font-size: 40px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .plans-page-wrapper {
+        padding: 20px 16px;
+    }
+
+    .plans-page-title {
+        font-size: 24px !important;
+    }
+
+    .plan-roi-value-v3 {
+        font-size: 36px !important;
+    }
+
+    .plan-card-v3 {
+        padding: 24px 20px;
+    }
+}
+
+.page-main-title {
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    margin-bottom: 32px !important;
+    color: #1a1a1a !important;
+}
+
+/* Info Box - Styled as a clean card */
+.info-box-blue {
+    border-left: 4px solid #926132;
+    padding: 16px 20px;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eef2f6;
+}
+
+.info-icon {
+    font-size: 20px;
+    color: #926132;
+    margin-right: 12px;
+    margin-top: 3px;
+}
+
+.info-title {
+    display: block;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #1a1a1a !important;
+    margin-bottom: 4px !important;
+}
+
+.info-desc {
+    font-size: 14px !important;
+    color: #6b7280 !important;
+}
+
+/* Section Card - Base style for individual white sections */
+.section-card-refined {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid #eef2f6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Input Section */
+.input-section {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid #eef2f6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.input-label {
+    display: block;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    margin-bottom: 12px !important;
+    color: #1a1a1a !important;
+}
+
+.investment-amount-input {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    height: 48px !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(146, 97, 50, 0.2) !important;
+    background: white !important;
+}
+
+.investment-amount-input:focus {
+    border-color: #926132 !important;
+    box-shadow: 0 0 0 2px rgba(146, 97, 50, 0.1) !important;
+}
+
+/* Investment Summary */
+.investment-summary-section {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid #eef2f6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.section-subtitle {
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    margin-bottom: 24px !important;
+    color: #1a1a1a !important;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+}
+
+.summary-label {
+    font-size: 15px !important;
+    color: #6b7280 !important;
+}
+
+.summary-value {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #1a1a1a !important;
+}
+
+.summary-value-green {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: #10b981 !important;
+}
+
+.divider-line {
+    height: 1px;
+    background: rgba(146, 97, 50, 0.1);
+    margin: 16px 0;
+}
+
+.total-row {
+    padding-top: 20px !important;
+    border-top: 1px solid rgba(146, 97, 50, 0.2);
+    margin-top: 8px;
+}
+
+.total-label {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+}
+
+.total-value-blue {
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    color: #926132 !important;
+}
+
+/* Terms Section */
+.terms-section {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+    border: 1px solid #eef2f6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.terms-title {
+    display: block;
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    margin-bottom: 16px !important;
+}
+
+.terms-list {
+    margin: 0 0 24px 0;
+    padding-left: 20px;
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.8;
+}
+
+.terms-checkbox .ant-checkbox-inner {
+    border-color: rgba(146, 97, 50, 0.3) !important;
+}
+
+.terms-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #926132 !important;
+    border-color: #926132 !important;
+}
+
+/* Returns Box (Right Column) - High Visibility Dark Theme */
+.returns-display-refined {
+    padding: 32px 24px;
+    border-radius: 16px;
+    background: #2d1a0a;
+    /* Dark brown for high visibility */
+    border: 1px solid #3d2a1a;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.dark-card-label {
+    font-size: 13px !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    text-transform: uppercase;
+    font-weight: 700 !important;
+    display: block;
+    margin-bottom: 12px !important;
+    letter-spacing: 1px;
+}
+
+.dark-card-value {
+    font-size: 42px !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    margin-bottom: 12px !important;
+    line-height: 1 !important;
+}
+
+.dark-card-sub {
+    font-size: 14px !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-weight: 500 !important;
+}
+
+/* Action Buttons */
+.action-buttons-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.action-btn {
+    height: 32px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    padding: 0 20px !important;
+}
+
+.btn-solid-primary {
+    background: #926132 !important;
+    border-color: #926132 !important;
+    color: white !important;
+}
+
+.btn-solid-primary:hover {
+    background: #7d522a !important;
+}
+
+/* Responsive Full-Width Adjustments */
+@media (max-width: 992px) {
+    .content-container {
+        padding: 0 32px;
+    }
+
+    .page-main-title {
+        font-size: 26px !important;
+        margin-bottom: 24px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .content-container {
+        padding: 0 24px;
+    }
+
+    .page-main-title {
+        font-size: 24px !important;
+    }
+
+    .dark-card-value {
+        font-size: 36px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .content-container {
+        padding: 0 16px;
+    }
+
+    .page-main-title {
+        font-size: 22px !important;
+    }
+
+    .dark-card-value {
+        font-size: 32px !important;
+    }
+
+    .section-card-refined,
+    .input-section,
+    .investment-summary-section,
+    .terms-section,
+    .returns-display-refined {
+        padding: 16px;
+    }
+}
+
+/* Portfolio Summary Cards */
+.summary-card {
+    background-color: #fff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid #f0f0f0 !important;
+    height: 100% !important;
+}
+
+.summary-card-inner {
+    padding: 24px !important;
+}
+
+.summary-card-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+}
+
+.summary-card-label {
+    font-size: 0.875rem !important;
+    color: #6b7280 !important;
+    margin-bottom: 4px !important;
+    font-weight: 500 !important;
+}
+
+.summary-card-value {
+    font-size: 1.875rem !important;
+    fontWeight: 700 !important;
+    color: #111827 !important;
+    margin-bottom: 8px !important;
+}
+
+.summary-card-icon-wrapper {
+    color: #1677ff !important;
+    background-color: #e6f4ff !important;
+    padding: 8px !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.summary-card-trend {
+    display: flex !important;
+    align-items: center !important;
+    margin-top: 8px !important;
+}
+
+.trend-positive {
+    color: #52c41a !important;
+}
+
+.trend-negative {
+    color: #ff4d4f !important;
+}
+
+.trend-value {
+    font-weight: 700 !important;
+    margin-right: 4px !important;
+    font-size: 0.875rem !important;
+}
+
+.trend-label {
+    color: #6b7280 !important;
+    font-size: 0.875rem !important;
+}
+
+/* Allocation Chart */
+.chart-header {
+    margin-bottom: 24px !important;
+    font-weight: 700 !important;
+    font-size: 1.1rem !important;
+    color: #1f2937 !important;
+}
+
+.chart-wrapper {
+    flex-grow: 1 !important;
+    min-height: 0 !important;
+}
+
+.chart-container-inner {
+    height: 400px !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+
+/* Utility Classes for External CSS Compliance */
+.btn-back-margin {
+    margin-bottom: 24px !important;
+}
+
+.w-full {
+    width: 100% !important;
+}
+
+.cursor-pointer {
+    cursor: pointer !important;
+}
+
+
+.chart-card-refined {
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    height: 100% !important;
+}

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
 import { fintechService } from '../../services/fintechService';
 import CertificateModal from '../../components/CertificateModal';
-import '../../styles/Bonds.css';
+import '../../styles/dashboard.css';
 
 const Bonds: React.FC = () => {
     const { investments, user } = useAppContext();
@@ -100,21 +100,20 @@ const Bonds: React.FC = () => {
     ];
 
     return (
-        <div className="bonds-page-container">
+        <div className="investor-dashboard-refined">
             <Button
+                size="small"
                 icon={<ArrowLeftOutlined />}
                 onClick={() => navigate('/dashboard')}
-                style={{ marginBottom: 24 }}
+                className="btn-back-refined btn-back-margin"
             >
                 Back to Dashboard
             </Button>
 
-            {investments.length > 0 && (
-                <div className="bonds-page-header">
-                    <h2 className="bonds-title">My Investment Bonds</h2>
-                    <div className="bonds-subtitle">Secure access to your verified digital investment certificates</div>
-                </div>
-            )}
+            <div className="bonds-page-header">
+                <h2 className="bonds-title">My Investment Bonds</h2>
+                <div className="bonds-subtitle">Secure access to your verified digital investment certificates</div>
+            </div>
 
             {investments.length > 0 ? (
                 <div className="bonds-table-card">

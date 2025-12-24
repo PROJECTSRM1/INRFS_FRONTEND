@@ -12,7 +12,7 @@ interface LogoProps {
 
 const Logo: React.FC<LogoProps> = ({ size = 32, showText = true, light = false }) => {
     return (
-        <div className="logo-container" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div className="logo-container">
             <svg
                 width={size}
                 height={size}
@@ -42,7 +42,10 @@ const Logo: React.FC<LogoProps> = ({ size = 32, showText = true, light = false }
                 <circle cx="50" cy="50" r="8" fill="white" />
             </svg>
             {showText && (
-                <Title level={4} style={{ margin: 0, color: light ? 'white' : 'var(--text-main)', fontWeight: 800, letterSpacing: '1px', fontFamily: 'Inter, sans-serif' }}>
+                <Title
+                    level={4}
+                    className={`logo-text ${light ? 'logo-text-light' : 'logo-text-dark'}`}
+                >
                     INRFS
                 </Title>
             )}

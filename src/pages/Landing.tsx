@@ -190,9 +190,9 @@ const Landing: React.FC = () => {
                 <div className="features-list right">
                     <div className="feature-item">
                         <div className="feature-icon-circle"><MobileOutlined /></div>
-                        <h3>On-the-Go Access</h3>
-                        <p>Manage your investments anytime, anywhere.</p>
                     </div>
+                    <h3>On-the-Go Access</h3>
+                    <p>Manage your investments anytime, anywhere.</p>
                     <div className="feature-item">
                         <div className="feature-icon-circle"><CheckCircleFilled /></div>
                         <h3>Instant Settlements</h3>
