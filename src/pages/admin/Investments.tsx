@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Card, Select, Tag, Typography } from 'antd';
+import { Table, Card, Select, Tag, Typography, Input } from 'antd';
 import { MOCK_INVESTMENTS } from '../../data/mockData';
+import { SearchOutlined, CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import '../../styles/admin.css';
 
 const { Title, Text } = Typography;
@@ -9,13 +10,30 @@ const { Option } = Select;
 const AdminInvestments: React.FC = () => {
     const [planFilter, setPlanFilter] = useState('All Plans');
     const [statusFilter, setStatusFilter] = useState('All Status');
+    const [searchText, setSearchText] = useState('');
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [investments, setInvestments] = useState(MOCK_INVESTMENTS);
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 768);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+    const handleSettlementStatusChange = (investmentId: string, newStatus: 'Completed' | 'Pending') => {
+        setInvestments(prev => prev.map(inv =>
+            inv.id === investmentId ? { ...inv, settlementStatus: newStatus } : inv
+        ));
+    };
+
+    // Helper function to parse date strings
+    const parseMaturityDate = (dateStr?: string): Date => {
+        if (!dateStr) return new Date(9999, 11, 31); // Far future for items without dates
+
+        // Handle formats like "Jun 15, 2024" or "Apr 20, 2024"
+        const parsed = new Date(dateStr);
+        return isNaN(parsed.getTime()) ? new Date(9999, 11, 31) : parsed;
+    };
 
     const columns: any = [
         {
@@ -66,13 +84,49 @@ const AdminInvestments: React.FC = () => {
                 return <Tag color={color} style={{ borderRadius: '12px' }}>{status}</Tag>;
             },
         },
+        {
+            title: 'Settlement',
+            dataIndex: 'settlementStatus',
+            key: 'settlementStatus',
+            width: 150,
+            render: (settlementStatus: 'Completed' | 'Pending' | undefined, record: any) => (
+                <Select
+                    value={settlementStatus || 'Pending'}
+                    onChange={(value) => handleSettlementStatusChange(record.id, value)}
+                    style={{ width: '100%' }}
+                    size="small"
+                >
+                    <Option value="Pending">
+                        <ClockCircleOutlined style={{ color: '#faad14', marginRight: 4 }} />
+                        Pending
+                    </Option>
+                    <Option value="Completed">
+                        <CheckCircleOutlined style={{ color: '#52c41a', marginRight: 4 }} />
+                        Completed
+                    </Option>
+                </Select>
+            ),
+        },
     ];
 
-    const dataSource = MOCK_INVESTMENTS.filter(item => {
-        const matchPlan = planFilter === 'All Plans' || item.planName === planFilter;
-        const matchStatus = statusFilter === 'All Status' || item.status === statusFilter;
-        return matchPlan && matchStatus;
-    });
+    // Filter and sort data
+    const dataSource = investments
+        .filter(item => {
+            const matchPlan = planFilter === 'All Plans' || item.planName === planFilter;
+            const matchStatus = statusFilter === 'All Status' || item.status === statusFilter;
+            const matchSearch =
+                item.id.toLowerCase().includes(searchText.toLowerCase()) ||
+                (item.investorName || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                item.planName.toLowerCase().includes(searchText.toLowerCase());
+
+            return matchPlan && matchStatus && matchSearch;
+        })
+        .sort((a, b) => {
+            // Sort by maturity date (nearest first)
+            const dateA = parseMaturityDate(a.maturityDate);
+            const dateB = parseMaturityDate(b.maturityDate);
+            return dateA.getTime() - dateB.getTime();
+        });
 
     return (
         <div className="admin-dashboard-wrapper">
@@ -81,13 +135,21 @@ const AdminInvestments: React.FC = () => {
                 <div className="header-flex-row">
                     <div>
                         <Title level={2} style={{ margin: 0, letterSpacing: '-0.5px' }}>Investment Tracking</Title>
-                        <Text type="secondary">Real-time status of all portfolio investments.</Text>
+                        <Text type="secondary">Sorted by maturity date (nearest first) • Real-time settlement status</Text>
                     </div>
                 </div>
             </div>
 
             <Card bordered={false} className="table-card-compact" style={{ marginTop: '16px' }}>
-                <div style={{ marginBottom: 16, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                <div style={{ marginBottom: 16, display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+                    <Input
+                        placeholder="Search by ID, Investor, Plan..."
+                        prefix={<SearchOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
+                        value={searchText}
+                        onChange={e => setSearchText(e.target.value)}
+                        style={{ width: isMobile ? '100%' : 250 }}
+                        allowClear
+                    />
                     <Select
                         defaultValue="All Plans"
                         onChange={setPlanFilter}

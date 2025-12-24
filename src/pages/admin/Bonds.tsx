@@ -1,13 +1,21 @@
 import React from 'react';
-import { Row, Col, Card, Tag, Button, Typography, Space } from 'antd';
-import { DownloadOutlined, MailOutlined, FilePdfOutlined, CheckCircleFilled } from '@ant-design/icons';
+import { Row, Col, Card, Tag, Button, Typography, Space, Input } from 'antd';
+import { DownloadOutlined, MailOutlined, FilePdfOutlined, CheckCircleFilled, SearchOutlined } from '@ant-design/icons';
 import { MOCK_INVESTMENTS } from '../../data/mockData';
 import '../../styles/admin.css';
 
 const { Title, Text } = Typography;
 
 const AdminBonds: React.FC = () => {
-    const bonds = MOCK_INVESTMENTS.filter(inv => inv.status === 'Active');
+    const [searchText, setSearchText] = React.useState('');
+
+    const bonds = MOCK_INVESTMENTS.filter(inv => {
+        const isBond = inv.status === 'Active';
+        const matchSearch =
+            inv.id.toLowerCase().includes(searchText.toLowerCase()) ||
+            (inv.investorName || '').toLowerCase().includes(searchText.toLowerCase());
+        return isBond && matchSearch;
+    });
 
     return (
         <div className="admin-dashboard-wrapper">
@@ -21,7 +29,19 @@ const AdminBonds: React.FC = () => {
                 </div>
             </div>
 
-            <Row gutter={[24, 24]} style={{ marginTop: '24px' }}>
+            <div style={{ marginTop: '24px', marginBottom: '24px' }}>
+                <Input
+                    placeholder="Search Bonds by ID or Investor..."
+                    prefix={<SearchOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
+                    value={searchText}
+                    onChange={e => setSearchText(e.target.value)}
+                    style={{ maxWidth: 400 }}
+                    allowClear
+                    size="large"
+                />
+            </div>
+
+            <Row gutter={[24, 24]}>
                 {bonds.map((bond) => (
                     <Col xs={24} sm={12} xl={6} key={bond.id}>
                         <Card
