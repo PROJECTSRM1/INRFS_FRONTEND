@@ -40,6 +40,7 @@ export interface Investment {
     infrcNumber: string;
     investorName?: string;
     investorId?: string;
+    settlementStatus?: 'Completed' | 'Pending';
 }
 
 export interface Investor extends User {

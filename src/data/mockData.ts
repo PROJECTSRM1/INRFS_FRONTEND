@@ -115,7 +115,8 @@ export const MOCK_INVESTMENTS: Investment[] = [
         maturityDate: 'Jun 15, 2024',
         infrcNumber: 'GA-6M-001',
         investorName: 'John Doe (I1234)',
-        investorId: '1'
+        investorId: '1',
+        settlementStatus: 'Pending'
     },
     {
         id: 'INV-2024-002',
@@ -132,7 +133,8 @@ export const MOCK_INVESTMENTS: Investment[] = [
         maturityDate: 'Apr 20, 2024',
         infrcNumber: 'QB-3M-002',
         investorName: 'Sarah Smith (I1235)',
-        investorId: '2'
+        investorId: '2',
+        settlementStatus: 'Pending'
     },
     {
         id: 'INV-2024-003',
@@ -149,7 +151,8 @@ export const MOCK_INVESTMENTS: Investment[] = [
         maturityDate: 'Jan 01, 2025',
         infrcNumber: 'WM-1Y-003',
         investorName: 'Michael Johnson (I1236)',
-        investorId: '3'
+        investorId: '3',
+        settlementStatus: 'Pending'
     },
     {
         id: 'INV-2023-156',
@@ -166,7 +169,8 @@ export const MOCK_INVESTMENTS: Investment[] = [
         maturityDate: 'Jan 01, 2024',
         infrcNumber: 'GA-6M-156',
         investorName: 'Emily Davis (I1237)',
-        investorId: '4'
+        investorId: '4',
+        settlementStatus: 'Completed'
     }
 ];
 
