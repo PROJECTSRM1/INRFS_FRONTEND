@@ -92,8 +92,8 @@ const Landing: React.FC = () => {
             {/* Why Choose Section */}
             <section className="section-padding bg-warm-gray">
                 <div className="dashboard-container">
-                    <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-                        <Title level={2} className="dashboard-logo-text" style={{ fontSize: '2.5rem', fontWeight: 800 }}>Why Choose INRFS?</Title>
+                    <div className="landing-centered-heading">
+                        <Title level={2} className="dashboard-logo-text landing-large-title">Why Choose INRFS?</Title>
                         <div className="section-underline" />
                     </div>
                     <Row gutter={[32, 32]}>
@@ -135,60 +135,60 @@ const Landing: React.FC = () => {
             </section>
 
             {/* About Section */}
-            <section id="about" className="section-padding" style={{ backgroundColor: '#fff' }}>
+            <section id="about" className="section-padding landing-white-bg">
                 <div className="dashboard-container">
                     <Row gutter={[64, 64]} align="middle">
                         <Col xs={24} lg={12}>
-                            <Title level={4} style={{ color: 'var(--accent-color)', letterSpacing: '2px', textTransform: 'uppercase', fontSize: '14px', marginBottom: '16px' }}>About INRFS</Title>
-                            <Title level={2} style={{ fontSize: '2.8rem', fontWeight: 800, lineHeight: 1.2, marginBottom: '24px' }}>Empowering Your Wealth Building Journey</Title>
-                            <Paragraph style={{ fontSize: '1.1rem', color: '#64748b', lineHeight: 1.8, marginBottom: '32px' }}>
+                            <Title level={4} className="about-accent-text">About INRFS</Title>
+                            <Title level={2} className="about-main-title">Empowering Your Wealth Building Journey</Title>
+                            <Paragraph className="about-desc-text">
                                 INRFS (Institutional Returns & Financial Security) was founded on the principle that high-grade investment opportunities should be accessible to everyone. Our mission is to bridge the gap between institutional asset management and individual investors through technology and transparency.
                             </Paragraph>
                             <Row gutter={[32, 32]}>
                                 <Col span={12}>
                                     <Space size="middle">
-                                        <div style={{ background: 'rgba(37, 99, 235, 0.1)', padding: '10px', borderRadius: '12px' }}>
-                                            <TeamOutlined style={{ fontSize: '24px', color: 'var(--primary-color)' }} />
+                                        <div className="feature-icon-box-blue">
+                                            <TeamOutlined className="feature-icon-blue" />
                                         </div>
                                         <div>
-                                            <Title level={5} style={{ margin: 0 }}>Expert Team</Title>
-                                            <Text type="secondary" style={{ fontSize: '12px' }}>Decades of fund management</Text>
+                                            <Title level={5} className="feature-title-compact">Expert Team</Title>
+                                            <Text type="secondary" className="feature-subtext-small">Decades of fund management</Text>
                                         </div>
                                     </Space>
                                 </Col>
                                 <Col span={12}>
                                     <Space size="middle">
-                                        <div style={{ background: 'rgba(16, 185, 129, 0.1)', padding: '10px', borderRadius: '12px' }}>
-                                            <GlobalOutlined style={{ fontSize: '24px', color: 'var(--accent-color)' }} />
+                                        <div className="feature-icon-box-green">
+                                            <GlobalOutlined className="feature-icon-green-alt" />
                                         </div>
                                         <div>
-                                            <Title level={5} style={{ margin: 0 }}>Global Assets</Title>
-                                            <Text type="secondary" style={{ fontSize: '12px' }}>Diversified across markets</Text>
+                                            <Title level={5} className="feature-title-compact">Global Assets</Title>
+                                            <Text type="secondary" className="feature-subtext-small">Diversified across markets</Text>
                                         </div>
                                     </Space>
                                 </Col>
                             </Row>
                         </Col>
                         <Col xs={24} lg={12}>
-                            <Card className="stat-card-refined" style={{ padding: '40px', background: 'var(--bg-light)', border: 'none' }}>
-                                <div style={{ textAlign: 'center' }}>
-                                    <div style={{ marginBottom: '32px' }}>
-                                        <HeartOutlined style={{ fontSize: '48px', color: 'var(--coral-red)' }} />
+                            <Card className="stat-card-refined about-stat-card">
+                                <div className="about-card-centered">
+                                    <div className="about-card-icon-wrapper">
+                                        <HeartOutlined className="about-card-icon-coral" />
                                     </div>
                                     <Title level={3}>Our Core Values</Title>
-                                    <Space direction="vertical" size="large" style={{ marginTop: '24px', textAlign: 'left', width: '100%' }}>
-                                        <div style={{ display: 'flex', gap: '16px' }}>
-                                            <CheckCircleFilled style={{ color: 'var(--accent-color)', marginTop: '4px' }} />
+                                    <Space direction="vertical" size="large" className="about-card-check-list">
+                                        <div className="about-card-check-item">
+                                            <CheckCircleFilled className="about-card-check-icon" />
                                             <div>
                                                 <Text strong>Transparency First</Text>
-                                                <Paragraph type="secondary" style={{ margin: 0, fontSize: '13px' }}>Real-time tracking of every dollar invested.</Paragraph>
+                                                <Paragraph type="secondary" className="about-card-check-desc">Real-time tracking of every dollar invested.</Paragraph>
                                             </div>
                                         </div>
-                                        <div style={{ display: 'flex', gap: '16px' }}>
-                                            <CheckCircleFilled style={{ color: 'var(--accent-color)', marginTop: '4px' }} />
+                                        <div className="about-card-check-item">
+                                            <CheckCircleFilled className="about-card-check-icon" />
                                             <div>
                                                 <Text strong>Guaranteed Solvency</Text>
-                                                <Paragraph type="secondary" style={{ margin: 0, fontSize: '13px' }}>Capital reserves maintained at 120% of liabilities.</Paragraph>
+                                                <Paragraph type="secondary" className="about-card-check-desc">Capital reserves maintained at 120% of liabilities.</Paragraph>
                                             </div>
                                         </div>
                                     </Space>
@@ -201,70 +201,66 @@ const Landing: React.FC = () => {
 
             {/* Investment Plans Section */}
             {/* Investment Plans Section */}
-<section id="plans" className="plans-section-final">
-  <div className="dashboard-container">
-    <div style={{ textAlign: "center", marginBottom: "48px" }}>
-      <Title
-        level={2}
-        style={{ fontSize: "2.4rem", fontWeight: 800, marginBottom: 8 }}
-      >
-        Investment Plans
-      </Title>
-      <p style={{ color: "#6b7280", fontSize: "15px", margin: 0 }}>
-        Choose a plan that fits your investment horizon.
-      </p>
-    </div>
+            <section id="plans" className="plans-section-final">
+                <div className="dashboard-container">
+                    <div className="plans-header-centered">
+                        <Title level={2} className="plans-main-title">
+                            Investment Plans
+                        </Title>
+                        <p className="plans-main-subtitle">
+                            Choose a plan that fits your investment horizon.
+                        </p>
+                    </div>
 
-    <Row gutter={[24, 24]} justify="center">
-      {INVESTMENT_PLANS.map((plan) => {
-        const getFeatures = (duration: number) => {
-          if (duration === 1) return ["Quick returns", "Low risk", "Flexible amount"];
-          if (duration === 3) return ["Better returns", "Balanced risk", "Popular choice"];
-          if (duration === 6) return ["High returns", "Best value", "Recommended"];
-          return ["Maximum returns", "Long term", "Wealth building"];
-        };
+                    <Row gutter={[24, 24]} justify="center">
+                        {INVESTMENT_PLANS.map((plan) => {
+                            const getFeatures = (duration: number) => {
+                                if (duration === 1) return ["Quick returns", "Low risk", "Flexible amount"];
+                                if (duration === 3) return ["Better returns", "Balanced risk", "Popular choice"];
+                                if (duration === 6) return ["High returns", "Best value", "Recommended"];
+                                return ["Maximum returns", "Long term", "Wealth building"];
+                            };
 
-        const isPopular = plan.duration === 6;
+                            const isPopular = plan.duration === 6;
 
-        return (
-          <Col xs={24} sm={12} lg={6} key={plan.id}>
-            <Card
-              bordered={false}
-              className={`plan-card-final ${
-                isPopular ? "plan-card-featured-final" : ""
-              }`}
-            >
-              {isPopular && (
-                <div className="popular-badge-final">POPULAR</div>
-              )}
+                            return (
+                                <Col xs={24} sm={12} lg={6} key={plan.id}>
+                                    <Card
+                                        bordered={false}
+                                        className={`plan-card-final ${isPopular ? "plan-card-featured-final" : ""
+                                            }`}
+                                    >
+                                        {isPopular && (
+                                            <div className="popular-badge-final">POPULAR</div>
+                                        )}
 
-              <div className="plan-name-final">{plan.name}</div>
+                                        <div className="plan-name-final">{plan.name}</div>
 
-              <div className="plan-roi-final">{plan.roi}% Returns</div>
+                                        <div className="plan-roi-final">{plan.roi}% Returns</div>
 
-              <ul className="plan-features-final">
-                {getFeatures(plan.duration).map((feature, idx) => (
-                  <li key={idx}>
-                    <CheckCircleFilled />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
+                                        <ul className="plan-features-final">
+                                            {getFeatures(plan.duration).map((feature, idx) => (
+                                                <li key={idx}>
+                                                    <CheckCircleFilled />
+                                                    <span>{feature}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
 
-              <Button
-                block
-                className="invest-btn-final"
-                onClick={() => handleInvestInPlan(plan)}
-              >
-                Invest Now
-              </Button>
-            </Card>
-          </Col>
-        );
-      })}
-    </Row>
-  </div>
-</section>
+                                        <Button
+                                            block
+                                            className="invest-btn-final"
+                                            onClick={() => handleInvestInPlan(plan)}
+                                        >
+                                            Invest Now
+                                        </Button>
+                                    </Card>
+                                </Col>
+                            );
+                        })}
+                    </Row>
+                </div>
+            </section>
 
 
             {/* Dark Footer -> Now Light Green Accented Deep Green */}
@@ -301,25 +297,25 @@ const Landing: React.FC = () => {
                             <Title level={5} className="footer-col-title">Contact Us</Title>
                             <Space direction="vertical" size="middle">
                                 <div className="footer-contact-item">
-                                    <MailOutlined style={{ color: 'var(--accent-color)' }} />
-                                    <Text style={{ color: 'inherit' }}>support@inrfs.com</Text>
+                                    <MailOutlined className="footer-contact-icon" />
+                                    <Text className="footer-contact-text">support@inrfs.com</Text>
                                 </div>
                                 <div className="footer-contact-item">
-                                    <PhoneOutlined style={{ color: 'var(--accent-color)' }} />
-                                    <Text style={{ color: 'inherit' }}>+1 800 123 4567</Text>
+                                    <PhoneOutlined className="footer-contact-icon" />
+                                    <Text className="footer-contact-text">+1 800 123 4567</Text>
                                 </div>
                                 <div className="footer-contact-item">
-                                    <EnvironmentOutlined style={{ color: 'var(--accent-color)' }} />
-                                    <Text style={{ color: 'inherit' }}>123 Finance Street, NY</Text>
+                                    <EnvironmentOutlined className="footer-contact-icon" />
+                                    <Text className="footer-contact-text">123 Finance Street, NY</Text>
                                 </div>
                             </Space>
                         </Col>
                     </Row>
                     <div className="footer-bottom">
-                        <Text style={{ color: 'inherit' }}>© 2024 INRFS. All rights reserved. Regulated by Financial Authority.</Text>
+                        <Text className="footer-bottom-text">© 2024 INRFS. All rights reserved. Regulated by Financial Authority.</Text>
                         <Link to="/admin" className="footer-admin-link">
                             <LockOutlined />
-                            <Text style={{ color: 'inherit', fontSize: '12px', marginLeft: '4px' }}>Admin Access</Text>
+                            <Text className="footer-admin-text">Admin Access</Text>
                         </Link>
                     </div>
                 </div>
@@ -339,9 +335,8 @@ const Landing: React.FC = () => {
                         <Button
                             type="primary"
                             key="login"
-                            className="register-btn-solid"
-                            style={{ background: 'var(--primary-color)' }}
-                            onClick={() => navigate('/auth/login')}
+                            className="register-btn-solid register-btn-solid-override"
+                            onClick={() => navigate('/dashboard')}
                         >
                             Login to Dashboard
                         </Button>

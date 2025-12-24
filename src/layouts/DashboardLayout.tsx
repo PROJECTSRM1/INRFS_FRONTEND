@@ -5,8 +5,7 @@ import { MenuOutlined } from '@ant-design/icons';
 import { useAppContext } from '../context/AppContext';
 import Logo from '../components/Logo';
 import '../styles/theme.css';
-import '../styles/mobile-menu-fix.css';
-import '../styles/mobile-header-fix.css';
+import '../styles/layout.css';
 
 const { Header, Content } = Layout;
 

@@ -36,7 +36,7 @@ interface ChartContainerProps {
 
 const ChartContainer: React.FC<ChartContainerProps> = ({ title, children, height = 300 }) => {
     return (
-        <Card title={title} style={{ borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', height: '100%' }}>
+        <Card title={title} className="chart-card-refined">
             <div style={{ height: height }}>
                 {children}
             </div>

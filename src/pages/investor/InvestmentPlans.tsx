@@ -7,8 +7,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { INVESTMENT_PLANS } from '../../data/mockData';
 import type { InvestmentPlan } from '../../types';
-import '../../styles/theme.css';
-import '../../styles/investment-plans.css';
+import '../../styles/dashboard.css';
 
 const { Title, Text } = Typography;
 
@@ -20,11 +19,12 @@ const InvestmentPlans: React.FC = () => {
     };
 
     return (
-        <div className="plans-page-wrapper">
+        <div className="investor-dashboard-refined">
             <Button
+                size="small"
                 icon={<ArrowLeftOutlined />}
                 onClick={() => navigate('/dashboard')}
-                style={{ marginBottom: 24 }}
+                className="btn-back-refined btn-back-margin"
             >
                 Back to Dashboard
             </Button>
@@ -55,7 +55,7 @@ const InvestmentPlans: React.FC = () => {
                             </div>
 
                             <div className="plan-features-section">
-                                <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+                                <Space direction="vertical" size="middle" className="w-full">
                                     <div className="feature-item-compact">
                                         <CheckCircleFilled className="feature-icon-green" />
                                         <Text>{plan.duration <= 3 ? 'Quick returns' : plan.duration === 6 ? 'High returns' : 'Maximum returns'}</Text>

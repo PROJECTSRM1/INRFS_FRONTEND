@@ -34,7 +34,7 @@ const Register: React.FC = () => {
                         <Text strong>Please save this ID. You will need it to sign in.</Text>
                     </div>
                 ),
-                onOk: () => navigate(`/auth/login?role=investor&id=${newId}`)
+                onOk: () => navigate(`/dashboard?role=investor&id=${newId}`)
             });
         }, 1500);
     };
@@ -96,7 +96,7 @@ const Register: React.FC = () => {
 
                 <div style={{ textAlign: 'center', marginTop: '32px' }}>
                     <Text type="secondary">Already have an account? </Text>
-                    <Link to="/auth/login" style={{ color: '#2563eb', fontWeight: 600 }}>Login here</Link>
+                    <Link to="/dashboard" style={{ color: '#2563eb', fontWeight: 600 }}>Login here</Link>
                 </div>
             </Card>
 

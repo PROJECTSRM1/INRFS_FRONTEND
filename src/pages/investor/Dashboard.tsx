@@ -14,9 +14,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
 import StatMiniCard from '../../components/StatMiniCard';
 import { fintechService } from '../../services/fintechService';
-import '../../styles/theme.css';
-import '../../styles/dashboard-critical-fix-v2.css';
-import '../../styles/customer-id-style.css';
+import '../../styles/dashboard.css';
+
 
 const { Title, Text } = Typography;
 
@@ -78,7 +77,7 @@ const Dashboard: React.FC = () => {
             {/* Header Section */}
             <div className="welcome-header">
                 <div>
-                    <Title level={2} className="greeting-text">Welcome Back, {user?.name || 'John Doe'}</Title>
+                    <Title level={2} className="greeting-text">Welcome Back, <span>{user?.name || 'John Doe'}</span></Title>
                     <div className="id-details">
                         <Text className="id-label">Customer ID: </Text>
                         <Text className="id-highlight">{user?.customerId || 'I4829'}</Text>
@@ -171,6 +170,7 @@ const Dashboard: React.FC = () => {
                     dataSource={displayInvestments.map((inv, idx) => ({ ...inv, key: idx }))}
                     pagination={false}
                     className="refined-table-v2"
+                    scroll={{ x: true }}
                 />
             </div>
         </div>
