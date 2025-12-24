@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 const RoleSelection: React.FC = () => {
     const navigate = useNavigate();
 
-    // Automatically redirect to investor login since vendor is removed
+    // Automatically redirect to investor dashboard
     useEffect(() => {
-        navigate('/auth/login');
+        navigate('/dashboard');
     }, [navigate]);
 
     return null;

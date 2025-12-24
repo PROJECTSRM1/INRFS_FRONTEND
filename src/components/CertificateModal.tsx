@@ -4,7 +4,7 @@ import { DownloadOutlined, CloseOutlined } from '@ant-design/icons';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { fintechService } from '../services/fintechService';
-import '../styles/Bonds.css';
+import '../styles/dashboard.css';
 
 interface CertificateModalProps {
     visible: boolean;

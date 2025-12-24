@@ -498,3 +498,183 @@
     font-size: 14px !important;
     line-height: 1.6 !important;
 }
+/* Additional Landing Cleanups */
+.landing-centered-heading {
+    text-align: center !important;
+    margin-bottom: 60px !important;
+}
+
+.landing-large-title {
+    font-size: 2.5rem !important;
+    fontWeight: 800 !important;
+}
+
+.landing-white-bg {
+    background-color: #fff !important;
+}
+
+.about-accent-text {
+    color: var(--accent-color) !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+    font-size: 14px !important;
+    margin-bottom: 16px !important;
+}
+
+.about-main-title {
+    font-size: 2.8rem !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    margin-bottom: 24px !important;
+}
+
+.about-desc-text {
+    font-size: 1.1rem !important;
+    color: #64748b !important;
+    line-height: 1.8 !important;
+    margin-bottom: 32px !important;
+}
+
+.feature-icon-box-blue {
+    background: rgba(37, 99, 235, 0.1) !important;
+    padding: 10px !important;
+    border-radius: 12px !important;
+}
+
+.feature-icon-box-green {
+    background: rgba(16, 185, 129, 0.1) !important;
+    padding: 10px !important;
+    border-radius: 12px !important;
+}
+
+.feature-icon-blue {
+    font-size: 24px !important;
+    color: var(--primary-color) !important;
+}
+
+.feature-icon-green-alt {
+    font-size: 24px !important;
+    color: var(--accent-color) !important;
+}
+
+.feature-title-compact {
+    margin: 0 !important;
+    font-size: 16px !important;
+}
+
+.feature-subtext-small {
+    font-size: 12px !important;
+}
+
+.about-stat-card {
+    padding: 40px !important;
+    background: var(--bg-light) !important;
+    border: none !important;
+}
+
+.about-card-centered {
+    text-align: center !important;
+}
+
+.about-card-icon-wrapper {
+    margin-bottom: 32px !important;
+}
+
+.about-card-icon-coral {
+    font-size: 48px !important;
+    color: var(--coral-red) !important;
+}
+
+.about-card-check-list {
+    margin-top: 24px !important;
+    text-align: left !important;
+    width: 100% !important;
+}
+
+.about-card-check-item {
+    display: flex !important;
+    gap: 16px !important;
+    margin-bottom: 16px !important;
+}
+
+.about-card-check-icon {
+    color: var(--accent-color) !important;
+    margin-top: 4px !important;
+}
+
+.about-card-check-desc {
+    margin: 0 !important;
+    font-size: 13px !important;
+}
+
+.plans-header-centered {
+    text-align: center !important;
+    margin-bottom: 48px !important;
+}
+
+.plans-main-title {
+    font-size: 2.4rem !important;
+    font-weight: 800 !important;
+    margin-bottom: 8px !important;
+}
+
+.plans-main-subtitle {
+    color: #6b7280 !important;
+    font-size: 15px !important;
+    margin: 0 !important;
+}
+
+.footer-contact-icon {
+    color: var(--accent-color) !important;
+}
+
+.footer-contact-text {
+    color: inherit !important;
+}
+
+.footer-bottom-text {
+    color: inherit !important;
+}
+
+.footer-admin-text {
+    color: inherit !important;
+    font-size: 12px !important;
+    margin-left: 4px !important;
+}
+
+.register-btn-solid-override {
+    background: var(--primary-color) !important;
+}
+
+/* Mobile Portrait Refinements (<= 576px) */
+@media (max-width: 576px) {
+    .hero-section {
+        padding: 110px 20px 60px 20px !important;
+    }
+    
+    .hero-title {
+        font-size: 28px !important;
+        line-height: 1.2 !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 16px !important;
+    }
+    
+    .about-main-title {
+        font-size: 1.8rem !important;
+    }
+    
+    .landing-large-title {
+        font-size: 1.8rem !important;
+    }
+
+    .plans-main-title {
+        font-size: 1.8rem !important;
+    }
+    
+    .about-stat-card {
+        padding: 24px !important;
+    }
+}
+

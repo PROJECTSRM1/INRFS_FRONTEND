@@ -5,8 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
 import { fintechService } from '../../services/fintechService';
 import CertificateModal from '../../components/CertificateModal';
-import '../../styles/theme.css';
-import '../../styles/my-investments.css';
+import '../../styles/dashboard.css';
 
 const { Title } = Typography;
 
@@ -98,11 +97,12 @@ const MyInvestments: React.FC = () => {
     ];
 
     return (
-        <div className="portfolio-refined">
+        <div className="investor-dashboard-refined">
             <Button
+                size="small"
                 icon={<ArrowLeftOutlined />}
                 onClick={() => navigate('/dashboard')}
-                style={{ marginBottom: 24 }}
+                className="btn-back-refined btn-back-margin"
             >
                 Back to Dashboard
             </Button>

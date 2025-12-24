@@ -6,7 +6,7 @@ import Logo from '../components/Logo';
 import RegisterModal from '../components/auth/RegisterModal';
 import LoginModal from '../components/auth/LoginModal';
 import '../styles/theme.css';
-import '../styles/mobile-menu-fix.css';
+import '../styles/layout.css';
 
 const { Header, Content } = Layout;
 
@@ -125,8 +125,7 @@ const PublicLayout: React.FC = () => {
                             type="text"
                             block
                             onClick={openLogin}
-                            className="mobile-nav-link"
-                            style={{ textAlign: 'left', height: 'auto' }}
+                            className="mobile-nav-link mobile-login-drawer-btn"
                         >
                             Login
                         </Button>

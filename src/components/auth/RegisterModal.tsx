@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { fintechService } from '../../services/fintechService';
 import '../../styles/theme.css';
 
+import { useAppContext } from '../../context/AppContext';
+
 const { Title, Text, Paragraph } = Typography;
 
 interface RegisterModalProps {
@@ -13,6 +15,7 @@ interface RegisterModalProps {
 
 const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel }) => {
     const navigate = useNavigate();
+    const { setUser } = useAppContext();
     const [loading, setLoading] = useState(false);
     const [isOtpVisible, setIsOtpVisible] = useState(false);
 
@@ -28,6 +31,16 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel }) => {
         setLoading(true);
         setTimeout(() => {
             const newId = fintechService.generateCustomerId();
+            const newUser = {
+                id: newId,
+                name: 'New User', // Ideally capture this from form
+                email: 'user@example.com', // Ideally capture this from form
+                role: 'investor' as const,
+                kycStatus: 'verified' as const
+            };
+
+            setUser(newUser); // Auto-login and save to localStorage
+
             setIsOtpVisible(false);
             onCancel();
             setLoading(false);
@@ -42,7 +55,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel }) => {
                         <Text strong>Please save this ID safely. You will need it to login.</Text>
                     </div>
                 ),
-                onOk: () => navigate(`/auth/login?role=investor&id=${newId}`)
+                onOk: () => navigate(`/dashboard`)
             });
         }, 1500);
     };
@@ -66,12 +79,12 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel }) => {
 
                 <Form layout="vertical" onFinish={onFinishInfo} requiredMark={false} className="auth-form-v2">
                     <Row gutter={16}>
-                        <Col span={12}>
+                        <Col xs={24} sm={12}>
                             <Form.Item label={<Text strong>First Name</Text>} name="firstName" rules={[{ required: true, message: 'Required' }]}>
                                 <Input placeholder="John" size="large" className="minimal-input" />
                             </Form.Item>
                         </Col>
-                        <Col span={12}>
+                        <Col xs={24} sm={12}>
                             <Form.Item label={<Text strong>Last Name</Text>} name="lastName" rules={[{ required: true, message: 'Required' }]}>
                                 <Input placeholder="Doe" size="large" className="minimal-input" />
                             </Form.Item>
@@ -87,12 +100,12 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel }) => {
                     </Form.Item>
 
                     <Row gutter={16}>
-                        <Col span={12}>
+                        <Col xs={24} sm={12}>
                             <Form.Item label={<Text strong>Password</Text>} name="password" rules={[{ required: true, message: 'Required' }]}>
                                 <Input.Password placeholder="••••••••" size="large" className="minimal-input" />
                             </Form.Item>
                         </Col>
-                        <Col span={12}>
+                        <Col xs={24} sm={12}>
                             <Form.Item label={<Text strong>Confirm Password</Text>} name="confirm" rules={[{ required: true, message: 'Required' }]}>
                                 <Input.Password placeholder="••••••••" size="large" className="minimal-input" />
                             </Form.Item>
