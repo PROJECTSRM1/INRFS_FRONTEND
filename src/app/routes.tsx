@@ -22,6 +22,7 @@ const InvestmentPlans = lazy(() => import('../pages/investor/InvestmentPlans'));
 const CompleteInvestment = lazy(() => import('../pages/investor/CompleteInvestment'));
 const MyInvestments = lazy(() => import('../pages/investor/MyInvestments'));
 const InvestorBonds = lazy(() => import('../pages/investor/Bonds'));
+const Profile = lazy(() => import('../pages/investor/Profile'));
 
 // Admin Pages
 // Core Admin
@@ -86,6 +87,7 @@ const AppRoutes: React.FC = () => {
                             <Route path="complete-investment/:planId" element={<CompleteInvestment />} />
                             <Route path="bonds" element={<InvestorBonds />} />
                             <Route path="my-investments" element={<MyInvestments />} />
+                            <Route path="profile" element={<Profile />} />
                         </>
                     )}
                 </Route>
