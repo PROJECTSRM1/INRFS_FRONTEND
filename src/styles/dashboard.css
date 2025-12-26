@@ -268,7 +268,7 @@
 }
 
 .table-id-link {
-    color: #3b82f6 !important;
+    color: #926132 !important;
     font-weight: 600 !important;
 }
 
@@ -2338,4 +2338,231 @@
     .profile-card {
         padding: 20px;
     }
+}
+
+/* =========================================
+   Certificate Modal Styles (External)
+   ========================================= */
+.cert-modal .ant-modal-content {
+    border-radius: 16px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.cert-modal .ant-modal-body {
+    padding: 0;
+}
+
+.cert-preview-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+    background: #f8fafc;
+}
+
+.cert-modal-header {
+    background: #fff;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.cert-modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+/* Mobile Responsive Header Fix */
+@media (max-width: 768px) {
+    .cert-modal-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .cert-modal-title {
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .cert-download-btn {
+        width: 100%;
+        margin-left: 0 !important;
+    }
+}
+
+.cert-download-btn {
+    background: #2563eb;
+    border-color: #2563eb;
+    height: 40px;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+.cert-download-btn:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+.cert-preview-wrapper {
+    flex: 1;
+    overflow: auto;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .cert-preview-wrapper {
+        padding: 16px;
+        justify-content: flex-start;
+    }
+}
+
+.certificate-layout {
+    width: 794px;
+    min-height: 1123px;
+    background: #fff;
+    position: relative;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+}
+
+/* Watermark/Logo - CSS Background Method */
+.cert-logo-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-image: url('/infrs-logo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 600px auto;
+    /* Larger as per screenshot */
+    opacity: 0.12;
+    /* Faint but visible */
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Removed old img class */
+/* .cert-logo-image { ... } */
+
+.cert-content-layer {
+    position: relative;
+    z-index: 10;
+    /* Strictly above watermark */
+    padding: 60px 80px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Certificate Internal Styles */
+.cert-header {
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 4px double #1a1a1a;
+    padding-bottom: 20px;
+}
+
+.cert-title {
+    font-size: 36px;
+    font-weight: 900;
+    color: #1e3a8a;
+    /* Blue title as per screenshot */
+    margin-bottom: 8px;
+    text-transform: none;
+    /* Screenshot isn't all caps */
+    letter-spacing: 0.5px;
+    font-family: 'Arial', sans-serif;
+    /* Clean sans-serif */
+}
+
+.cert-subtitle {
+    font-size: 18px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.cert-body-text {
+    font-size: 15px;
+    line-height: 1.6;
+    text-align: left;
+    margin-bottom: 40px;
+    color: #1f2937;
+    font-family: 'Arial', sans-serif;
+}
+
+.cert-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 60px;
+    border: 1px solid #9ca3af;
+    background: transparent !important;
+    /* Visual transparency for watermark */
+}
+
+.cert-details-table td {
+    padding: 12px 20px;
+    border: 1px solid #9ca3af;
+    font-size: 15px;
+    background: transparent !important;
+    /* Ensure watermark shows through */
+}
+
+.cert-label {
+    font-weight: 600;
+    width: 40%;
+    color: #374151;
+    background: transparent !important;
+    /* Removed grey bg */
+}
+
+.cert-val {
+    font-weight: 500;
+    color: #111827;
+}
+
+.cert-footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 40px;
+}
+
+.cert-sig-block {
+    text-align: center;
+    width: 250px;
+}
+
+.cert-sig-name {
+    font-size: 18px;
+    font-weight: 700;
+    border-top: 2px solid #333;
+    padding-top: 8px;
+    margin-top: 50px;
+}
+
+.cert-sig-title {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.cert-system-note {
+    font-size: 12px;
+    text-align: center;
+    color: #9ca3af;
+    margin-top: 20px;
+    font-style: italic;
 }

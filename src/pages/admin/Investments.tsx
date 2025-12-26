@@ -12,7 +12,7 @@ const AdminInvestments: React.FC = () => {
     const [statusFilter, setStatusFilter] = useState('All Status');
     const [searchText, setSearchText] = useState('');
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-    const [investments, setInvestments] = useState(MOCK_INVESTMENTS);
+    const [investments] = useState(MOCK_INVESTMENTS);
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -20,11 +20,7 @@ const AdminInvestments: React.FC = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const handleSettlementStatusChange = (investmentId: string, newStatus: 'Completed' | 'Pending') => {
-        setInvestments(prev => prev.map(inv =>
-            inv.id === investmentId ? { ...inv, settlementStatus: newStatus } : inv
-        ));
-    };
+
 
     // Helper function to parse date strings
     const parseMaturityDate = (dateStr?: string): Date => {
@@ -40,8 +36,22 @@ const AdminInvestments: React.FC = () => {
             title: 'ID',
             dataIndex: 'id',
             key: 'id',
-            render: (text: string) => <Text strong style={{ color: 'var(--admin-primary)' }}>{text}</Text>,
-            width: 100,
+            render: (text: string) => (
+                <span style={{
+                    fontFamily: 'monospace',
+                    color: '#926132',
+                    background: 'rgba(146, 97, 50, 0.1)',
+                    padding: '2px 8px',
+                    borderRadius: '4px',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    letterSpacing: '0.5px',
+                    whiteSpace: 'nowrap'
+                }}>
+                    {text}
+                </span>
+            ),
+            width: 140,
         },
         {
             title: 'Investor (ID)',
@@ -58,14 +68,14 @@ const AdminInvestments: React.FC = () => {
             title: 'Amount',
             dataIndex: 'amount',
             key: 'amount',
-            render: (val: number) => <Text strong>${val.toLocaleString()}</Text>,
+            render: (val: number) => <Text strong>₹{val.toLocaleString()}</Text>,
             sorter: (a: any, b: any) => a.amount - b.amount,
         },
         {
             title: 'Interest',
             dataIndex: 'interest',
             key: 'interest',
-            render: (val: number) => <Text type="success" strong>${val?.toLocaleString()}</Text>,
+            render: (val: number) => <Text type="success" strong>₹{val?.toLocaleString()}</Text>,
         },
         {
             title: 'Maturity',
@@ -78,10 +88,23 @@ const AdminInvestments: React.FC = () => {
             dataIndex: 'status',
             key: 'status',
             render: (status: string) => {
-                let color = 'processing';
+                let color = '#926132'; // Default/Active is now Bronze
                 if (status === 'Completed') color = 'success';
-                if (status === 'Matured') color = 'gold';
-                return <Tag color={color} style={{ borderRadius: '12px' }}>{status}</Tag>;
+                if (status === 'Matured') color = 'gold'; // Or keep gold/yellow
+                // For 'Active' specifically, user wanted to change the blue.
+                return (
+                    <Tag
+                        color={color}
+                        style={{
+                            borderRadius: '50px',
+                            fontWeight: 600,
+                            padding: '0 12px',
+                            border: status === 'Active' ? '1px solid rgba(146, 97, 50, 0.3)' : 'none'
+                        }}
+                    >
+                        {status}
+                    </Tag>
+                );
             },
         },
         {
@@ -89,23 +112,23 @@ const AdminInvestments: React.FC = () => {
             dataIndex: 'settlementStatus',
             key: 'settlementStatus',
             width: 150,
-            render: (settlementStatus: 'Completed' | 'Pending' | undefined, record: any) => (
-                <Select
-                    value={settlementStatus || 'Pending'}
-                    onChange={(value) => handleSettlementStatusChange(record.id, value)}
-                    style={{ width: '100%' }}
-                    size="small"
-                >
-                    <Option value="Pending">
-                        <ClockCircleOutlined style={{ color: '#faad14', marginRight: 4 }} />
-                        Pending
-                    </Option>
-                    <Option value="Completed">
-                        <CheckCircleOutlined style={{ color: '#52c41a', marginRight: 4 }} />
-                        Completed
-                    </Option>
-                </Select>
-            ),
+            render: (settlementStatus: 'Completed' | 'Pending' | undefined) => {
+                const status = settlementStatus || 'Pending';
+                const isCompleted = status === 'Completed';
+                return (
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        color: isCompleted ? '#52c41a' : '#faad14',
+                        fontWeight: 600,
+                        fontSize: '13px'
+                    }}>
+                        {isCompleted ? <CheckCircleOutlined /> : <ClockCircleOutlined />}
+                        {status}
+                    </div>
+                );
+            },
         },
     ];
 

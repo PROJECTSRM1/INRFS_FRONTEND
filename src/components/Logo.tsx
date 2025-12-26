@@ -1,8 +1,4 @@
 import React from 'react';
-import { Typography } from 'antd';
-import '../styles/theme.css';
-
-const { Title } = Typography;
 
 interface LogoProps {
     size?: number;
@@ -10,29 +6,18 @@ interface LogoProps {
     light?: boolean;
 }
 
-import logoImg from '../assets/logo_custom.png';
-
-const Logo: React.FC<LogoProps> = ({ size = 32, showText = true, light = false }) => {
+const Logo: React.FC<LogoProps> = ({ size = 32 }) => {
     return (
-        <div className="logo-container">
+        <div className="logo-container" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <img
-                src={logoImg}
-                alt="Logo"
-                className="logo-spin"
+                src="/infrs-logo.png"
+                alt="INRFS Logo"
                 style={{
-                    width: size,
                     height: size,
+                    width: 'auto',
                     objectFit: 'contain'
                 }}
             />
-            {showText && (
-                <Title
-                    level={4}
-                    className={`logo-text ${light ? 'logo-text-light' : 'logo-text-dark'}`}
-                >
-                    INRFS
-                </Title>
-            )}
         </div>
     );
 };
