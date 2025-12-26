@@ -73,7 +73,7 @@ const CertificateModal: React.FC<CertificateModalProps> = ({ visible, onClose, b
                     <div ref={certRef} className="certificate-layout">
                         {/* Logo Watermark */}
                         <div className="cert-logo-watermark">
-                            <img src="/logo.png" alt="INRFS" className="cert-logo-image" />
+                            {/* Background image set in CSS */}
                         </div>
 
                         <div className="cert-content-layer">

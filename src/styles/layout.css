@@ -121,11 +121,11 @@
 }
 
 .nav-text-link:hover {
-    color: #2563eb;
+    color: #926132;
 }
 
 .nav-text-link.active {
-    color: #2563eb;
+    color: #926132;
     font-weight: 600;
 }
 
@@ -156,7 +156,7 @@
 }
 
 .mobile-menu-toggle:hover {
-    color: #2563eb;
+    color: #926132;
     background: transparent;
 }
 
@@ -201,15 +201,15 @@
 
 .mobile-nav-link:hover {
     background: #f8fafc;
-    color: #2563eb;
-    border-left-color: #2563eb;
+    color: #926132;
+    border-left-color: #926132;
 }
 
 .mobile-nav-link.active {
-    background: #eff6ff;
-    color: #2563eb;
+    background: #fff7ed;
+    color: #926132;
     font-weight: 600;
-    border-left-color: #2563eb;
+    border-left-color: #926132;
 }
 
 .mobile-logout-btn {
@@ -381,15 +381,15 @@
 
     .mobile-nav-link:hover {
         background: #f8fafc;
-        color: #2563eb;
-        border-left-color: #2563eb;
+        color: #926132;
+        border-left-color: #926132;
     }
 
     .mobile-nav-link.active {
-        background: #eff6ff;
-        color: #2563eb;
+        background: #fff7ed;
+        color: #926132;
         font-weight: 600;
-        border-left-color: #2563eb;
+        border-left-color: #926132;
     }
 
     /* Logout button */

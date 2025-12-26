@@ -103,7 +103,7 @@ const CompleteInvestment: React.FC = () => {
                     <div className="content-card-refined h-full">
                         <Title level={4} className="card-section-title">Investment Amount</Title>
                         <Input
-                            prefix="$"
+                            prefix="₹"
                             type="number"
                             placeholder="0"
                             className="investment-amount-input large-input"
@@ -111,7 +111,7 @@ const CompleteInvestment: React.FC = () => {
                             onChange={handleAmountChange}
                         />
                         <Text type="secondary" className="input-helper-text">
-                            Minimum: {fintechService.formatCurrency(plan.minAmount)} | Maximum: $1,000,000
+                            Minimum: {fintechService.formatCurrency(plan.minAmount)} | Maximum: ₹1,000,000
                         </Text>
                     </div>
                 </Col>
@@ -139,7 +139,7 @@ const CompleteInvestment: React.FC = () => {
                             </div>
                             <div className="summary-item">
                                 <Text className="s-label">Investment Amount</Text>
-                                <Text strong className="s-value">{amount ? fintechService.formatCurrency(Number(amount)) : '$0'}</Text>
+                                <Text strong className="s-value">{amount ? fintechService.formatCurrency(Number(amount)) : '₹0'}</Text>
                             </div>
                             <div className="summary-item">
                                 <Text className="s-label">Interest Rate</Text>

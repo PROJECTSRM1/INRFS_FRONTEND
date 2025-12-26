@@ -90,7 +90,7 @@ const Dashboard: React.FC = () => {
                 <Col xs={24} sm={12} lg={6}>
                     <StatMiniCard
                         title="Total Invested"
-                        value="$45,000"
+                        value="₹45,000"
                         icon={<WalletOutlined />}
                         colorClass="stat-blue"
                         trend="+12.5%"
@@ -99,7 +99,7 @@ const Dashboard: React.FC = () => {
                 <Col xs={24} sm={12} lg={6}>
                     <StatMiniCard
                         title="Total Returns"
-                        value="$6,750"
+                        value="₹6,750"
                         icon={<LineChartOutlined />}
                         colorClass="stat-green"
                         trend="+8.2%"
