@@ -1,9 +1,14 @@
 :root {
     /* Dynamic Theme Variables - UPDATED TO CORAL/RED THEME */
-    --admin-primary: #2563eb;
-    --admin-primary-shadow: rgba(37, 99, 235, 0.4);
-    --admin-bg: #f8fafc;
-    --admin-sidebar-gradient: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    --accent-color: #926132;
+    --admin-primary: #926132;
+    --admin-primary-shadow: rgba(146, 97, 50, 0.4);
+    --admin-bg: linear-gradient(135deg,
+            color-mix(in srgb, var(--accent-color), transparent 95%) 50%,
+            color-mix(in srgb, var(--accent-color), transparent 98%) 25%, transparent 50%);
+    --admin-sidebar-gradient: linear-gradient(135deg,
+            color-mix(in srgb, var(--accent-color), transparent 95%) 50%,
+            color-mix(in srgb, var(--accent-color), transparent 98%) 25%, transparent 50%);
     --admin-header-bg: rgba(255, 255, 255, 0.85);
     --admin-card-bg: #fff;
     --admin-text-main: #1e293b;
@@ -80,11 +85,11 @@ body {
     align-items: center;
     padding: 0 24px;
     gap: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .logo-text {
-    color: #fff;
+    color: #926132;
     font-size: 20px;
     font-weight: 800;
     letter-spacing: -0.5px;
@@ -104,41 +109,48 @@ body {
     border: none !important;
 }
 
-.admin-sidebar-menu-antd.ant-menu-dark .ant-menu-item {
+.admin-sidebar-menu-antd .ant-menu-item {
     border-radius: 50px !important;
     margin-bottom: 8px !important;
     height: 48px !important;
-    /* Min 44px target */
     line-height: 48px !important;
     display: flex !important;
     align-items: center !important;
-    color: rgba(255, 255, 255, 0.65) !important;
+    color: #926132 !important;
     width: 100% !important;
     padding: 0 16px !important;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent !important;
+    font-weight: 600 !important;
 }
 
-.admin-sidebar-menu-antd.ant-menu-dark .ant-menu-item-selected {
-    background-color: var(--admin-primary) !important;
-    color: #fff !important;
-    box-shadow: 0 4px 12px var(--admin-primary-shadow);
+.admin-sidebar-menu-antd .ant-menu-item:hover {
+    color: #926132 !important;
+    background: rgba(146, 97, 50, 0.05) !important;
+}
+
+.admin-sidebar-menu-antd .ant-menu-item-selected {
+    background-color: rgba(146, 97, 50, 0.1) !important;
+    color: #926132 !important;
+    box-shadow: none !important;
+    border: 1px solid rgba(146, 97, 50, 0.1);
 }
 
 .admin-sidebar-menu-antd .ant-menu-title-content {
     white-space: nowrap !important;
-    font-weight: 600 !important;
-    margin-left: 4px !important;
+    font-weight: 700 !important;
+    margin-left: 8px !important;
 }
 
 /* Footer & Logout - Strictly Pinned */
 .admin-sider-footer {
     padding: 16px 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    background: rgba(146, 97, 50, 0.03);
 }
 
 .logout-btn-sider {
-    color: rgba(255, 255, 255, 0.7) !important;
+    color: #926132 !important;
     width: 100%;
     height: 48px;
     border-radius: 50px !important;
@@ -326,23 +338,23 @@ body {
 }
 
 .stat-icon-box.blue {
-    background: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
+    background: rgba(146, 97, 50, 0.1);
+    color: #926132;
 }
 
 .stat-icon-box.green {
-    background: rgba(16, 185, 129, 0.1);
-    color: #10b981;
+    background: rgba(146, 97, 50, 0.1);
+    color: #926132;
 }
 
 .stat-icon-box.purple {
-    background: rgba(139, 92, 246, 0.1);
-    color: #8b5cf6;
+    background: rgba(146, 97, 50, 0.1);
+    color: #926132;
 }
 
 .stat-icon-box.orange {
-    background: rgba(245, 158, 11, 0.1);
-    color: #f59e0b;
+    background: rgba(146, 97, 50, 0.1);
+    color: #926132;
 }
 
 .stat-percent {
@@ -502,13 +514,13 @@ body {
 }
 
 .activity-icon-container.investment {
-    background: rgba(16, 185, 129, 0.1);
-    color: #10b981;
+    background: rgba(146, 97, 50, 0.1);
+    color: #926132;
 }
 
 .activity-icon-container.user {
-    background: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
+    background: rgba(146, 97, 50, 0.1);
+    color: #926132;
 }
 
 .vs-text {
@@ -570,20 +582,21 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f8fafc;
-    /* Light background to contrast dark card */
+    background: linear-gradient(135deg,
+            color-mix(in srgb, var(--accent-color), transparent 95%) 50%,
+            color-mix(in srgb, var(--accent-color), transparent 98%) 25%, transparent 50%);
+    /* Light gradient background */
     padding: 20px;
 }
 
 .admin-login-card {
     width: 100%;
     max-width: 440px;
-    background-color: #0f172a !important;
-    /* Dark Slate 900 */
-    border-radius: 16px !important;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    padding: 32px 24px !important;
+    background-color: #ffffff !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 40px rgba(146, 97, 50, 0.08) !important;
+    border: 1px solid rgba(146, 97, 50, 0.1) !important;
+    padding: 40px 32px !important;
 }
 
 .admin-login-header {
@@ -594,30 +607,31 @@ body {
 .admin-shield-icon-container {
     width: 64px;
     height: 64px;
-    background: rgba(30, 41, 59, 0.8);
+    background: rgba(146, 97, 50, 0.08);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    color: #3b82f6;
+    margin: 0 auto 24px;
+    border: 1px solid rgba(146, 97, 50, 0.1);
+    box-shadow: 0 4px 12px rgba(146, 97, 50, 0.1);
+    color: #926132;
     font-size: 28px;
 }
 
 .admin-login-title {
-    color: white !important;
-    font-size: 24px !important;
-    font-weight: 700 !important;
+    color: #926132 !important;
+    font-size: 26px !important;
+    font-weight: 800 !important;
     margin-bottom: 8px !important;
+    letter-spacing: -0.5px;
 }
 
 .admin-login-subtitle {
-    color: #94a3b8 !important;
-    /* Slate 400 */
+    color: rgba(146, 97, 50, 0.7) !important;
     font-size: 14px;
     display: block;
+    font-weight: 500;
 }
 
 .admin-restricted-alert {
@@ -639,68 +653,113 @@ body {
     margin-top: 2px;
 }
 
-/* Custom Dark Inputs */
+/* Custom Light Inputs */
 .admin-input-dark {
-    background-color: #1e293b !important;
-    /* Slate 800 */
-    border: 1px solid #334155 !important;
-    color: white !important;
-    height: 48px !important;
-    border-radius: 8px !important;
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #334155 !important;
+    height: 50px !important;
+    border-radius: 12px !important;
+    transition: all 0.2s;
 }
 
 .admin-input-dark input,
 .admin-input-dark .ant-input {
     background-color: transparent !important;
-    color: white !important;
+    color: #334155 !important;
 }
 
 .admin-input-dark .ant-input-password-icon {
-    color: #64748b !important;
+    color: #94a3b8 !important;
 }
 
 .admin-input-dark::placeholder {
-    color: #64748b !important;
+    color: #cbd5e1 !important;
 }
 
 .admin-input-dark:hover,
 .admin-input-dark:focus,
-.admin-input-dark-focused {
-    border-color: #3b82f6 !important;
+.admin-input-dark-focused,
+.admin-input-dark:focus-within {
+    border-color: #926132 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 2px rgba(146, 97, 50, 0.1) !important;
 }
 
 .admin-label-text {
-    color: #e2e8f0;
+    color: #926132;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: block;
 }
 
 .admin-submit-btn {
-    height: 48px !important;
+    height: 52px !important;
     font-size: 16px !important;
-    font-weight: 600 !important;
-    background-color: #0ea5e9 !important;
-    /* Sky 500 */
+    font-weight: 700 !important;
+    background-color: #926132 !important;
     border: none !important;
-    border-radius: 8px !important;
+    border-radius: 12px !important;
     margin-top: 12px;
     width: 100%;
+    box-shadow: 0 4px 12px rgba(146, 97, 50, 0.3);
+    transition: all 0.3s;
 }
 
 .admin-submit-btn:hover {
-    background-color: #0284c7 !important;
+    background-color: #7a5028 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(146, 97, 50, 0.4);
 }
 
 .back-home-link {
-    color: #64748b;
+    color: #94a3b8;
     font-size: 14px;
     text-decoration: none;
     transition: color 0.2s;
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    font-weight: 500;
 }
 
 .back-home-link:hover {
-    color: #94a3b8;
+    color: #926132;
+}
+
+/* --- Global Ant Design Overrides (Force Bronze) --- */
+.ant-btn-primary {
+    background-color: #926132 !important;
+    border-color: #926132 !important;
+    box-shadow: 0 4px 10px rgba(146, 97, 50, 0.2);
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus {
+    background-color: #7a5028 !important;
+    border-color: #7a5028 !important;
+}
+
+.ant-btn-link {
+    color: #926132 !important;
+}
+
+.ant-btn-link:hover {
+    color: #7a5028 !important;
+}
+
+.ant-typography a,
+a {
+    color: #926132;
+}
+
+.ant-typography a:hover,
+a:hover {
+    color: #7a5028;
+}
+
+::selection {
+    background: rgba(146, 97, 50, 0.2);
+    color: #926132;
 }

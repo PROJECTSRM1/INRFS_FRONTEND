@@ -93,14 +93,14 @@ const AdminLayout: React.FC = () => {
         <div className="admin-side-menu-container">
             <div className="admin-sider-logo" style={{ height: 'auto', padding: '24px', flexDirection: 'column', alignItems: 'flex-start', borderBottom: 'none' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
-                    <Logo size={32} light showText={false} />
+                    <Logo size={32} showText={false} />
                     {(!collapsed || isMobile) && <span className="logo-text" style={{ fontSize: '18px', fontWeight: 800 }}>Admin Panel</span>}
                 </div>
-                {(!collapsed || isMobile) && <Text style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', paddingLeft: '44px' }}>INRFS</Text>}
+
             </div>
             <div className="admin-menu-scrollable">
                 <Menu
-                    theme="dark"
+                    theme="light"
                     mode="inline"
                     selectedKeys={[location.pathname]}
                     items={menuItems}

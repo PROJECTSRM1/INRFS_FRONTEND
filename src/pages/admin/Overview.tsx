@@ -19,7 +19,7 @@ const AdminOverview: React.FC = () => {
     const [period, setPeriod] = useState('Monthly');
 
     const pieData = [
-        { name: '1 Month', value: 400, color: '#3b82f6' },
+        { name: '1 Month', value: 400, color: '#926132' },
         { name: '3 Month', value: 300, color: '#10b981' },
         { name: '6 Month', value: 300, color: '#8b5cf6' },
         { name: 'Yearly', value: 200, color: '#f59e0b' },
@@ -91,7 +91,7 @@ const AdminOverview: React.FC = () => {
                             </div>
                         </div>
                         <Text className="stat-label">Total Invested</Text>
-                        <Title level={2} className="stat-value">${(stats.totalInvested / 1000000).toFixed(1)}M</Title>
+                        <Title level={2} className="stat-value">₹{(stats.totalInvested / 1000000).toFixed(1)}M</Title>
                         <Text className="stat-period">Period: monthly</Text>
                     </Card>
                 </Col>
@@ -106,7 +106,7 @@ const AdminOverview: React.FC = () => {
                             </div>
                         </div>
                         <Text className="stat-label">Interest Payable</Text>
-                        <Title level={2} className="stat-value">${(stats.interestPayable / 1000000).toFixed(1)}M</Title>
+                        <Title level={2} className="stat-value">₹{(stats.interestPayable / 1000000).toFixed(1)}M</Title>
                         <Text className="stat-period">Period: monthly</Text>
                     </Card>
                 </Col>
@@ -135,7 +135,7 @@ const AdminOverview: React.FC = () => {
                                         axisLine={false}
                                         tickLine={false}
                                         tick={{ fontSize: 12, fill: '#64748b' }}
-                                        tickFormatter={(val) => `$${val}K`}
+                                        tickFormatter={(val) => `₹${val}K`}
                                     />
                                     <Tooltip
                                         contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
