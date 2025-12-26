@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Table, Tag, Button, Empty } from 'antd';
-import { EyeOutlined, DownloadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { DownloadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
 import { fintechService } from '../../services/fintechService';
@@ -78,13 +78,7 @@ const Bonds: React.FC = () => {
             key: 'actions',
             render: (_: any, record: any) => (
                 <div className="bond-action-buttons">
-                    <Button
-                        size="small"
-                        icon={<EyeOutlined />}
-                        className="bond-action-btn-view"
-                    >
-                        See Plan
-                    </Button>
+
                     <Button
                         size="small"
                         icon={<DownloadOutlined />}

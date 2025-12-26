@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Typography, Input, Checkbox, Button, message, Row, Col } from 'antd';
-import { InfoCircleFilled, ArrowLeftOutlined } from '@ant-design/icons';
+import { InfoCircleFilled } from '@ant-design/icons';
 import { useAppContext } from '../../context/AppContext';
 import { INVESTMENT_PLANS } from '../../data/mockData';
 import { fintechService } from '../../services/fintechService';
@@ -86,127 +86,134 @@ const CompleteInvestment: React.FC = () => {
 
     return (
         <div className="investor-dashboard-refined">
-            <div className="content-container">
-                <Title level={2} className="page-main-title">Complete Your Investment</Title>
+            <Typography.Title level={2} className="page-main-title">Complete Your Investment</Typography.Title>
 
-                {/* Info Box */}
-                <div className="info-box-blue">
-                    <InfoCircleFilled className="info-icon" />
-                    <div className="info-content">
-                        <Text strong className="info-title">Selected Plan: {plan.name}</Text>
-                        <Text className="info-desc">Enter your investment amount to see calculated returns</Text>
-                    </div>
+            {/* Selected Plan Alert Banner */}
+            <div className="selected-plan-banner">
+                <InfoCircleFilled className="banner-icon" />
+                <div className="banner-content">
+                    <Text strong className="banner-title">Selected Plan: <span style={{ color: '#2563eb' }}>{plan.name}</span></Text>
+                    <Text className="banner-desc">Enter your investment amount to see calculated returns</Text>
                 </div>
-
-                <Row gutter={[32, 32]} className="investment-main-row">
-                    {/* Left Col: Inputs & Summary */}
-                    <Col xs={{ span: 24, order: 2 }} lg={{ span: 14, order: 1 }}>
-                        <div className="input-section">
-                            <Text strong className="input-label">Investment Amount</Text>
-                            <Input
-                                prefix="$"
-                                type="number"
-                                placeholder="0"
-                                className="investment-amount-input"
-                                value={amount}
-                                onChange={handleAmountChange}
-                                size="large"
-                            />
-                            <Text type="secondary" className="input-helper">
-                                Minimum: {fintechService.formatCurrency(plan.minAmount)} | Maximum: $1,000,000
-                            </Text>
-                        </div>
-
-                        <div className="investment-summary-section">
-                            <Title level={4} className="section-subtitle">Investment Summary</Title>
-
-                            <div className="summary-row">
-                                <Text className="summary-label">Plan Type:</Text>
-                                <Text strong className="summary-value">{plan.name}</Text>
-                            </div>
-                            <div className="summary-row">
-                                <Text className="summary-label">Investment Amount:</Text>
-                                <Text strong className="summary-value">{amount ? fintechService.formatCurrency(Number(amount)) : '$0'}</Text>
-                            </div>
-                            <div className="summary-row">
-                                <Text className="summary-label">Interest Rate:</Text>
-                                <Text strong className="summary-value">{plan.roi}%</Text>
-                            </div>
-                            <div className="summary-row">
-                                <Text className="summary-label">Expected Returns:</Text>
-                                <Text strong className="summary-value-green">{fintechService.formatCurrency(returns)}</Text>
-                            </div>
-
-                            <div className="divider-line" />
-
-                            <div className="summary-row total-row">
-                                <Text strong className="total-label">Total Maturity Amount:</Text>
-                                <Text strong className="total-value-blue">{fintechService.formatCurrency(totalMaturity)}</Text>
-                            </div>
-                        </div>
-
-                        <div className="terms-section">
-                            <Text strong className="terms-title">Terms & Conditions</Text>
-                            <div className="terms-scrollbox">
-                                <ol className="terms-list">
-                                    <li>Investment is locked for the selected tenure period.</li>
-                                    <li>Returns are calculated based on the fixed interest rate.</li>
-                                    <li>Digital bond will be issued immediately after payment confirmation.</li>
-                                    <li>Early withdrawal may incur penalties as per policy.</li>
-                                    <li>All investments are subject to regulatory compliance.</li>
-                                    <li>Interest is calculated on a simple interest basis.</li>
-                                    <li>Maturity amount will be credited to your registered account.</li>
-                                </ol>
-                            </div>
-                            <Checkbox checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="terms-checkbox">
-                                <span className="cursor-pointer">I have read and agree to the Terms & Conditions</span>
-                            </Checkbox>
-                        </div>
-
-                        <div className="action-buttons-row">
-                            <Button
-                                size="small"
-                                className="btn-back-refined"
-                                onClick={() => navigate('/dashboard/plans')}
-                            >
-                                <ArrowLeftOutlined /> Back to Plans
-                            </Button>
-                            <Button
-                                type="primary"
-                                size="large"
-                                className="btn-solid-primary action-btn"
-                                onClick={handleProceed}
-                                loading={loading}
-                            >
-                                Proceed to Payment
-                            </Button>
-                        </div>
-                    </Col>
-
-                    {/* Right Col: Returns Display */}
-                    <Col xs={{ span: 24, order: 1 }} lg={{ span: 10, order: 2 }}>
-                        <div className="returns-display-refined">
-                            <Text className="dark-card-label">Calculated Returns</Text>
-                            <Title level={1} className="dark-card-value">
-                                {fintechService.formatCurrency(returns)}
-                            </Title>
-                            <Text className="dark-card-sub">
-                                Total Maturity: {fintechService.formatCurrency(totalMaturity)}
-                            </Text>
-                        </div>
-                    </Col>
-                </Row>
-
-                <PaymentModal
-                    visible={isPaymentModalVisible}
-                    onClose={() => setIsPaymentModalVisible(false)}
-                    onConfirm={handlePaymentConfirm}
-                    amount={Number(amount)}
-                    returns={returns}
-                    planName={plan.name}
-                    loading={loading}
-                />
             </div>
+
+            <Row gutter={[24, 24]} className="investment-content-grid">
+                {/* Row 1: Input and Returns (Side-by-Side on Desktop) */}
+                <Col xs={24} md={12}>
+                    <div className="content-card-refined h-full">
+                        <Title level={4} className="card-section-title">Investment Amount</Title>
+                        <Input
+                            prefix="$"
+                            type="number"
+                            placeholder="0"
+                            className="investment-amount-input large-input"
+                            value={amount}
+                            onChange={handleAmountChange}
+                        />
+                        <Text type="secondary" className="input-helper-text">
+                            Minimum: {fintechService.formatCurrency(plan.minAmount)} | Maximum: $1,000,000
+                        </Text>
+                    </div>
+                </Col>
+                <Col xs={24} md={12}>
+                    <div className="returns-card-dark h-full">
+                        <Text className="returns-label">Calculated Returns</Text>
+                        <Title level={1} className="returns-value">
+                            {fintechService.formatCurrency(returns)}
+                        </Title>
+                        <div className="returns-divider" />
+                        <Text className="returns-sub">
+                            Total Maturity: <span className="highlight-white">{fintechService.formatCurrency(totalMaturity)}</span>
+                        </Text>
+                    </div>
+                </Col>
+
+                {/* Row 2: Investment Summary */}
+                <Col span={24}>
+                    <div className="content-card-refined">
+                        <Title level={4} className="card-section-title">Investment Summary</Title>
+                        <div className="summary-grid-clean">
+                            <div className="summary-item">
+                                <Text className="s-label">Plan Type</Text>
+                                <Text strong className="s-value">{plan.name}</Text>
+                            </div>
+                            <div className="summary-item">
+                                <Text className="s-label">Investment Amount</Text>
+                                <Text strong className="s-value">{amount ? fintechService.formatCurrency(Number(amount)) : '$0'}</Text>
+                            </div>
+                            <div className="summary-item">
+                                <Text className="s-label">Interest Rate</Text>
+                                <Text strong className="s-value">{plan.roi}%</Text>
+                            </div>
+                            <div className="summary-item">
+                                <Text className="s-label">Expected Returns</Text>
+                                <Text strong className="s-value-green">{fintechService.formatCurrency(returns)}</Text>
+                            </div>
+                        </div>
+                        <div className="total-maturity-bar">
+                            <Text strong className="tm-label">Total Maturity Amount:</Text>
+                            <Text strong className="tm-value">{fintechService.formatCurrency(totalMaturity)}</Text>
+                        </div>
+                    </div>
+                </Col>
+
+                {/* Row 3: Terms & Conditions */}
+                <Col span={24}>
+                    <div className="content-card-refined">
+                        <Title level={4} className="card-section-title">Terms & Conditions</Title>
+                        <div className="terms-list-clean">
+                            <ol>
+                                <li>Investment is locked for the selected tenure period.</li>
+                                <li>Returns are calculated based on the fixed interest rate.</li>
+                                <li>Digital bond will be issued immediately after payment confirmation.</li>
+                                <li>Early withdrawal may incur penalties as per policy.</li>
+                                <li>All investments are subject to regulatory compliance.</li>
+                                <li>Interest is calculated on a simple interest basis.</li>
+                                <li>Maturity amount will be credited to your registered account.</li>
+                            </ol>
+                        </div>
+                        <Checkbox
+                            checked={agreed}
+                            onChange={(e) => setAgreed(e.target.checked)}
+                            className="terms-checkbox-clean"
+                        >
+                            I have read and agree to the Terms & Conditions
+                        </Checkbox>
+                    </div>
+                </Col>
+
+                {/* Row 4: Action Buttons */}
+                <Col span={24}>
+                    <div className="action-buttons-container">
+                        <Button
+                            size="large"
+                            className="btn-outline-clean"
+                            onClick={() => navigate('/dashboard/plans')}
+                        >
+                            Back to Plans
+                        </Button>
+                        <Button
+                            type="primary"
+                            size="large"
+                            className="btn-solid-dark"
+                            onClick={handleProceed}
+                            loading={loading}
+                        >
+                            Proceed to Payment
+                        </Button>
+                    </div>
+                </Col>
+            </Row>
+
+            <PaymentModal
+                visible={isPaymentModalVisible}
+                onClose={() => setIsPaymentModalVisible(false)}
+                onConfirm={handlePaymentConfirm}
+                amount={Number(amount)}
+                returns={returns}
+                planName={plan.name}
+                loading={loading}
+            />
         </div>
     );
 };

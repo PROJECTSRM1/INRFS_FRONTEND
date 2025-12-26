@@ -79,8 +79,9 @@ const MyInvestments: React.FC = () => {
                         size="small"
                         icon={<EyeOutlined />}
                         className="action-btn-view"
+                        onClick={() => navigate('/dashboard/plans')}
                     >
-                        View
+                        See Plan
                     </Button>
                     <Button
                         size="small"

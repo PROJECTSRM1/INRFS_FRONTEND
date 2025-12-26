@@ -46,6 +46,9 @@ const DashboardLayout: React.FC = () => {
                         <Link to="/dashboard/bonds" className={`nav-text-link ${location.pathname === '/dashboard/bonds' ? 'active' : ''}`}>
                             Bonds
                         </Link>
+                        <Link to="/dashboard/profile" className={`nav-text-link ${location.pathname === '/dashboard/profile' ? 'active' : ''}`}>
+                            Profile
+                        </Link>
                         <Button
                             type="link"
                             className="btn-logout-red"
@@ -92,6 +95,13 @@ const DashboardLayout: React.FC = () => {
                             onClick={handleNavClick}
                         >
                             Bonds
+                        </Link>
+                        <Link
+                            to="/dashboard/profile"
+                            className={`mobile-nav-link ${location.pathname === '/dashboard/profile' ? 'active' : ''}`}
+                            onClick={handleNavClick}
+                        >
+                            Profile
                         </Link>
                         <Button
                             type="primary"

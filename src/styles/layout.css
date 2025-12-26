@@ -446,3 +446,18 @@
     height: auto !important;
     padding: 12px 0 !important;
 }
+
+/* Logo Animation */
+@keyframes app-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.logo-spin {
+    animation: app-logo-spin 20s linear infinite;
+}
