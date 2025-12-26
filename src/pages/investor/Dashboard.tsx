@@ -152,7 +152,7 @@ const Dashboard: React.FC = () => {
                         </div>
                     </Col>
                     <Col xs={24} sm={12} md={6}>
-                        <div className="quick-action-card-white">
+                        <div className="quick-action-card-white" onClick={() => navigate('/dashboard/profile')}>
                             <div className="quick-action-icon">
                                 <UserOutlined />
                             </div>
