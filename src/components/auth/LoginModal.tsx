@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
 import '../../styles/theme.css';
 import '../../styles/login-modal.css';
+import { authService } from '../../services/authService';
 
 const { Title, Text, Link } = Typography;
 
@@ -12,31 +13,51 @@ interface LoginModalProps {
     visible: boolean;
     onClose: () => void;
     openRegister?: () => void;
+    initialEmail?: string;
 }
 
-const LoginModal: React.FC<LoginModalProps> = ({ visible, onClose, openRegister }) => {
+const LoginModal: React.FC<LoginModalProps> = ({ visible, onClose, openRegister, initialEmail }) => {
     const navigate = useNavigate();
     const { setUser } = useAppContext();
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
 
+    React.useEffect(() => {
+        if (visible && initialEmail) {
+            form.setFieldsValue({ email: initialEmail });
+        }
+    }, [visible, initialEmail, form]);
+
     const handleLogin = async (values: { email: string; password: string; remember: boolean }) => {
         setLoading(true);
         try {
-            // Simulate login - set user data
+            const response = await authService.loginUser({
+                email: values.email,
+                password: values.password
+            });
+
+            // Map response to user context
+            // Assuming backend returns similar structure to register or user details
+            // If strictly following the provided schema in register response (user_id, inv_reg_id)
+            // We might need to fetch profile if name is missed, but for now let's set what we have.
             setUser({
-                id: '1',
-                name: 'Alex Johnson',
+                id: response.user_id || '0',
+                name: response.name || 'Investor', // Fallback if name not in login response
                 email: values.email,
                 role: 'investor',
-                customerId: 'I4829'
+                customerId: response.inv_reg_id || 'INV-000'
             });
+
             message.success('Login Successful!');
             form.resetFields();
             onClose();
             navigate('/dashboard');
         } catch (error: any) {
-            message.error(error.message || 'Login failed. Please check your credentials.');
+            console.error(error);
+            const errorMsg = error.response?.data?.detail
+                || error.response?.data?.message
+                || 'Login failed. Please check your credentials.';
+            message.error(errorMsg);
         } finally {
             setLoading(false);
         }

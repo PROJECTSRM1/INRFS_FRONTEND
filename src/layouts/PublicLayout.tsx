@@ -16,6 +16,7 @@ const PublicLayout: React.FC = () => {
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [initialLoginEmail, setInitialLoginEmail] = useState('');
 
     const openRegister = () => {
         setIsRegisterModalOpen(true);
@@ -46,6 +47,12 @@ const PublicLayout: React.FC = () => {
     const openLogin = () => {
         setIsLoginModalOpen(true);
         setMobileMenuOpen(false);
+    };
+
+    const handleRegisterSuccess = (email: string) => {
+        setIsRegisterModalOpen(false);
+        setInitialLoginEmail(email);
+        setIsLoginModalOpen(true);
     };
 
     const menuItems = [
@@ -147,11 +154,19 @@ const PublicLayout: React.FC = () => {
             )}
             <Content>
                 <Outlet context={{ openRegister, openLogin }} />
-                <RegisterModal open={isRegisterModalOpen} onCancel={() => setIsRegisterModalOpen(false)} />
+                <RegisterModal
+                    open={isRegisterModalOpen}
+                    onCancel={() => setIsRegisterModalOpen(false)}
+                    onSuccess={handleRegisterSuccess}
+                />
                 <LoginModal
                     visible={isLoginModalOpen}
-                    onClose={() => setIsLoginModalOpen(false)}
+                    onClose={() => {
+                        setIsLoginModalOpen(false);
+                        setInitialLoginEmail('');
+                    }}
                     openRegister={openRegister}
+                    initialEmail={initialLoginEmail}
                 />
             </Content>
         </Layout>
