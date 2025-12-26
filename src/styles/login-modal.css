@@ -20,7 +20,7 @@
 
 .login-icon {
     font-size: 48px;
-    color: #3b82f6;
+    color: var(--primary-color);
     margin-bottom: 16px;
     display: block;
 }
@@ -29,12 +29,12 @@
     font-size: 28px !important;
     font-weight: 700 !important;
     margin: 0 0 8px 0 !important;
-    color: #0f172a !important;
+    color: var(--text-main) !important;
 }
 
 .login-subtitle {
     font-size: 15px !important;
-    color: #64748b !important;
+    color: var(--text-muted) !important;
 }
 
 .login-form {
@@ -43,7 +43,7 @@
 
 .login-form .ant-form-item-label>label {
     font-weight: 600;
-    color: #1e293b;
+    color: var(--text-main);
     font-size: 14px;
 }
 
@@ -65,12 +65,12 @@
 }
 
 .forgot-link {
-    color: #3b82f6 !important;
+    color: var(--primary-color) !important;
     font-size: 14px !important;
 }
 
 .forgot-link:hover {
-    color: #2563eb !important;
+    color: var(--primary-hover) !important;
 }
 
 .login-button {
@@ -78,13 +78,13 @@
     font-size: 16px !important;
     font-weight: 600 !important;
     border-radius: 8px !important;
-    background: #3b82f6 !important;
-    border-color: #3b82f6 !important;
+    background: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
 }
 
 .login-button:hover {
-    background: #2563eb !important;
-    border-color: #2563eb !important;
+    background: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
 }
 
 .login-footer {
@@ -96,16 +96,16 @@
 
 .footer-text {
     font-size: 14px !important;
-    color: #64748b !important;
+    color: var(--text-muted) !important;
 }
 
 .signup-link {
-    color: #3b82f6 !important;
+    color: var(--primary-color) !important;
     font-weight: 600 !important;
 }
 
 .signup-link:hover {
-    color: #2563eb !important;
+    color: var(--primary-hover) !important;
 }
 
 /* Mobile Responsive */
