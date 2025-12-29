@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { Modal, Typography, Card, Space, Button as AntButton } from 'antd';
-import {
-    SafetyCertificateOutlined,
+import { Modal, Typography, Card} from 'antd';
+import { SafetyCertificateOutlined,
     RocketOutlined,
     LineChartOutlined,
     WalletOutlined,
