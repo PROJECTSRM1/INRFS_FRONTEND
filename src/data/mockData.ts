@@ -214,3 +214,33 @@ export const MOCK_MONTHLY_DATA = [
     { name: 'Nov', value: 1900 },
     { name: 'Dec', value: 1950 },
 ];
+
+export const MOCK_SYSTEM_USERS = [
+    {
+        id: 'a1',
+        name: 'Admin User',
+        email: 'admin@inrfs.com',
+        role: 'Super Admin',
+        mobile: '+91 98765 00000',
+        status: 'Active',
+        joinedDate: '2023-01-15'
+    },
+    {
+        id: 'a2',
+        name: 'John Moderator',
+        email: 'john.mod@inrfs.com',
+        role: 'Moderator',
+        mobile: '+91 98765 11111',
+        status: 'Active',
+        joinedDate: '2023-05-20'
+    },
+    {
+        id: 'a3',
+        name: 'Jane Smith',
+        email: 'jane.admin@inrfs.com',
+        role: 'Admin',
+        mobile: '+91 98765 22222',
+        status: 'Inactive',
+        joinedDate: '2024-02-10'
+    }
+];

@@ -33,6 +33,7 @@ const AdminInvestors = lazy(() => import('../pages/admin/Investors'));
 const AdminInvestments = lazy(() => import('../pages/admin/Investments'));
 const AdminBonds = lazy(() => import('../pages/admin/Bonds'));
 const AdminReports = lazy(() => import('../pages/admin/Reports'));
+const Users = lazy(() => import('../pages/admin/Users'));
 
 const AppRoutes: React.FC = () => {
     const { user } = useAppContext();
@@ -62,8 +63,8 @@ const AppRoutes: React.FC = () => {
                     <Route path="investments" element={<AdminInvestments />} />
                     <Route path="bonds" element={<AdminBonds />} />
                     <Route path="reports" element={<AdminReports />} />
-                    <Route path="notifications" element={<div style={{ padding: '24px' }}>Notifications Panel Coming Soon</div>} />
-                    <Route path="payments" element={<div style={{ padding: '24px' }}>Payments Panel Coming Soon</div>} />
+                    <Route path="users" element={<Users />} />
+
                 </Route>
 
                 {/* Dashboard Routes (Original) */}
