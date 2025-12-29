@@ -37,9 +37,14 @@ import '../styles/landing.css';
 
 const { Title, Text, Paragraph } = Typography;
 
+interface PublicLayoutContext {
+    openRegister: () => void;
+    openLogin: () => void;
+}
+
 const Landing: React.FC = () => {
     const navigate = useNavigate();
-    const { openRegister, openLogin } = useOutletContext<any>();
+    const { openRegister, openLogin } = useOutletContext<PublicLayoutContext>();
 
     // Modal States
     const [isPlansModalOpen, setIsPlansModalOpen] = useState(false);
