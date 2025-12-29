@@ -1061,35 +1061,39 @@ body {
 }
 
 /* Dark Returns Card */
+/* Light Brown Returns Card (Updated) */
 .returns-card-dark {
-    background: #0f172a !important;
-    color: white;
-    border-radius: 12px !important;
+    background: linear-gradient(135deg, #fdfbf7 0%, #f5e6d3 100%) !important;
+    color: #1e293b;
+    border-radius: 16px !important;
     padding: 24px !important;
     height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    border: 1px solid #e2e8f0;
 }
 
 .dark-card-label {
-    color: #94a3b8;
+    color: #64748b;
     font-size: 14px;
     margin-bottom: 8px;
     display: block;
+    font-weight: 600;
 }
 
 .dark-card-value {
-    color: white !important;
+    color: #0f172a !important;
     font-size: 48px !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
     margin: 0 0 16px !important;
     line-height: 1 !important;
 }
 
 .dark-card-sub {
-    color: #e2e8f0;
+    color: #475569;
     font-size: 14px;
+    font-weight: 500;
 }
 
 /* Mobile adjustments for complete investment */
