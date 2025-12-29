@@ -2049,46 +2049,51 @@
 }
 
 /* Dark Returns Card */
+/* Light Brown Returns Card */
 .returns-card-dark {
-    background: #0f172a;
+    background: linear-gradient(135deg, #fdfbf7 0%, #f5e6d3 100%);
     border-radius: 16px;
     padding: 32px;
-    color: white;
+    color: #1e293b;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
 }
 
 .returns-label {
-    color: #94a3b8;
+    color: #64748b;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 8px;
     display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .returns-value {
-    color: white !important;
+    color: #0f172a !important;
     font-size: 42px !important;
     margin: 0 !important;
     line-height: 1.1 !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
 }
 
 .returns-divider {
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.1);
     margin: 24px 0;
 }
 
 .returns-sub {
-    color: #cbd5e1;
+    color: #475569;
     font-size: 16px;
+    font-weight: 500;
 }
 
 .highlight-white {
-    color: white;
+    color: #0f172a;
     font-weight: 700;
 }
 
