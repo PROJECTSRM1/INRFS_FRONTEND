@@ -2571,3 +2571,39 @@
     margin-top: 20px;
     font-style: italic;
 }
+
+/* User Requested: Light Brown Download Button */
+.cert-download-btn {
+    background-color: var(--primary-light-brown) !important;
+    border-color: var(--primary-light-brown) !important;
+    color: white !important;
+}
+
+.cert-download-btn:hover {
+    background-color: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
+}
+
+/* User Requested: Table Action Download Button - Light Brown */
+.action-btn-download {
+    background-color: var(--primary-light-brown) !important;
+    border-color: var(--primary-light-brown) !important;
+    color: white !important;
+}
+
+.action-btn-download:hover {
+    background-color: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
+}
+
+/* User Requested: Bond Page Download Button - Light Brown */
+.bond-action-btn-download {
+    background-color: var(--primary-light-brown) !important;
+    border-color: var(--primary-light-brown) !important;
+    color: white !important;
+}
+
+.bond-action-btn-download:hover {
+    background-color: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
+}

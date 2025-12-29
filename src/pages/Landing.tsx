@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { Modal, Typography, Card, Space, Button as AntButton } from 'antd';
+import { Modal, Typography, Card } from 'antd';
 import {
     SafetyCertificateOutlined,
     RocketOutlined,
@@ -64,16 +64,19 @@ const Landing: React.FC = () => {
     return (
         <div className="landing-container">
             {/* Navbar */}
+            {/* Navbar */}
             <nav className="aesth-navbar animate-fade-in">
                 <div className="nav-brand">
                     <img src="/infrs-logo.png" alt="INFRS" style={{ height: 40 }} />
                 </div>
+
                 <div className="nav-links">
                     <button className="nav-link-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Home</button>
                     <button className="nav-link-btn" onClick={() => setIsPlansModalOpen(true)}>Plans</button>
                     <button className="nav-link-btn" onClick={() => setIsAboutModalOpen(true)}>About</button>
                 </div>
-                <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+
+                <div className="nav-actions" style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
                     <button className="btn-pill outline small" onClick={openLogin}>Login</button>
                     <button className="btn-pill primary small" onClick={openRegister} style={{ padding: '8px 20px', fontSize: '0.9rem' }}>
                         Register
@@ -99,7 +102,7 @@ const Landing: React.FC = () => {
                         Secure, transparent, and high-yield opportunities all in one place.
                     </p>
                     <div style={{ display: 'flex', gap: 16 }}>
-                        <button className="btn-pill primary" onClick={() => navigate('/login')}>
+                        <button className="btn-pill primary" onClick={openLogin}>
                             Start Investing <ArrowRightOutlined />
                         </button>
                     </div>
@@ -126,10 +129,10 @@ const Landing: React.FC = () => {
                     analytics—all in one intuitive platform.
                 </p>
                 <div className="banner-actions">
-                    <button className="btn-pill" onClick={() => navigate('/investor/dashboard')}>
+                    <button className="btn-pill" onClick={openLogin}>
                         <PlayCircleOutlined /> Investor Workflow
                     </button>
-                    <button className="btn-pill" onClick={() => navigate('/admin/dashboard')}>
+                    <button className="btn-pill" onClick={() => navigate('/admin/login')}>
                         <PlayCircleOutlined /> Admin Workflow
                     </button>
                 </div>

@@ -667,6 +667,27 @@ body {
 .admin-input-dark .ant-input {
     background-color: transparent !important;
     color: #334155 !important;
+    height: 100% !important;
+    /* Ensure full height */
+    padding-top: 4px !important;
+    /* Visual center adjustment */
+    padding-bottom: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.admin-close-btn {
+    position: absolute !important;
+    top: 16px;
+    right: 16px;
+    color: #94a3b8;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.admin-close-btn:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
 }
 
 .admin-input-dark .ant-input-password-icon {
@@ -762,4 +783,94 @@ a:hover {
 ::selection {
     background: rgba(146, 97, 50, 0.2);
     color: #926132;
+}
+
+/* ==========================================================================
+   Admin Login - Mobile Responsiveness (Industry Standard)
+   ========================================================================== */
+@media (max-width: 768px) {
+
+    /* Container: Ensure full viewport height with safe padding */
+    .admin-login-container {
+        min-height: 100vh;
+        min-height: 100dvh;
+        /* Dynamic viewport height support */
+        padding: 40px 16px;
+        align-items: center;
+        /* Vertical Center */
+        overflow-y: auto;
+    }
+
+    /* Card: Fluid width with max-width constraint */
+    .admin-login-card {
+        width: 100% !important;
+        max-width: 400px !important;
+        margin: 0 auto !important;
+        padding: 32px 24px !important;
+        border-radius: 20px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    /* Header: Scaled down but readable */
+    .admin-login-title {
+        font-size: 24px !important;
+        white-space: nowrap;
+        /* Force single line */
+        margin-bottom: 8px !important;
+        line-height: 1.2 !important;
+    }
+
+    .admin-login-subtitle {
+        font-size: 14px !important;
+        line-height: 1.4 !important;
+        margin-bottom: 24px !important;
+    }
+
+    /* Icon: Proportional resizing */
+    .admin-shield-icon-container {
+        width: 56px;
+        height: 56px;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    /* Inputs: Touch-friendly sizing (prevents iOS zoom) */
+    .admin-input-dark,
+    .admin-input-dark input {
+        font-size: 16px !important;
+        height: 48px !important;
+    }
+
+    .admin-label-text {
+        font-size: 14px !important;
+    }
+
+    /* Buttons: Easy to tap */
+    .admin-submit-btn {
+        height: 52px !important;
+        font-size: 16px !important;
+        margin-top: 24px !important;
+    }
+
+    /* Alert: Compact layout */
+    .admin-restricted-alert {
+        margin-bottom: 24px !important;
+        padding: 12px 16px !important;
+    }
+
+    .admin-restricted-alert .ant-alert-message {
+        font-size: 12px !important;
+        line-height: 1.5 !important;
+    }
+}
+
+/* Small Mobile (iPhone SE/Mini) Adjustments */
+@media (max-width: 375px) {
+    .admin-login-card {
+        padding: 24px 20px !important;
+    }
+
+    .admin-login-title {
+        font-size: 22px !important;
+    }
 }

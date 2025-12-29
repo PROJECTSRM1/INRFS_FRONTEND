@@ -42,8 +42,9 @@ body {
 .aesth-navbar {
     position: fixed;
     top: 24px;
-    left: 6%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    margin: 0 auto;
     background: var(--white);
     padding: 12px 32px;
     border-radius: var(--radius-pill);
@@ -393,11 +394,43 @@ body {
 
     .aesth-navbar {
         width: 95%;
-        padding: 12px 20px;
+        padding: 8px 16px;
+        top: 16px;
+    }
+
+    .nav-brand img {
+        height: 28px !important;
     }
 
     .nav-links {
         display: none;
-        /* simple mobile hide for now, standard hamburger would be better */
+    }
+
+    .hero-title {
+        font-size: 2.2rem;
+        margin-bottom: 12px;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 16px;
+    }
+
+    .hero-tag {
+        margin-bottom: 16px;
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+
+    .hero-desc {
+        font-size: 1rem;
+        padding: 0 16px;
+    }
+
+    /* Navbar buttons on mobile */
+    .aesth-navbar .btn-pill {
+        padding: 6px 12px !important;
+        font-size: 0.8rem !important;
+        height: 32px;
     }
 }

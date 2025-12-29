@@ -29,8 +29,8 @@ const DashboardLayout: React.FC = () => {
         <Layout className="dashboard-layout-main">
             <Header className="dashboard-header">
                 <div className="header-logo-container">
-                    <Link to="/dashboard" className="header-logo-container">
-                        <Logo size={36} />
+                    <Link to="/dashboard" className="dashboard-logo-link">
+                        <Logo size={40} />
                     </Link>
                 </div>
 

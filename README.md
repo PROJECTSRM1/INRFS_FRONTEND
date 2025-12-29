@@ -1,78 +1,89 @@
-<<<<<<< HEAD
-# React + TypeScript + Vite
+# INRFS Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern investment and sports facility booking application built with React, TypeScript, and Vite.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Core
+- **Framework**: [React](https://react.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
 
-## React Compiler
+### UI & Styling
+- **Component Library**: [Ant Design](https://ant.design/)
+- **Icons**: [@ant-design/icons](https://ant.design/components/icon)
+- **Styling**: CSS Modules / Vanilla CSS Variables
+- **Charts**: [Chart.js](https://www.chartjs.org/) & [Recharts](https://recharts.org/)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### State Management & Data
+- **Global State**: [Redux Toolkit](https://redux-toolkit.js.org/) & Context API
+- **Routing**: [React Router](https://reactrouter.com/)
+- **HTTP Client**: [Axios](https://axios-http.com/)
+- **Forms**: [React Hook Form](https://react-hook-form.com/)
 
-## Expanding the ESLint configuration
+### Utilities
+- **PDF Generation**: [jsPDF](https://github.com/parallax/jsPDF) & [html2canvas](https://html2canvas.hertzen.com/)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Project Flow
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### User Roles
+The application supports two distinct workflows:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1.  **Investor Workflow**
+2.  **Admin Workflow**
+
+### 1. Landing Page
+- The entry point (`/`) displays the Hero section and navigation options.
+- **"Start Investing"** & **"Investor Workflow"**: Opens the **Login Modal**.
+- **"Admin Workflow"**: Navigates to the dedicated Admin Login page.
+
+### 2. Authentication Flow
+- **Investor Login**:
+    - Triggered via modal on the landing page.
+    - Supports mock login with Email/Password.
+    - **Forgot Password**: Opens a modal to reset via Email or SMS.
+    - **Registration**: "Sign Up" opens the Registration Modal.
+    - **Success**: Redirects to `/investor/dashboard`.
+- **Admin Login**:
+    - Accessed via `/admin/login`.
+    - Dedicated login page.
+    - **Forgot Password**: Integrated link opens the same recovery modal.
+    - **Success**: Redirects to `/admin/dashboard`.
+
+### 3. Dashboard Features
+- **Investor Dashboard**:
+    - View and manage investments.
+    - Book sports facilities/items.
+    - View transaction history and wallet balance.
+    - Download investment certificates (generated via jsPDF).
+- **Admin Dashboard**:
+    - Manage users and bookings.
+    - Oversee platform statistics.
+
+## Development
+
+### Setup
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Build
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# Build for production
+npm run build
 ```
-=======
-# INRFS_FE
-INRFS Frontend
->>>>>>> f2659e18afb6ab055ae901638bd36bdac484f02d
+
+### Linting
+
+```bash
+# Run linting
+npm run lint
+```
