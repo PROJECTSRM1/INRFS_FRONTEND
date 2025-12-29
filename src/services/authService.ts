@@ -42,5 +42,21 @@ export const authService = {
         } catch (error) {
             throw error;
         }
+    },
+    sendOTP: async (email: string) => {
+        try {
+            const response = await axios.post(`${API_URL}/users/send-otp`, { email });
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+    verifyOTP: async (email: string, otp: string) => {
+        try {
+            const response = await axios.post(`${API_URL}/users/verify-otp`, { email, otp });
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
     }
 };
