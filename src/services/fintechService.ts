@@ -2,8 +2,9 @@ export const fintechService = {
     /**
      * Calculate deterministic returns based on amount and plan ROI.
      */
-    calculateReturns: (amount: number, roi: number, durationMonths: number) => {
-        const interest = (amount * roi * durationMonths) / 1200;
+    calculateReturns: (amount: number, roi: number, _durationMonths: number) => {
+        // Fixed return calculation: Flat percentage of the amount regardless of duration
+        const interest = amount * (roi / 100);
         const maturityAmount = amount + interest;
         return {
             interest: Math.round(interest),

@@ -14,7 +14,12 @@ const Login: React.FC = () => {
     const [searchParams] = useSearchParams();
     const [loading, setLoading] = useState(false);
 
-    const onFinish = (values: any) => {
+    interface LoginValues {
+        id: string;
+        password?: string;
+    }
+
+    const onFinish = (values: LoginValues) => {
         setLoading(true);
         setTimeout(() => {
             const derivedId = values.id.includes('@') ? 'I4829' : values.id;

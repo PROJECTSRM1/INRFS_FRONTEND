@@ -5,14 +5,18 @@ import {
     LockOutlined,
     SafetyCertificateFilled,
     ArrowLeftOutlined,
-    ExclamationCircleFilled
+    ExclamationCircleFilled,
+    CloseOutlined
 } from '@ant-design/icons';
 import '../../styles/admin.css';
+
+import ForgotPasswordModal from '../../components/auth/ForgotPasswordModal';
 
 const { Title, Text } = Typography;
 
 const AdminLogin: React.FC = () => {
     const navigate = useNavigate();
+    const [isForgotModalOpen, setIsForgotModalOpen] = React.useState(false);
 
     const onFinish = (values: any) => {
         console.log('Login attempt:', values);
@@ -22,6 +26,12 @@ const AdminLogin: React.FC = () => {
     return (
         <div className="admin-login-container">
             <Card className="admin-login-card" bordered={false}>
+                <Button
+                    type="text"
+                    icon={<CloseOutlined />}
+                    className="admin-close-btn"
+                    onClick={() => navigate('/')}
+                />
                 <div className="admin-login-header">
                     <div className="admin-shield-icon-container">
                         <SafetyCertificateFilled />
@@ -70,18 +80,15 @@ const AdminLogin: React.FC = () => {
                         />
                     </Form.Item>
 
-                    <Form.Item
-                        label={<span className="admin-label-text">Two-Factor Authentication Code</span>}
-                        name="2fa"
-                        rules={[{ required: true, message: 'Required' }]}
-                    >
-                        <Input
-                            placeholder="000000"
-                            className="admin-input-dark"
-                            maxLength={6}
-                            style={{ letterSpacing: '2px', textAlign: 'center' }}
-                        />
-                    </Form.Item>
+
+                    <div style={{ textAlign: 'right', marginBottom: 24 }}>
+                        <a
+                            style={{ color: 'var(--primary-gold)', cursor: 'pointer' }}
+                            onClick={() => setIsForgotModalOpen(true)}
+                        >
+                            Forgot Password?
+                        </a>
+                    </div>
 
                     <Form.Item style={{ marginBottom: 0, marginTop: 32 }}>
                         <Button
@@ -102,6 +109,7 @@ const AdminLogin: React.FC = () => {
                     </a>
                 </div>
             </Card>
+            <ForgotPasswordModal open={isForgotModalOpen} onCancel={() => setIsForgotModalOpen(false)} />
         </div>
     );
 };

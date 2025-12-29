@@ -3,6 +3,7 @@ import { Modal, Form, Input, Button, message, Checkbox, Typography } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
+import ForgotPasswordModal from './ForgotPasswordModal';
 import '../../styles/theme.css';
 import '../../styles/login-modal.css';
 
@@ -18,6 +19,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible, onClose, openRegister 
     const navigate = useNavigate();
     const { setUser } = useAppContext();
     const [loading, setLoading] = useState(false);
+    const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
     const [form] = Form.useForm();
 
     const handleLogin = async (values: { email: string; password: string; remember: boolean }) => {
@@ -99,7 +101,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible, onClose, openRegister 
                         <Form.Item name="remember" valuePropName="checked" noStyle>
                             <Checkbox>Remember me</Checkbox>
                         </Form.Item>
-                        <Link className="forgot-link">Forgot password?</Link>
+                        <Link className="forgot-link" onClick={() => setIsForgotModalOpen(true)}>Forgot password?</Link>
                     </div>
 
                     <Form.Item>
@@ -131,6 +133,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible, onClose, openRegister 
                     </div>
                 </Form>
             </div>
+            <ForgotPasswordModal open={isForgotModalOpen} onCancel={() => setIsForgotModalOpen(false)} />
         </Modal>
     );
 };

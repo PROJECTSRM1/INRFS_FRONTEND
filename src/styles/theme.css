@@ -2,8 +2,10 @@
     --primary-color: #C5A572;
     /* Gold matching landing page */
     --primary-hover: #A38655;
-    /* Darker Gold */
-    --accent-color: #10b981;
+    --primary-overlay: rgba(29, 29, 29, 0.8);
+    --primary-light-brown: #C5A572;
+    /* Using the primary gold as the base light brown requested */
+    --primary-brown-hover: #A38655;
     /* Light Green */
     --secondary-color: #64748b;
     --bg-light: #FDFBF7;
@@ -1207,4 +1209,23 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--brand-gold);
+}
+
+.forgot-password-title {
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    margin-bottom: 8px !important;
+    line-height: 1.2 !important;
+}
+
+@media (max-width: 768px) {
+    .forgot-password-title {
+        font-size: 24px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .forgot-password-title {
+        font-size: 22px !important;
+    }
 }
