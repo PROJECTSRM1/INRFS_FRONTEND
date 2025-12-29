@@ -6,12 +6,13 @@ import {
     TeamOutlined,
     LineChartOutlined,
     FileTextOutlined,
-    DollarOutlined,
+
     BellOutlined,
     LogoutOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     UserOutlined,
+    UserAddOutlined,
     BulbOutlined,
     BulbFilled
 } from '@ant-design/icons';
@@ -72,20 +73,16 @@ const AdminLayout: React.FC = () => {
             icon: <FileTextOutlined />,
             label: <NavLink to="/admin/bonds" onClick={() => setDrawerVisible(false)}>Bonds</NavLink>,
         },
-        {
-            key: '/admin/payments',
-            icon: <DollarOutlined />,
-            label: <NavLink to="/admin/payments" onClick={() => setDrawerVisible(false)}>Payments</NavLink>,
-        },
+
         {
             key: '/admin/reports',
             icon: <FileTextOutlined />,
             label: <NavLink to="/admin/reports" onClick={() => setDrawerVisible(false)}>Reports</NavLink>,
         },
         {
-            key: '/admin/notifications',
-            icon: <BellOutlined />,
-            label: <NavLink to="/admin/notifications" onClick={() => setDrawerVisible(false)}>Notifications</NavLink>,
+            key: '/admin/users',
+            icon: <UserAddOutlined />,
+            label: <NavLink to="/admin/users" onClick={() => setDrawerVisible(false)}>Users</NavLink>,
         },
     ];
 

@@ -275,6 +275,80 @@ body {
     opacity: 0.8;
 }
 
+/* --- Users Page Specific Styles --- */
+.users-page-title-container h2 {
+    margin: 0 !important;
+    letter-spacing: -0.5px !important;
+}
+
+.users-add-btn {
+    margin: 0 !important;
+    width: auto !important;
+    padding: 0 24px !important;
+}
+
+.users-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.users-table-card {
+    margin-top: 16px !important;
+}
+
+.users-filter-container {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    /* Center align vertically */
+    gap: 12px;
+    flex-wrap: nowrap;
+    /* Force single line on desktop */
+}
+
+.users-search-input {
+    width: 250px !important;
+}
+
+.users-form-input {
+    border-radius: 8px !important;
+}
+
+.users-submit-btn {
+    height: 44px !important;
+    font-weight: 600 !important;
+}
+
+.users-status-tag {
+    border-radius: 12px !important;
+}
+
+/* Mobile Responsiveness for Users Page */
+@media (max-width: 768px) {
+    .users-search-input {
+        width: 100% !important;
+    }
+
+    .users-add-btn {
+        width: 100% !important;
+    }
+
+    .users-filter-container {
+        flex-direction: row;
+        /* Keep row even on mobile if space allows, or wrap if not */
+        flex-wrap: wrap;
+    }
+
+    .users-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 .header-flex-row {
     display: flex;
     justify-content: space-between;
@@ -873,4 +947,51 @@ a:hover {
     .admin-login-title {
         font-size: 22px !important;
     }
+}
+
+/* --- Reports Page Specific Styles --- */
+.reports-full-width-space {
+    width: 100% !important;
+}
+
+.reports-select-full {
+    width: 100% !important;
+    margin-top: 8px !important;
+}
+
+.reports-range-picker-container {
+    margin-top: 8px;
+}
+
+.reports-range-picker-full {
+    width: 100% !important;
+}
+
+.reports-format-select-container {
+    margin-top: 8px;
+}
+
+.reports-format-select-full {
+    width: 100% !important;
+}
+
+.reports-generate-btn {
+    margin-top: 8px !important;
+}
+
+.reports-action-btn-link {
+    padding: 0 !important;
+}
+
+.reports-table-card .ant-card-body {
+    padding: 0 !important;
+}
+
+/* --- Utility Icons --- */
+.icon-pdf {
+    color: #ef4444 !important;
+}
+
+.icon-excel {
+    color: #22c55e !important;
 }
