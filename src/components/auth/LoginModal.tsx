@@ -38,19 +38,20 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible, onClose, openRegister,
                 password: values.password
             });
 
-            // Map response to user context
-            // Assuming backend returns similar structure to register or user details
-            // If strictly following the provided schema in register response (user_id, inv_reg_id)
-            // We might need to fetch profile if name is missed, but for now let's set what we have.
+            // Store tokens in localStorage
+            localStorage.setItem('access_token', response.access_token);
+            localStorage.setItem('refresh_token', response.refresh_token);
+
+            // Map response to user context using the correct field names
             setUser({
-                id: response.user_id || '0',
-                name: response.name || 'Investor', // Fallback if name not in login response
+                id: response["Customer-ID"],
+                name: response.First_Name,
                 email: values.email,
                 role: 'investor',
-                customerId: response.inv_reg_id || 'INV-000'
+                customerId: response["Customer-ID"]
             });
 
-            message.success('Login Successful!');
+            message.success(response.message || 'Login Successful!');
             form.resetFields();
             onClose();
             navigate('/dashboard');
