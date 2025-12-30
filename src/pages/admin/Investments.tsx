@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Card, Select, Tag, Typography, Input } from 'antd';
+import React, { useState } from 'react';
+import { Table, Card, Select, Tag, Typography, Input, Button, Tooltip, message } from 'antd';
 import { MOCK_INVESTMENTS } from '../../data/mockData';
-import { SearchOutlined, CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { SearchOutlined, CheckCircleOutlined, ClockCircleOutlined, CheckSquareOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import InvestmentCompletionModal from '../../components/admin/InvestmentCompletionModal';
+import type { Investment } from '../../types';
 import '../../styles/admin.css';
 
 const { Title, Text } = Typography;
@@ -11,16 +13,10 @@ const AdminInvestments: React.FC = () => {
     const [planFilter, setPlanFilter] = useState('All Plans');
     const [statusFilter, setStatusFilter] = useState('All Status');
     const [searchText, setSearchText] = useState('');
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-    const [investments] = useState(MOCK_INVESTMENTS);
-
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth <= 768);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-
+    // isMobile removed as we use CSS media queries now
+    const [investments, setInvestments] = useState(MOCK_INVESTMENTS);
+    const [isCompletionModalVisible, setIsCompletionModalVisible] = useState(false);
+    const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
 
     // Helper function to parse date strings
     const parseMaturityDate = (dateStr?: string): Date => {
@@ -31,25 +27,46 @@ const AdminInvestments: React.FC = () => {
         return isNaN(parsed.getTime()) ? new Date(9999, 11, 31) : parsed;
     };
 
+    const handleMarkAsCompleted = (investment: Investment) => {
+        setSelectedInvestment(investment);
+        setIsCompletionModalVisible(true);
+    };
+
+    const handleConfirmCompletion = (mode: 'Maturity' | 'Early') => {
+        if (!selectedInvestment) return;
+
+        const updatedInvestments = investments.map(inv => {
+            if (inv.id === selectedInvestment.id) {
+                const isEarly = mode === 'Early';
+                const originalInterest = inv.interest || 0;
+                // No penalty as per user request
+                const adjustedInterest = originalInterest;
+
+                return {
+                    ...inv,
+                    status: isEarly ? 'Closed Early' : 'Completed',
+                    settlementStatus: isEarly ? 'Adjusted' : 'Completed',
+                    interest: adjustedInterest,
+                    // Maturity amount remains same as interest is not reduced
+                    maturityAmount: inv.amount + adjustedInterest
+                } as Investment;
+            }
+            return inv;
+        });
+
+        setInvestments(updatedInvestments);
+        setIsCompletionModalVisible(false);
+        setSelectedInvestment(null);
+        message.success(mode === 'Early' ? 'Investment closed early with adjustment' : 'Investment marked as completed successfully');
+    };
+
     const columns: any = [
         {
             title: 'ID',
             dataIndex: 'id',
             key: 'id',
             render: (text: string) => (
-                <span style={{
-                    fontFamily: 'monospace',
-                    color: '#926132',
-                    background: 'rgba(146, 97, 50, 0.1)',
-                    padding: '2px 8px',
-                    borderRadius: '4px',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    letterSpacing: '0.5px',
-                    whiteSpace: 'nowrap'
-                }}>
-                    {text}
-                </span>
+                <span className="investment-id-badge">{text}</span>
             ),
             width: 140,
         },
@@ -91,16 +108,13 @@ const AdminInvestments: React.FC = () => {
                 let color = '#926132'; // Default/Active is now Bronze
                 if (status === 'Completed') color = 'success';
                 if (status === 'Matured') color = 'gold'; // Or keep gold/yellow
-                // For 'Active' specifically, user wanted to change the blue.
+                if (status === 'Closed Early') color = 'error'; // Red badge for Closed Early
+
                 return (
                     <Tag
                         color={color}
-                        style={{
-                            borderRadius: '50px',
-                            fontWeight: 600,
-                            padding: '0 12px',
-                            border: status === 'Active' ? '1px solid rgba(146, 97, 50, 0.3)' : 'none'
-                        }}
+                        className={`investment-status-tag ${status === 'Active' ? 'active' : ''}`}
+                    // border logic for 'Active' moved to CSS via 'active' class
                     >
                         {status}
                     </Tag>
@@ -112,23 +126,47 @@ const AdminInvestments: React.FC = () => {
             dataIndex: 'settlementStatus',
             key: 'settlementStatus',
             width: 150,
-            render: (settlementStatus: 'Completed' | 'Pending' | undefined) => {
+            render: (settlementStatus: 'Completed' | 'Pending' | 'Adjusted' | undefined) => {
                 const status = settlementStatus || 'Pending';
                 const isCompleted = status === 'Completed';
+                const isAdjusted = status === 'Adjusted';
+
+                let color = '#faad14'; // Pending default
+                let icon = <ClockCircleOutlined />;
+
+                if (isCompleted) {
+                    color = '#52c41a';
+                    icon = <CheckCircleOutlined />;
+                } else if (isAdjusted) {
+                    color = '#faad14'; // Or orange/warning color
+                    icon = <ExclamationCircleOutlined />;
+                }
+
                 return (
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        color: isCompleted ? '#52c41a' : '#faad14',
-                        fontWeight: 600,
-                        fontSize: '13px'
-                    }}>
-                        {isCompleted ? <CheckCircleOutlined /> : <ClockCircleOutlined />}
+                    // Leaving color inline here as it's dynamic based on status variable, which is complex to map to class names efficiently in one go without a helper function or map.
+                    // However, we can use a style object. 
+                    <div className="settlement-status-container" style={{ color: color }}>
+                        {icon}
                         {status}
                     </div>
                 );
             },
+        },
+        {
+            title: 'Actions',
+            key: 'actions',
+            width: 100,
+            render: (_: any, record: Investment) => (
+                <Tooltip title="Mark as Completed">
+                    <Button
+                        type="text"
+                        icon={<CheckSquareOutlined />}
+                        disabled={record.status === 'Completed' || record.status === 'Closed Early'}
+                        onClick={() => handleMarkAsCompleted(record)}
+                        className={record.status === 'Active' || record.status === 'Matured' ? 'action-btn-completed' : 'action-btn-disabled'}
+                    />
+                </Tooltip>
+            ),
         },
     ];
 
@@ -154,29 +192,29 @@ const AdminInvestments: React.FC = () => {
     return (
         <div className="admin-dashboard-wrapper">
             <div className="page-header-compact">
-                <div className="breadcrumb-mini">Pages / Investments</div>
+                {/* Breadcrumb removed */}
                 <div className="header-flex-row">
                     <div>
-                        <Title level={2} style={{ margin: 0, letterSpacing: '-0.5px' }}>Investment Tracking</Title>
+                        <Title level={2} className="page-title-compact">Investment Tracking</Title>
                         <Text type="secondary">Sorted by maturity date (nearest first) • Real-time settlement status</Text>
                     </div>
                 </div>
             </div>
 
-            <Card bordered={false} className="table-card-compact" style={{ marginTop: '16px' }}>
-                <div style={{ marginBottom: 16, display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+            <Card bordered={false} className="table-card-compact table-card-top-margin">
+                <div className="investment-filter-container">
                     <Input
                         placeholder="Search by ID, Investor, Plan..."
                         prefix={<SearchOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
                         value={searchText}
                         onChange={e => setSearchText(e.target.value)}
-                        style={{ width: isMobile ? '100%' : 250 }}
+                        className="investment-search-input"
                         allowClear
                     />
                     <Select
                         defaultValue="All Plans"
                         onChange={setPlanFilter}
-                        style={{ width: isMobile ? '100%' : 160 }}
+                        className="investment-filter-select"
                     >
                         <Option value="All Plans">All Plans</Option>
                         <Option value="6 Month">6 Month</Option>
@@ -186,7 +224,7 @@ const AdminInvestments: React.FC = () => {
                     <Select
                         defaultValue="All Status"
                         onChange={setStatusFilter}
-                        style={{ width: isMobile ? '100%' : 160 }}
+                        className="investment-filter-select"
                     >
                         <Option value="All Status">All Status</Option>
                         <Option value="Active">Active</Option>
@@ -208,6 +246,13 @@ const AdminInvestments: React.FC = () => {
                     }}
                 />
             </Card>
+
+            <InvestmentCompletionModal
+                visible={isCompletionModalVisible}
+                onClose={() => setIsCompletionModalVisible(false)}
+                onConfirm={handleConfirmCompletion}
+                investment={selectedInvestment}
+            />
         </div>
     );
 };

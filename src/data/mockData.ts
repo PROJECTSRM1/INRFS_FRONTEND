@@ -59,7 +59,7 @@ export const MOCK_INVESTORS: Investor[] = [
         email: 'john.doe@email.com',
         role: 'investor',
         customerId: 'I1234',
-        mobile: '+1 234 567 8900',
+        mobile: '+91 98765 43210',
         totalInvested: 45000,
         activeInvestments: 5,
         status: 'Active'
@@ -70,7 +70,7 @@ export const MOCK_INVESTORS: Investor[] = [
         email: 'sarah.smith@email.com',
         role: 'investor',
         customerId: 'I1235',
-        mobile: '+1 234 567 8901',
+        mobile: '+91 98765 43211',
         totalInvested: 32500,
         activeInvestments: 3,
         status: 'Active'
@@ -81,7 +81,7 @@ export const MOCK_INVESTORS: Investor[] = [
         email: 'michael.j@email.com',
         role: 'investor',
         customerId: 'I1236',
-        mobile: '+1 234 567 8902',
+        mobile: '+91 98765 43212',
         totalInvested: 78000,
         activeInvestments: 8,
         status: 'Active'
@@ -92,7 +92,7 @@ export const MOCK_INVESTORS: Investor[] = [
         email: 'emily.davis@email.com',
         role: 'investor',
         customerId: 'I1237',
-        mobile: '+1 234 567 8903',
+        mobile: '+91 98765 43213',
         totalInvested: 21000,
         activeInvestments: 2,
         status: 'Pending'
@@ -201,18 +201,82 @@ export const MOCK_ACTIVITY: Activity[] = [
 ];
 
 export const MOCK_MONTHLY_DATA = [
-    { name: 'Jan', value: 800 },
-    { name: 'Feb', value: 950 },
-    { name: 'Mar', value: 1100 },
-    { name: 'Apr', value: 1000 },
-    { name: 'May', value: 1250 },
-    { name: 'Jun', value: 1400 },
-    { name: 'Jul', value: 1350 },
-    { name: 'Aug', value: 1550 },
-    { name: 'Sep', value: 1450 },
-    { name: 'Oct', value: 1700 },
-    { name: 'Nov', value: 1900 },
-    { name: 'Dec', value: 1950 },
+    { name: 'Jan', value: 800, count: 12 },
+    { name: 'Feb', value: 950, count: 15 },
+    { name: 'Mar', value: 1100, count: 18 },
+    { name: 'Apr', value: 1000, count: 20 },
+    { name: 'May', value: 1250, count: 25 },
+    { name: 'Jun', value: 1400, count: 30 },
+    { name: 'Jul', value: 1350, count: 35 },
+    { name: 'Aug', value: 1550, count: 40 },
+    { name: 'Sep', value: 1450, count: 38 },
+    { name: 'Oct', value: 1700, count: 45 },
+    { name: 'Nov', value: 1900, count: 50 },
+    { name: 'Dec', value: 1950, count: 55 },
+];
+
+export const MOCK_STATS_BY_PERIOD: Record<string, DashboardStats> = {
+    'Daily': {
+        totalInvestors: 12,
+        investorsIncrease: 2,
+        activeInvestments: 45,
+        investmentsIncrease: 5,
+        totalInvested: 150000,
+        investedIncrease: 3,
+        interestPayable: 25000,
+        interestIncrease: 1
+    },
+    'Monthly': MOCK_DASHBOARD_STATS,
+    'Quarterly': {
+        totalInvestors: 350,
+        investorsIncrease: 12,
+        activeInvestments: 1100,
+        investmentsIncrease: 18,
+        totalInvested: 4500000,
+        investedIncrease: 15,
+        interestPayable: 850000,
+        interestIncrease: 10
+    },
+    'Annually': {
+        totalInvestors: 1247,
+        investorsIncrease: 15,
+        activeInvestments: 3456,
+        investmentsIncrease: 22,
+        totalInvested: 12500000,
+        investedIncrease: 18,
+        interestPayable: 2100000,
+        interestIncrease: 12
+    }
+};
+
+export const MOCK_CHART_DATA_BY_PERIOD: Record<string, any[]> = {
+    'Daily': [
+        { name: '09:00', value: 50, count: 2 },
+        { name: '12:00', value: 120, count: 5 },
+        { name: '15:00', value: 180, count: 8 },
+        { name: '18:00', value: 140, count: 6 },
+        { name: '21:00', value: 90, count: 4 },
+    ],
+    'Monthly': MOCK_MONTHLY_DATA,
+    'Quarterly': [
+        { name: 'Q1', value: 2500, count: 120 },
+        { name: 'Q2', value: 3200, count: 150 },
+        { name: 'Q3', value: 2800, count: 130 },
+        { name: 'Q4', value: 3900, count: 200 },
+    ],
+    'Annually': [
+        { name: '2021', value: 12000, count: 800 },
+        { name: '2022', value: 15000, count: 1000 },
+        { name: '2023', value: 22000, count: 1500 },
+        { name: '2024', value: 28000, count: 2000 },
+    ]
+};
+
+export const MOCK_PIE_DATA = [
+    { name: '1 Month', value: 400000, count: 45, color: '#926132' },
+    { name: '3 Month', value: 300000, count: 30, color: '#10b981' },
+    { name: '6 Month', value: 300000, count: 25, color: '#8b5cf6' },
+    { name: 'Yearly', value: 200000, count: 12, color: '#f59e0b' },
 ];
 
 export const MOCK_SYSTEM_USERS = [
