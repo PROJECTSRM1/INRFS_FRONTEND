@@ -33,7 +33,7 @@
 
 /* --- Container & Layout --- */
 .investor-dashboard-refined {
-    padding: 40px 80px;
+    padding: 4px 48px;
     background: linear-gradient(135deg, var(--brand-light-blue) 0%, var(--brand-light-blue) 50%, #ffffff 50%, #ffffff 100%);
     min-height: 100vh;
     width: 100%;
@@ -41,7 +41,7 @@
 
 /* --- Welcome Header & Customer ID --- */
 .welcome-header {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .greeting-text {
@@ -78,7 +78,7 @@
 
 /* --- KPI Stat Cards --- */
 .kpi-row {
-    margin-bottom: 48px !important;
+    margin-bottom: 24px !important;
 }
 
 .stat-card-refined {
@@ -96,8 +96,8 @@
 }
 
 .stat-card-refined .ant-card-body {
-    padding: 24px !important;
-    min-height: 160px !important;
+    padding: 20px !important;
+    min-height: 140px !important;
     height: auto !important;
     display: flex;
     align-items: flex-start;
@@ -187,20 +187,20 @@
 
 /* --- Quick Actions Section --- */
 .quick-actions-section {
-    margin-bottom: 48px !important;
+    margin-bottom: 24px !important;
 }
 
 .section-header-margin {
     font-size: 20px !important;
     font-weight: 700 !important;
     color: #1a1a1a !important;
-    margin: 0 0 24px 0 !important;
+    margin: 0 0 16px 0 !important;
 }
 
 .quick-action-card-white {
     background: white !important;
     border-radius: 12px !important;
-    padding: 24px !important;
+    padding: 20px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -209,7 +209,7 @@
     transition: all 0.2s ease !important;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) !important;
     border: 1px solid #e5e7eb !important;
-    height: 140px !important;
+    height: 120px !important;
 }
 
 .quick-action-card-white:hover {
@@ -242,7 +242,7 @@
 .recent-table-card {
     background: #fff;
     border-radius: 16px;
-    padding: 24px;
+    padding: 20px;
     border: 1px solid #f1f5f9;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 12px rgba(0, 0, 0, 0.03);
 }
@@ -585,14 +585,14 @@
    Bonds Grid Page
    ========================================= */
 .bonds-page-container {
-    padding: 40px 48px;
+    padding: 24px 48px;
     background: linear-gradient(135deg, #f5e6d3 0%, #e8d4bb 100%);
     min-height: calc(100vh - 70px);
     width: 100%;
 }
 
 .bonds-page-header {
-    margin-bottom: 40px;
+    margin-bottom: 24px;
     text-align: center;
 }
 
@@ -612,7 +612,7 @@
 .bonds-table-card {
     background: #fff;
     border-radius: 16px;
-    padding: 24px;
+    padding: 20px;
     border: 1px solid #f1f5f9;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 12px rgba(0, 0, 0, 0.03);
 }
@@ -630,14 +630,14 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-bottom: 2px solid #e2e8f0;
-    padding: 16px 12px;
+    padding: 12px 10px;
 }
 
 .bonds-table .ant-table-tbody>tr>td {
     color: #0f172a;
     font-size: 14px;
     border-bottom: 1px solid #f1f5f9;
-    padding: 16px 12px;
+    padding: 12px 10px;
 }
 
 .bonds-table .ant-table-tbody>tr:hover>td {
@@ -764,7 +764,7 @@
 
 /* ... Header Styles ... */
 .bond-card-header {
-    padding: 20px;
+    padding: 16px;
     background: #fff;
     /* Clean white header */
     border-bottom: 1px solid #f1f5f9;
@@ -820,16 +820,16 @@
 }
 
 .bond-body {
-    padding: 20px;
+    padding: 16px;
     flex: 1;
 }
 
 .bond-info-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 20px;
-    padding-bottom: 16px;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
     border-bottom: 1px dashed #e2e8f0;
 }
 
@@ -878,10 +878,10 @@
 }
 
 .bond-footer {
-    padding: 16px 20px;
+    padding: 12px 16px;
     border-top: 1px solid var(--bond-border);
     display: flex;
-    gap: 12px;
+    gap: 10px;
 }
 
 .btn-bond-action {
@@ -1261,14 +1261,14 @@
     font-size: 32px !important;
     font-weight: 800 !important;
     color: #0f172a !important;
-    margin-bottom: 32px !important;
+    margin-bottom: 20px !important;
 }
 
 /* Table Card */
 .investments-table-card {
     background: #fff;
     border-radius: 16px;
-    padding: 24px;
+    padding: 20px;
     border: 1px solid #f1f5f9;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 12px rgba(0, 0, 0, 0.03);
 }
@@ -1286,14 +1286,14 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-bottom: 2px solid #e2e8f0;
-    padding: 16px 12px;
+    padding: 12px 10px;
 }
 
 .investments-table .ant-table-tbody>tr>td {
     color: #0f172a;
     font-size: 14px;
     border-bottom: 1px solid #f1f5f9;
-    padding: 16px 12px;
+    padding: 12px 10px;
 }
 
 .investments-table .ant-table-tbody>tr:hover>td {
@@ -1364,11 +1364,11 @@
 .empty-investments-container {
     background: #fff;
     border-radius: 12px;
-    padding: 60px 40px;
+    padding: 40px 30px;
     text-align: center;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
     max-width: 500px;
-    margin: 40px auto;
+    margin: 20px auto;
 }
 
 /* Mobile Responsive */
@@ -1977,7 +1977,7 @@
     background: #eff6ff;
     border: 1px solid #dbeafe;
     border-radius: 12px;
-    padding: 20px 24px;
+    padding: 2px 10px;
     display: flex;
     align-items: flex-start;
     gap: 16px;
@@ -2010,10 +2010,10 @@
 .content-card-refined {
     background: white;
     border-radius: 16px;
-    padding: 32px;
+    padding: 20px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     border: 1px solid #e2e8f0;
-    height: 100%;
+    height: 94%;
 }
 
 .card-section-title {
@@ -2024,7 +2024,7 @@
 }
 
 .h-full {
-    height: 100%;
+    height: 86%;
 }
 
 /* Input Styling */
@@ -2606,4 +2606,15 @@
 .bond-action-btn-download:hover {
     background-color: var(--primary-hover) !important;
     border-color: var(--primary-hover) !important;
+}
+
+/* Back Button Styling */
+.btn-back-refined {
+    margin-bottom: 16px !important;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+}
+
+.btn-back-margin {
+    margin-bottom: 16px !important;
 }

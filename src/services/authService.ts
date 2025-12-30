@@ -26,6 +26,15 @@ export interface LoginPayload {
     inv_reg_id?: string;
 }
 
+export interface LoginResponse {
+    message: string;
+    "Customer-ID": string;
+    First_Name: string;
+    access_token: string;
+    refresh_token: string;
+    token_type: string;
+}
+
 export const authService = {
     registerUser: async (userData: RegisterPayload): Promise<RegisterResponse> => {
         try {
@@ -35,9 +44,17 @@ export const authService = {
             throw error;
         }
     },
-    loginUser: async (credentials: LoginPayload) => {
+    loginUser: async (credentials: LoginPayload): Promise<LoginResponse> => {
         try {
-            const response = await axios.post(`${API_URL}/users/login`, credentials);
+            // Try JSON format first (custom endpoint)
+            const response = await axios.post(`${API_URL}/users/login`, {
+                email: credentials.email,
+                password: credentials.password
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
             return response.data;
         } catch (error) {
             throw error;
