@@ -1,218 +1,217 @@
 import React, { useState } from 'react';
-import { Row, Col, Card, List, Typography, Button } from 'antd';
+import { Row, Col, Card, Typography, Button } from 'antd';
 import {
     TeamOutlined,
     RiseOutlined,
     DollarCircleOutlined,
-    HistoryOutlined,
-    PlusOutlined,
-    UserOutlined
+    HistoryOutlined
 } from '@ant-design/icons';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { MOCK_DASHBOARD_STATS, MOCK_ACTIVITY, MOCK_MONTHLY_DATA } from '../../data/mockData';
+import { MOCK_DASHBOARD_STATS, MOCK_MONTHLY_DATA, MOCK_STATS_BY_PERIOD, MOCK_CHART_DATA_BY_PERIOD, MOCK_PIE_DATA } from '../../data/mockData';
 import '../../styles/admin.css';
 
 const { Title, Text } = Typography;
 
 const AdminOverview: React.FC = () => {
-    const stats = MOCK_DASHBOARD_STATS;
     const [period, setPeriod] = useState('Monthly');
 
-    const pieData = [
-        { name: '1 Month', value: 400, color: '#926132' },
-        { name: '3 Month', value: 300, color: '#10b981' },
-        { name: '6 Month', value: 300, color: '#8b5cf6' },
-        { name: 'Yearly', value: 200, color: '#f59e0b' },
-    ];
+    // Dynamic Data Selection
+    const stats = MOCK_STATS_BY_PERIOD[period] || MOCK_DASHBOARD_STATS;
+    const chartData = MOCK_CHART_DATA_BY_PERIOD[period] || MOCK_MONTHLY_DATA;
+
+    // Use Mock Data for Pie Logic (Could be dynamic too, but static for now as per requirement)
+    const pieData = MOCK_PIE_DATA;
 
     const periods = ['Daily', 'Monthly', 'Quarterly', 'Annually'];
 
+    const CustomTooltip = ({ active, payload, label }: any) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="custom-tooltip" style={{ backgroundColor: '#fff', padding: '10px', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', border: '1px solid #f0f0f0' }}>
+                    <p className="label" style={{ margin: 0, fontWeight: 600, color: '#1e293b' }}>{label}</p>
+                    <p className="intro" style={{ margin: '4px 0 0', color: '#64748b', fontSize: '12px' }}>
+                        Invested: <span style={{ color: '#f24c52', fontWeight: 600 }}>₹{payload[0].value.toLocaleString()}</span>
+                    </p>
+                    <p className="desc" style={{ margin: 0, color: '#64748b', fontSize: '12px' }}>
+                        Investors: <span style={{ color: '#0f172a', fontWeight: 600 }}>{payload[0].payload.count}</span>
+                    </p>
+                </div>
+            );
+        }
+        return null;
+    };
+
+    const CustomPieTooltip = ({ active, payload }: any) => {
+        if (active && payload && payload.length) {
+            const data = payload[0];
+            return (
+                <div className="custom-tooltip" style={{ backgroundColor: '#fff', padding: '10px', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', border: '1px solid #f0f0f0' }}>
+                    <p className="label" style={{ margin: 0, fontWeight: 600, color: data.payload.color }}>{data.name}</p>
+                    <p className="intro" style={{ margin: '4px 0 0', color: '#64748b', fontSize: '12px' }}>
+                        Amount: <span style={{ color: '#0f172a', fontWeight: 600 }}>₹{(data.value / 1000).toFixed(0)}K</span>
+                    </p>
+                    <p className="desc" style={{ margin: 0, color: '#64748b', fontSize: '12px' }}>
+                        Investors: <span style={{ color: '#0f172a', fontWeight: 600 }}>{data.payload.count}</span>
+                    </p>
+                </div>
+            );
+        }
+        return null;
+    };
+
     return (
-        <div className="dashboard-content-wrapper">
-            <div className="page-header-compact">
-                <div className="breadcrumb-mini">Pages / Overview</div>
-                <div className="header-flex-row">
-                    <Title level={1} className="dashboard-main-title">Dashboard Overview</Title>
-                    <div className="period-switcher">
-                        {periods.map(p => (
-                            <Button
-                                key={p}
-                                type="text"
-                                className={`switcher-btn ${period === p ? 'active' : ''}`}
-                                onClick={() => setPeriod(p)}
-                            >
-                                {p}
-                            </Button>
-                        ))}
-                    </div>
+        <div className="dashboard-fixed-container">
+            {/* Header Section */}
+            <div className="dashboard-header-row">
+                <Title level={1} className="dashboard-main-title">Dashboard Overview</Title>
+                <div className="period-switcher">
+                    {periods.map(p => (
+                        <Button
+                            key={p}
+                            type="text"
+                            className={`switcher-btn ${period === p ? 'active' : ''}`}
+                            onClick={() => setPeriod(p)}
+                        >
+                            {p}
+                        </Button>
+                    ))}
                 </div>
             </div>
 
-            {/* NEW Stat Cards Layout */}
-            <Row gutter={[24, 24]} className="stats-grid-container mt-24">
-                <Col xs={24} md={12} xl={6}>
-                    <Card className="fintech-stat-card" bordered={false}>
-                        <div className="stat-card-header">
-                            <div className="stat-icon-box blue">
-                                <TeamOutlined />
-                            </div>
-                            <div className="stat-percent" style={{ color: '#10b981' }}>
-                                +15%
-                            </div>
-                        </div>
-                        <Text className="stat-label">Total Investors</Text>
-                        <Title level={2} className="stat-value">{stats.totalInvestors.toLocaleString()}</Title>
-                        <Text className="stat-period">Period: monthly</Text>
-                    </Card>
-                </Col>
-                <Col xs={24} md={12} xl={6}>
-                    <Card className="fintech-stat-card" bordered={false}>
-                        <div className="stat-card-header">
-                            <div className="stat-icon-box green">
-                                <RiseOutlined />
-                            </div>
-                            <div className="stat-percent" style={{ color: '#10b981' }}>
-                                +22%
-                            </div>
-                        </div>
-                        <Text className="stat-label">Active Investments</Text>
-                        <Title level={2} className="stat-value">{stats.activeInvestments.toLocaleString()}</Title>
-                        <Text className="stat-period">Period: monthly</Text>
-                    </Card>
-                </Col>
-                <Col xs={24} md={12} xl={6}>
-                    <Card className="fintech-stat-card" bordered={false}>
-                        <div className="stat-card-header">
-                            <div className="stat-icon-box purple">
-                                <DollarCircleOutlined />
-                            </div>
-                            <div className="stat-percent" style={{ color: '#10b981' }}>
-                                +18%
-                            </div>
-                        </div>
-                        <Text className="stat-label">Total Invested</Text>
-                        <Title level={2} className="stat-value">₹{(stats.totalInvested / 1000000).toFixed(1)}M</Title>
-                        <Text className="stat-period">Period: monthly</Text>
-                    </Card>
-                </Col>
-                <Col xs={24} md={12} xl={6}>
-                    <Card className="fintech-stat-card" bordered={false}>
-                        <div className="stat-card-header">
-                            <div className="stat-icon-box orange">
-                                <HistoryOutlined />
-                            </div>
-                            <div className="stat-percent" style={{ color: '#10b981' }}>
-                                +12%
-                            </div>
-                        </div>
-                        <Text className="stat-label">Interest Payable</Text>
-                        <Title level={2} className="stat-value">₹{(stats.interestPayable / 1000000).toFixed(1)}M</Title>
-                        <Text className="stat-period">Period: monthly</Text>
-                    </Card>
-                </Col>
-            </Row>
-
-            {/* Charts Row */}
-            <Row gutter={[24, 24]} className="mt-24">
-                <Col xs={24} xl={14}>
-                    <Card className="fintech-chart-card" bordered={false} bodyStyle={{ padding: 0 }}>
-                        <div className="chart-card-header">
-                            <Title level={5} className="chart-title">Investment Trend</Title>
-                            <Text className="chart-period-label">monthly</Text>
-                        </div>
-                        <div className="chart-responsive-container padded">
-                            <ResponsiveContainer width="100%" height={300}>
-                                <LineChart data={MOCK_MONTHLY_DATA}>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={true} horizontal={true} stroke="#f0f0f0" />
-                                    <XAxis
-                                        dataKey="name"
-                                        axisLine={false}
-                                        tickLine={false}
-                                        tick={{ fontSize: 12, fill: '#64748b' }}
-                                        dy={10}
-                                    />
-                                    <YAxis
-                                        axisLine={false}
-                                        tickLine={false}
-                                        tick={{ fontSize: 12, fill: '#64748b' }}
-                                        tickFormatter={(val) => `₹${val}K`}
-                                    />
-                                    <Tooltip
-                                        contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-                                    />
-                                    <Line
-                                        type="monotone"
-                                        dataKey="value"
-                                        stroke="#f24c52"
-                                        strokeWidth={3}
-                                        dot={{ r: 4, fill: '#f24c52', strokeWidth: 2, stroke: '#fff' }}
-                                        activeDot={{ r: 6 }}
-                                    />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </div>
-                    </Card>
-                </Col>
-                <Col xs={24} xl={10}>
-                    <Card className="fintech-chart-card" bordered={false} bodyStyle={{ padding: 0 }}>
-                        <div className="chart-card-header">
-                            <Title level={5} className="chart-title">Investment by Tenure</Title>
-                            <Text className="chart-period-label">monthly</Text>
-                        </div>
-                        <div className="pie-responsive-container high">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie
-                                        data={pieData}
-                                        cx="50%"
-                                        cy="50%"
-                                        innerRadius={70}
-                                        outerRadius={100}
-                                        paddingAngle={2}
-                                        dataKey="value"
-                                    >
-                                        {pieData.map((entry: any, index: number) => (
-                                            <Cell key={`cell-${index}`} fill={entry.color} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip />
-                                </PieChart>
-                            </ResponsiveContainer>
-                        </div>
-                        <div className="pie-legend-container horizontal">
-                            {pieData.map((item: any) => (
-                                <div key={item.name} className="flex-align-center">
-                                    <div className="legend-dot" style={{ background: item.color }}></div>
-                                    <Text style={{ fontSize: 12, color: '#64748b' }}>{item.name}</Text>
+            {/* Stats Row - Fixed Height */}
+            <div className="dashboard-stats-row">
+                <Row gutter={[16, 16]} className="h-100">
+                    <Col xs={24} md={6} className="h-100">
+                        <Card className="fintech-stat-card compact" bordered={false}>
+                            <div className="stat-card-header compact">
+                                <div className="stat-icon-box blue compact">
+                                    <TeamOutlined />
                                 </div>
-                            ))}
-                        </div>
-                    </Card>
-                </Col>
-            </Row>
+                                <div className="stat-percent">+15%</div>
+                            </div>
+                            <div className="stat-info-compact">
+                                <Text className="stat-label">Total Investors</Text>
+                                <Title level={2} className="stat-value compact">{stats.totalInvestors.toLocaleString()}</Title>
+                            </div>
+                        </Card>
+                    </Col>
+                    <Col xs={24} md={6} className="h-100">
+                        <Card className="fintech-stat-card compact" bordered={false}>
+                            <div className="stat-card-header compact">
+                                <div className="stat-icon-box green compact">
+                                    <RiseOutlined />
+                                </div>
+                                <div className="stat-percent">+22%</div>
+                            </div>
+                            <div className="stat-info-compact">
+                                <Text className="stat-label">Active Investments</Text>
+                                <Title level={2} className="stat-value compact">{stats.activeInvestments.toLocaleString()}</Title>
+                            </div>
+                        </Card>
+                    </Col>
+                    <Col xs={24} md={6} className="h-100">
+                        <Card className="fintech-stat-card compact" bordered={false}>
+                            <div className="stat-card-header compact">
+                                <div className="stat-icon-box purple compact">
+                                    <DollarCircleOutlined />
+                                </div>
+                                <div className="stat-percent">+18%</div>
+                            </div>
+                            <div className="stat-info-compact">
+                                <Text className="stat-label">Total Invested</Text>
+                                <Title level={2} className="stat-value compact">₹{(stats.totalInvested / 1000000).toFixed(1)}M</Title>
+                            </div>
+                        </Card>
+                    </Col>
+                    <Col xs={24} md={6} className="h-100">
+                        <Card className="fintech-stat-card compact" bordered={false}>
+                            <div className="stat-card-header compact">
+                                <div className="stat-icon-box orange compact">
+                                    <HistoryOutlined />
+                                </div>
+                                <div className="stat-percent">+12%</div>
+                            </div>
+                            <div className="stat-info-compact">
+                                <Text className="stat-label">Interest Payable</Text>
+                                <Title level={2} className="stat-value compact">₹{(stats.interestPayable / 1000000).toFixed(1)}M</Title>
+                            </div>
+                        </Card>
+                    </Col>
+                </Row>
+            </div>
 
-            {/* Recent Activity Section */}
-            <div className="mt-32">
-                <Title level={4} className="mb-16" style={{ fontWeight: 700 }}>Recent Activity</Title>
-                <Card bordered={false} className="fintech-list-card" bodyStyle={{ padding: 0 }}>
-                    <List
-                        dataSource={MOCK_ACTIVITY}
-                        renderItem={(item) => (
-                            <List.Item className="activity-item-custom">
-                                <List.Item.Meta
-                                    avatar={
-                                        <div className={`activity-icon-container ${item.type === 'New Investment' ? 'investment' : 'user'}`}>
-                                            {item.type === 'New Investment' ? <PlusOutlined /> : <UserOutlined />}
-                                        </div>
-                                    }
-                                    title={<Text style={{ fontWeight: 700, fontSize: 15 }}>{item.type}</Text>}
-                                    description={<Text type="secondary">{item.description}</Text>}
-                                />
-                                <Text type="secondary" style={{ fontSize: 12 }}>{item.timestamp}</Text>
-                            </List.Item>
-                        )}
-                    />
-                </Card>
+            {/* Main Content Area - Flexible Height */}
+            <div className="dashboard-main-content">
+                <Row gutter={[16, 16]} className="h-100">
+                    {/* Left Column: Trend Chart (Top) + Activity (Bottom) */}
+                    <Col xs={24} lg={16} className="flex-col-gap-16">
+
+                        {/* Trend Chart - Flex 1 */}
+                        <Card
+                            className="fintech-chart-card dashboard-card-container"
+                            bordered={false}
+                            bodyStyle={{ padding: 0, flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}
+                        >
+                            <div className="chart-card-header compact">
+                                <Title level={5} className="chart-title">Investment Trend</Title>
+                                <Text className="chart-period-label">{period.toLowerCase()}</Text>
+                            </div>
+                            <div className="chart-responsive-container flex-grow-chart">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <LineChart data={chartData} margin={{ top: 20, right: 20, left: 10, bottom: 0 }}>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={true} horizontal={true} stroke="#f0f0f0" />
+                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#64748b' }} dy={10} />
+                                        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#64748b' }} tickFormatter={(val) => `₹${val}K`} dx={-10} />
+                                        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
+                                        <Line type="monotone" dataKey="value" stroke="#f24c52" strokeWidth={3} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                                    </LineChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </Card>
+                    </Col>
+
+                    {/* Right Column: Pie Chart (Full Height) */}
+                    <Col xs={24} lg={8} className="h-100">
+                        <Card
+                            className="fintech-chart-card dashboard-card-container"
+                            bordered={false}
+                            bodyStyle={{ padding: 0, flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}
+                        >
+                            <div className="chart-card-header compact">
+                                <Title level={5} className="chart-title">Tenure Distribution</Title>
+                                <Text className="chart-period-label">{period.toLowerCase()}</Text>
+                            </div>
+                            <div className="pie-responsive-container flex-grow-pie">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie
+                                            data={pieData}
+                                            cx="50%"
+                                            cy="50%"
+                                            innerRadius={60}
+                                            outerRadius={80}
+                                            paddingAngle={2}
+                                            dataKey="value"
+                                        >
+                                            {pieData.map((entry: any, index: number) => (
+                                                <Cell key={`cell-${index}`} fill={entry.color} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip content={<CustomPieTooltip />} />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+                            <div className="pie-legend-container horizontal compact">
+                                {pieData.map((item: any) => (
+                                    <div key={item.name} className="flex-align-center">
+                                        <div className="legend-dot" style={{ background: item.color }}></div>
+                                        <Text className="text-small-muted">{item.name}</Text>
+                                    </div>
+                                ))}
+                            </div>
+                        </Card>
+                    </Col>
+                </Row>
             </div>
         </div>
     );

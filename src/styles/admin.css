@@ -243,15 +243,194 @@ body {
 .admin-content-antd {
     flex: 1;
     overflow: hidden;
+    /* Prevent default scrolling */
     background: var(--admin-bg) !important;
 }
 
 .admin-scroll-container {
     height: 100%;
     overflow-y: auto;
+    /* Default for other pages */
     overflow-x: hidden;
     padding: 32px;
     -webkit-overflow-scrolling: touch;
+}
+
+/* --- Fixed Dashboard Layout --- */
+.dashboard-fixed-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    overflow: hidden;
+    /* Strict no scroll */
+    gap: 16px;
+}
+
+.dashboard-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    margin-bottom: 8px;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .dashboard-header-row {
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .period-switcher {
+        width: 100%;
+        overflow-x: auto;
+        justify-content: space-between;
+    }
+
+    .dashboard-main-title {
+        font-size: 20px !important;
+        margin-bottom: 8px !important;
+        width: 100%;
+    }
+
+    .switcher-btn {
+        padding: 0 12px !important;
+        font-size: 13px !important;
+        flex: 1;
+        white-space: nowrap;
+    }
+}
+
+
+.dashboard-main-title {
+    margin: 0 !important;
+    font-size: 24px !important;
+    letter-spacing: -0.5px !important;
+}
+
+.dashboard-stats-row {
+    flex-shrink: 0;
+    /* Remove fixed height on mobile or let it grow if needed */
+}
+
+@media (max-width: 768px) {
+    .dashboard-stats-row {
+        height: auto;
+        margin-bottom: 16px;
+    }
+
+    .dashboard-card-container {
+        height: 400px !important;
+        /* Increased height for better visibility */
+        margin-bottom: 24px !important;
+        /* Proper spacing between stacked cards */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        /* Slightly improved shadow for mobile */
+    }
+
+    .dashboard-fixed-container {
+        padding: 16px;
+        height: auto;
+        /* Allow scroll on mobile */
+        overflow-y: auto;
+    }
+
+    .admin-main-layout {
+        height: auto !important;
+        min-height: 100vh;
+    }
+
+    .admin-content-antd {
+        overflow: visible !important;
+    }
+}
+
+
+.dashboard-main-content {
+    flex: 1;
+    min-height: 0;
+    /* Critical for flex scroll handling */
+    padding-bottom: 4px;
+}
+
+/* Compact Styles for Fixed Layout */
+.fintech-stat-card.compact {
+    padding: 16px !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stat-card-header.compact {
+    margin-bottom: 8px;
+}
+
+.stat-icon-box.compact {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+}
+
+.stat-value.compact {
+    font-size: 24px !important;
+    margin: 0 !important;
+}
+
+.chart-card-header.compact {
+    padding: 12px 16px;
+    min-height: 48px;
+}
+
+.flex-grow-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-grow-chart {
+    flex: 1;
+    min-height: 0;
+    padding: 12px 16px;
+}
+
+.flex-grow-pie {
+    flex: 1;
+    min-height: 0;
+}
+
+.activity-card-fixed {
+    flex: 0 0 40%;
+    /* Approx 40% height of column */
+}
+
+.activity-list-scrollable {
+    flex: 1;
+    overflow-y: auto;
+    /* Internal scroll only */
+    height: 100%;
+}
+
+.activity-item-custom.compact {
+    padding: 10px 16px !important;
+}
+
+.activity-icon-container.compact {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+}
+
+.pie-legend-container.compact {
+    padding-bottom: 12px;
+    margin-top: 8px;
+}
+
+/* Overrides for this specific page when in fixed mode */
+.dashboard-fixed-container .admin-scroll-container {
+    padding: 0;
+    overflow: hidden;
 }
 
 /* --- Mobile Page Header Optimization --- */
@@ -358,11 +537,214 @@ body {
     gap: 16px;
 }
 
+/* --- Utility Classes --- */
+.h-100 {
+    height: 100% !important;
+}
+
+.flex-col-gap-16 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%;
+}
+
+.dashboard-card-container {
+    height: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.dashboard-card-container .ant-card-body {
+    padding: 0 !important;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.text-small-muted {
+    font-size: 11px;
+    color: #64748b;
+}
+
+/* Investors Page Utilities */
+.text-admin-primary {
+    color: var(--admin-primary) !important;
+}
+
+.tag-rounded {
+    border-radius: 12px !important;
+}
+
+.icon-action-view {
+    color: #3b82f6 !important;
+}
+
+.icon-action-edit {
+    color: #64748b !important;
+}
+
+.page-title-compact {
+    margin: 0 !important;
+    letter-spacing: -0.5px !important;
+}
+
+.table-card-top-margin {
+    margin-top: 16px !important;
+}
+
+.investment-filter-container {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    width: 100%;
+    flex-wrap: nowrap !important;
+    /* Force one line on desktop */
+}
+
+.investment-search-input {
+    min-width: 250px !important;
+    flex: 1;
+    /* Search takes available space styling */
+}
+
+.investment-filter-select {
+    width: 180px !important;
+    /* Fixed width for consistent look */
+    flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+    .investment-filter-container {
+        flex-wrap: wrap !important;
+    }
+
+    .investment-search-input {
+        min-width: 100% !important;
+        order: 1;
+    }
+
+    .investment-filter-select {
+        flex: 1 !important;
+        width: auto !important;
+        min-width: 45% !important;
+        /* Allow 2 items per row on tablet if space */
+        order: 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .investment-filter-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .investment-search-input,
+    .investment-filter-select {
+        width: 100% !important;
+        min-width: 100% !important;
+    }
+}
+
+
+.investor-toolbar {
+    margin-bottom: 16px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.search-input-responsive {
+    width: 250px !important;
+}
+
+@media (max-width: 768px) {
+    .search-input-responsive {
+        width: 100% !important;
+    }
+}
+
+/* Investor Modal Styles */
+.investor-desc-label {
+    font-weight: 500;
+    color: #64748b;
+}
+
+.investor-desc-content {
+    font-weight: 600;
+    color: #1e293b;
+}
+
 .flex-align-center {
     display: flex;
     align-items: center;
     gap: 8px;
 }
+
+/* Bonds Page Utilities */
+.bond-search-container {
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.bond-search-input {
+    max-width: 400px !important;
+}
+
+.bond-card-body {
+    padding: 16px !important;
+}
+
+.bond-card-header-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.bond-icon-large {
+    font-size: 20px !important;
+    color: var(--admin-primary) !important;
+}
+
+.text-admin-label {
+    font-size: 11px !important;
+    display: block !important;
+}
+
+.text-admin-value-lg {
+    font-size: 14px !important;
+}
+
+.text-admin-value-md {
+    font-size: 13px !important;
+}
+
+.tag-tiny {
+    margin: 0 !important;
+    border-radius: 4px !important;
+    font-size: 10px !important;
+}
+
+.mt-4 {
+    margin-top: 4px !important;
+}
+
+.mb-16 {
+    margin-bottom: 16px !important;
+}
+
+.btn-bond-action {
+    border-radius: 6px !important;
+    font-size: 12px !important;
+}
+
+.w-100 {
+    width: 100% !important;
+}
+
 
 .live-date-pill {
     background: var(--admin-header-bg);
