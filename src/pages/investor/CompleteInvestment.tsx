@@ -93,7 +93,7 @@ const CompleteInvestment: React.FC = () => {
                 <InfoCircleFilled className="banner-icon" />
                 <div className="banner-content">
                     <Text strong className="banner-title">Selected Plan: <span style={{ color: '#926132' }}>{plan.name}</span></Text>
-                    <Text className="banner-desc">Enter your investment amount to see calculated returns</Text>
+                    {/* <Text className="banner-desc">Enter your investment amount to see calculated returns</Text> */}
                 </div>
             </div>
 
