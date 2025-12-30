@@ -6,11 +6,11 @@ const { Title, Paragraph } = Typography;
 
 const AboutPage: React.FC = () => {
     return (
-        <div style={{ padding: '60px 50px' }}>
+        <div className="padding-60-50">
             <Row gutter={[48, 48]} align="middle">
                 <Col xs={24} md={12}>
                     <Title level={1}>About InvestPro</Title>
-                    <Paragraph style={{ fontSize: '18px' }}>
+                    <Paragraph className="about-paragraph-large">
                         InvestPro is a leading fintech platform dedicated to making wealth management accessible, transparent, and secure for everyone.
                     </Paragraph>
                     <Paragraph>
@@ -18,43 +18,43 @@ const AboutPage: React.FC = () => {
                     </Paragraph>
                 </Col>
                 <Col xs={24} md={12}>
-                    <img src="/vite.svg" alt="About Us" style={{ width: '100%', maxWidth: '500px', display: 'block', margin: '0 auto' }} />
+                    <img src="/vite.svg" alt="About Us" className="about-image" />
                 </Col>
             </Row>
 
-            <Row gutter={[32, 32]} style={{ marginTop: '80px' }}>
+            <Row gutter={[32, 32]} className="about-row-spacing">
                 <Col xs={24} sm={12} lg={6}>
-                    <Card bordered={false} style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '32px', color: '#1890ff', marginBottom: '16px' }}><RocketOutlined /></div>
+                    <Card bordered={false} className="about-card-centered">
+                        <div className="about-icon-wrapper"><RocketOutlined /></div>
                         <Title level={4}>Innovation</Title>
                         <Paragraph>Constantly evolving our technology to provide the best tools for our users.</Paragraph>
                     </Card>
                 </Col>
                 <Col xs={24} sm={12} lg={6}>
-                    <Card bordered={false} style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '32px', color: '#1890ff', marginBottom: '16px' }}><SafetyOutlined /></div>
+                    <Card bordered={false} className="about-card-centered">
+                        <div className="about-icon-wrapper"><SafetyOutlined /></div>
                         <Title level={4}>Security</Title>
                         <Paragraph>Your data and assets are protected by top-tier security protocols.</Paragraph>
                     </Card>
                 </Col>
                 <Col xs={24} sm={12} lg={6}>
-                    <Card bordered={false} style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '32px', color: '#1890ff', marginBottom: '16px' }}><UsergroupAddOutlined /></div>
+                    <Card bordered={false} className="about-card-centered">
+                        <div className="about-icon-wrapper"><UsergroupAddOutlined /></div>
                         <Title level={4}>Community</Title>
                         <Paragraph>Join a growing community of informed and successful investors.</Paragraph>
                     </Card>
                 </Col>
                 <Col xs={24} sm={12} lg={6}>
-                    <Card bordered={false} style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '32px', color: '#1890ff', marginBottom: '16px' }}><GlobalOutlined /></div>
+                    <Card bordered={false} className="about-card-centered">
+                        <div className="about-icon-wrapper"><GlobalOutlined /></div>
                         <Title level={4}>Accessibility</Title>
                         <Paragraph>Investing made easy, no matter where you are or what your level of experience is.</Paragraph>
                     </Card>
                 </Col>
             </Row>
 
-            <div style={{ marginTop: '80px', maxWidth: '800px', margin: '80px auto 0' }}>
-                <Title level={2} style={{ textAlign: 'center', marginBottom: '40px' }}>Our Journey</Title>
+            <div className="about-journey-section">
+                <Title level={2} className="about-journey-title">Our Journey</Title>
                 <Timeline
                     mode="alternate"
                     items={[

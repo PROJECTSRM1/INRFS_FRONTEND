@@ -11,15 +11,15 @@ const PlansPage: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="section-padding" style={{ background: '#fff' }}>
-            <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-                <Title level={1} style={{ fontWeight: 800 }}>Choose Your Investment Plan</Title>
-                <Text type="secondary" style={{ fontSize: '1.2rem' }}>
+        <div className="section-padding plans-page-container">
+            <div className="plans-page-header">
+                <Title level={1} className="plans-page-title">Choose Your Investment Plan</Title>
+                <Text type="secondary" className="plans-page-subtitle">
                     Select the plan that best fits your financial goals
                 </Text>
             </div>
 
-            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div className="plans-page-content">
                 <Row gutter={[24, 24]}>
                     {INVESTMENT_PLANS.map((plan, idx) => (
                         <Col xs={24} sm={12} lg={6} key={plan.id}>
