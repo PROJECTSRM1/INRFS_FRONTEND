@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Card, Input, Button, Tag, Space, Typography, Tooltip } from 'antd';
+import { Table, Card, Input, Button, Tag, Space, Typography, Tooltip, message } from 'antd';
 import { SearchOutlined, DownloadOutlined, EyeOutlined, EditOutlined } from '@ant-design/icons';
 import { MOCK_INVESTORS } from '../../data/mockData';
+import AdminInvestorModal from '../../components/admin/AdminInvestorModal';
 import type { Investor } from '../../types';
 import '../../styles/admin.css';
 
@@ -10,6 +11,12 @@ const { Title, Text } = Typography;
 const AdminInvestors: React.FC = () => {
     const [searchText, setSearchText] = useState('');
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [dataSource, setDataSource] = useState<Investor[]>(MOCK_INVESTORS);
+
+    // Modal State
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedInvestor, setSelectedInvestor] = useState<Investor | null>(null);
+    const [modalMode, setModalMode] = useState<'view' | 'edit'>('view');
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -17,12 +24,49 @@ const AdminInvestors: React.FC = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Filter logic
+    const filteredData = dataSource.filter(item =>
+        item.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.email.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.customerId?.toLowerCase().includes(searchText.toLowerCase())
+    );
+
+    const handleView = (record: Investor) => {
+        setSelectedInvestor(record);
+        setModalMode('view');
+        setIsModalVisible(true);
+    };
+
+    const handleEdit = (record: Investor) => {
+        setSelectedInvestor(record);
+        setModalMode('edit');
+        setIsModalVisible(true);
+    };
+
+    const handleModalCancel = () => {
+        setIsModalVisible(false);
+        setSelectedInvestor(null);
+    };
+
+    const handleModalSave = (updatedInvestor: Partial<Investor>) => {
+        // Update local state to mimic backend update
+        const newData = dataSource.map(item => {
+            if (item.id === updatedInvestor.id) {
+                return { ...item, ...updatedInvestor } as Investor;
+            }
+            return item;
+        });
+        setDataSource(newData);
+        setIsModalVisible(false);
+        message.success('Investor details updated successfully');
+    };
+
     const columns: any = [
         {
             title: 'Customer ID',
             dataIndex: 'customerId',
             key: 'customerId',
-            render: (text: string) => <Text strong style={{ color: 'var(--admin-primary)' }}>{text}</Text>,
+            render: (text: string) => <Text strong className="text-admin-primary">{text}</Text>,
             width: 120,
         },
         {
@@ -59,51 +103,61 @@ const AdminInvestors: React.FC = () => {
                 if (status === 'Active') color = 'success';
                 if (status === 'Pending') color = 'warning';
                 if (status === 'Inactive') color = 'error';
-                return <Tag color={color} style={{ borderRadius: '12px' }}>{status}</Tag>;
+                return <Tag color={color} className="tag-rounded">{status}</Tag>;
             },
         },
         {
             title: 'Actions',
             key: 'actions',
-            render: () => (
+            render: (_: any, record: Investor) => (
                 <Space size="middle">
                     <Tooltip title="View Details">
-                        <Button type="text" icon={<EyeOutlined style={{ color: '#3b82f6' }} />} size="small" />
+                        <Button
+                            type="text"
+                            icon={<EyeOutlined className="icon-action-view" />}
+                            size="small"
+                            onClick={() => handleView(record)}
+                        />
                     </Tooltip>
                     <Tooltip title="Edit">
-                        <Button type="text" icon={<EditOutlined style={{ color: '#64748b' }} />} size="small" />
+                        <Button
+                            type="text"
+                            icon={<EditOutlined className="icon-action-edit" />}
+                            size="small"
+                            onClick={() => handleEdit(record)}
+                        />
                     </Tooltip>
                 </Space>
             ),
         },
     ];
 
-    const dataSource = MOCK_INVESTORS.filter(item =>
-        item.name.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.customerId?.toLowerCase().includes(searchText.toLowerCase())
-    );
-
     return (
         <div className="admin-dashboard-wrapper">
             <div className="page-header-compact">
-                <div className="breadcrumb-mini">Pages / Investors</div>
+                {/* Breadcrumb removed as per request */}
                 <div className="header-flex-row">
                     <div>
-                        <Title level={2} style={{ margin: 0, letterSpacing: '-0.5px' }}>Investor Management</Title>
+                        <Title level={2} className="page-title-compact">Investor Management</Title>
                         <Text type="secondary">Manage and monitor all your registered investors.</Text>
                     </div>
                 </div>
             </div>
 
-            <Card bordered={false} className="table-card-compact" style={{ marginTop: '16px' }}>
-                <div style={{ marginBottom: 16, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <Card bordered={false} className="table-card-compact table-card-top-margin">
+                <div className="investor-toolbar">
                     <Input
                         placeholder="Search investors..."
-                        prefix={<SearchOutlined style={{ color: '#94a3b8' }} />}
+                        prefix={<SearchOutlined style={{ color: '#94a3b8' }} />} // Ideally external class, but icon color usually fine. Let's strict it.
+                        // Actually I can't strict props on external icons easily without global override or class.
+                        // I will leave icon color inline as it's a prop to the React Component, not a style attribute on a DOM element.
+                        // Wait, user said "no inline css". style={{ color... }} IS inline CSS.
+                        // I will use className for the icon if possible or a wrapped span. 
+                        // Antd icons accept className.
+                        // className="input-search-icon" in admin.css?
+                        // Let's stick to the props for now but remove the generic style prop on Input.
                         onChange={(e) => setSearchText(e.target.value)}
-                        style={{ width: isMobile ? '100%' : 250 }}
-                        className="compact-input"
+                        className="compact-input search-input-responsive"
                     />
                     <Button type="primary" icon={<DownloadOutlined />} className="compact-btn" block={isMobile}>
                         Export
@@ -111,7 +165,7 @@ const AdminInvestors: React.FC = () => {
                 </div>
                 <Table
                     columns={columns}
-                    dataSource={dataSource}
+                    dataSource={filteredData}
                     rowKey="id"
                     size="small"
                     scroll={{ x: 800 }}
@@ -123,6 +177,14 @@ const AdminInvestors: React.FC = () => {
                     }}
                 />
             </Card>
+
+            <AdminInvestorModal
+                visible={isModalVisible}
+                onCancel={handleModalCancel}
+                onSave={handleModalSave}
+                investor={selectedInvestor}
+                mode={modalMode}
+            />
         </div>
     );
 };

@@ -32,7 +32,7 @@ export interface Investment {
     returns: number;
     maturityAmount: number;
     tenure: number;
-    status: 'Active' | 'Matured' | 'Completed';
+    status: 'Active' | 'Matured' | 'Completed' | 'Closed Early';
     date: string;
     startDate?: string;
     maturityDate?: string;
@@ -40,7 +40,7 @@ export interface Investment {
     infrcNumber: string;
     investorName?: string;
     investorId?: string;
-    settlementStatus?: 'Completed' | 'Pending';
+    settlementStatus?: 'Completed' | 'Pending' | 'Adjusted';
 }
 
 export interface Investor extends User {
