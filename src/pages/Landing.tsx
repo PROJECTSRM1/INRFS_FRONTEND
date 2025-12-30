@@ -256,9 +256,9 @@ const Landing: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <div className="footer-bottom">
+                {/* <div className="footer-bottom">
                     <p>&copy; 2024 INFRS Investment Platform. All rights reserved.</p>
-                </div>
+                </div> */}
             </footer>
             {/* Modals */}
             <Modal

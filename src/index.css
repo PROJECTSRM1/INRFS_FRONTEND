@@ -30,3 +30,6 @@ a:hover {
 #root {
   width: 100%;
 }
+
+/* Import utility classes */
+@import './styles/utilities.css';

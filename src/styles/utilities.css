@@ -1,0 +1,748 @@
+/* ==========================================================================
+   UTILITY CLASSES - Migrated from Inline Styles
+   This file contains all utility classes to replace inline styles across the app
+   ========================================================================== */
+
+/* --- Flexbox Utilities --- */
+.flex {
+    display: flex;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-align-center {
+    display: flex;
+    align-items: center;
+}
+
+.flex-justify-center {
+    display: flex;
+    justify-content: center;
+}
+
+.flex-justify-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-justify-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-gap-8 {
+    gap: 8px;
+}
+
+.flex-gap-12 {
+    gap: 12px;
+}
+
+.flex-gap-16 {
+    gap: 16px;
+}
+
+.flex-gap-24 {
+    gap: 24px;
+}
+
+/* --- Grid Utilities --- */
+.grid-auto-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+/* --- Spacing Utilities --- */
+.mt-8 {
+    margin-top: 8px;
+}
+
+.mt-12 {
+    margin-top: 12px;
+}
+
+.mt-16 {
+    margin-top: 16px;
+}
+
+.mt-24 {
+    margin-top: 24px;
+}
+
+.mb-8 {
+    margin-bottom: 8px;
+}
+
+.mb-16 {
+    margin-bottom: 16px;
+}
+
+.mb-24 {
+    margin-bottom: 24px;
+}
+
+.mb-64 {
+    margin-bottom: 64px;
+}
+
+.p-16 {
+    padding: 16px;
+}
+
+.p-20 {
+    padding: 20px;
+}
+
+.py-16 {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.px-20 {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.padding-60-50 {
+    padding: 60px 50px;
+}
+
+/* --- Text Utilities --- */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.font-800 {
+    font-weight: 800;
+}
+
+.font-size-12 {
+    font-size: 12px;
+}
+
+.font-size-13 {
+    font-size: 13px;
+}
+
+.font-size-14 {
+    font-size: 14px;
+}
+
+.font-size-15 {
+    font-size: 15px;
+}
+
+.font-size-18 {
+    font-size: 18px;
+}
+
+.font-size-1-2rem {
+    font-size: 1.2rem;
+}
+
+.font-size-1-5rem {
+    font-size: 1.5rem;
+}
+
+.font-size-0-9rem {
+    font-size: 0.9rem;
+}
+
+.font-size-30 {
+    font-size: 30px;
+}
+
+.font-size-32 {
+    font-size: 32px;
+}
+
+.letter-spacing-1 {
+    letter-spacing: 1px;
+}
+
+.opacity-80 {
+    opacity: 0.8;
+}
+
+/* --- Display Utilities --- */
+.display-block {
+    display: block;
+}
+
+.display-none {
+    display: none;
+}
+
+.float-right {
+    float: right;
+}
+
+/* --- Size Utilities --- */
+.w-100 {
+    width: 100%;
+}
+
+.h-40 {
+    height: 40px;
+}
+
+.max-w-300 {
+    max-width: 300px;
+}
+
+.max-w-500 {
+    max-width: 500px;
+}
+
+.max-w-800 {
+    max-width: 800px;
+}
+
+.max-w-1200 {
+    max-width: 1200px;
+}
+
+/* --- Background Utilities --- */
+.bg-white {
+    background: #fff;
+}
+
+.bg-light-gray {
+    background: #f8fafc;
+}
+
+.bg-cream {
+    background: #f8fafc;
+}
+
+/* --- Border Utilities --- */
+.border-radius-8 {
+    border-radius: 8px;
+}
+
+.border-radius-12 {
+    border-radius: 12px;
+}
+
+.border-radius-50 {
+    border-radius: 50%;
+}
+
+.border-1-solid-light {
+    border: 1px solid #e2e8f0;
+}
+
+.border-1-solid-lighter {
+    border: 1px solid #f1f5f9;
+}
+
+/* --- Color Utilities --- */
+.color-primary {
+    color: var(--primary-color);
+}
+
+.color-primary-gold-dark {
+    color: var(--primary-gold-dark);
+}
+
+.color-blue {
+    color: #2563eb;
+}
+
+.color-white {
+    color: white;
+}
+
+.color-secondary {
+    color: #64748b;
+}
+
+/* --- Position Utilities --- */
+.margin-auto {
+    margin: 0 auto;
+}
+
+.margin-auto-top-80 {
+    margin: 80px auto 0;
+}
+
+/* --- Landing Page Specific Utilities --- */
+.logo-height-40 {
+    height: 40px;
+}
+
+.nav-actions-container {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.btn-register-small {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+}
+
+.hero-buttons-container {
+    display: flex;
+    gap: 16px;
+}
+
+.plan-roi-display {
+    font-weight: bold;
+    color: var(--primary-gold-dark);
+    font-size: 1.5rem;
+}
+
+.plan-roi-label {
+    font-size: 0.9rem;
+    font-weight: normal;
+}
+
+.plan-duration-text {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.feature-icon-circle-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal-about-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.modal-about-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-gold);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-about-icon {
+    font-size: 30px;
+    color: white;
+}
+
+.modal-stats-container {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+}
+
+.modal-stat-item {
+    text-align: center;
+}
+
+.modal-stat-value {
+    margin: 0;
+    color: var(--primary-gold-dark);
+}
+
+.modal-plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    padding: 16px 0;
+}
+
+.modal-plan-card {
+    padding: 16px;
+}
+
+.modal-plan-title {
+    margin: 0;
+}
+
+.modal-plan-meta {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.modal-plan-roi {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-gold-dark);
+    margin: 12px 0;
+}
+
+.modal-plan-footer {
+    margin-top: 8px;
+}
+
+.modal-plan-duration {
+    float: right;
+}
+
+/* --- RegisterModal Specific --- */
+.registration-success-info-box {
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #e2e8f0;
+}
+
+.registration-success-label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.registration-success-id {
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.registration-success-user-id {
+    display: block;
+    margin-top: 8px;
+}
+
+.otp-input-container {
+    margin: 24px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.otp-cancel-button {
+    margin-top: 12px;
+}
+
+/* --- CompleteInvestment Specific --- */
+.selected-plan-name {
+    color: #926132;
+}
+
+/* --- Profile Specific --- */
+.profile-customer-id {
+    color: #2563eb;
+}
+
+.profile-account-number {
+    letter-spacing: 1px;
+}
+
+.profile-note-box {
+    margin-top: 24px;
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #f1f5f9;
+}
+
+.profile-note-text {
+    font-size: 13px;
+}
+
+/* --- AboutPage Specific --- */
+.about-icon-wrapper {
+    font-size: 32px;
+    color: #1890ff;
+    margin-bottom: 16px;
+}
+
+.about-card-centered {
+    text-align: center;
+}
+
+.about-journey-section {
+    margin-top: 80px;
+    max-width: 800px;
+    margin: 80px auto 0;
+}
+
+.about-journey-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.about-image {
+    width: 100%;
+    max-width: 500px;
+    display: block;
+    margin: 0 auto;
+}
+
+.about-row-spacing {
+    margin-top: 80px;
+}
+
+.about-paragraph-large {
+    font-size: 18px;
+}
+
+/* --- PlansPage Specific --- */
+.plans-page-container {
+    background: #fff;
+}
+
+.plans-page-header {
+    text-align: center;
+    margin-bottom: 64px;
+}
+
+.plans-page-title {
+    font-weight: 800;
+}
+
+.plans-page-subtitle {
+    font-size: 1.2rem;
+}
+
+.plans-page-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- Responsive Utilities --- */
+@media (max-width: 768px) {
+    .hero-buttons-container {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .modal-stats-container {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .nav-actions-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-plans-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Admin Page Specific Utilities --- */
+.admin-title-compact {
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.admin-card-margin-top {
+    margin-top: 16px;
+}
+
+.admin-search-filters {
+    margin-bottom: 16px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.admin-search-filters-centered {
+    margin-bottom: 16px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.admin-search-width {
+    width: 250px;
+}
+
+.admin-select-width {
+    width: 160px;
+}
+
+.admin-search-width-mobile {
+    width: 100%;
+}
+
+.admin-input-max-width-400 {
+    max-width: 400px;
+}
+
+.icon-color-blue {
+    color: #3b82f6;
+}
+
+.icon-color-red {
+    color: #ef4444;
+}
+
+.icon-color-gray {
+    color: #64748b;
+}
+
+.icon-color-muted {
+    color: #94a3b8;
+}
+
+.icon-color-search {
+    color: rgba(0, 0, 0, 0.25);
+}
+
+.icon-color-primary {
+    color: var(--admin-primary);
+}
+
+.icon-size-20 {
+    font-size: 20px;
+}
+
+.stat-percent-green {
+    color: #10b981;
+}
+
+.tag-rounded {
+    border-radius: 12px;
+}
+
+.tag-rounded-small {
+    border-radius: 4px;
+    font-size: 10px;
+}
+
+.legend-dot {
+    background: currentColor;
+}
+
+.text-font-12 {
+    font-size: 12px;
+}
+
+.text-font-11 {
+    font-size: 11px;
+}
+
+.text-font-13 {
+    font-size: 13px;
+}
+
+.text-font-14 {
+    font-size: 14px;
+}
+
+.text-font-15 {
+    font-size: 15px;
+}
+
+.text-color-muted {
+    color: #64748b;
+}
+
+.form-item-no-margin {
+    margin-bottom: 0;
+}
+
+.form-item-margin-top-16 {
+    margin-bottom: 0;
+    margin-top: 16px;
+}
+
+.form-item-margin-top-24 {
+    margin-bottom: 0;
+    margin-top: 24px;
+}
+
+.space-full-width-end {
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.row-margin-bottom-24 {
+    margin-bottom: 24px;
+}
+
+.bond-card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.bond-info-section {
+    margin-bottom: 16px;
+}
+
+.bond-info-label {
+    font-size: 11px;
+    display: block;
+}
+
+.bond-info-value {
+    font-size: 13px;
+}
+
+.bond-info-value-large {
+    font-size: 14px;
+}
+
+.bond-spacing-top-4 {
+    margin-top: 4px;
+}
+
+.admin-section-spacing {
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+/* --- Investment Amount Styles --- */
+.investment-amount-display {
+    font-weight: 700;
+    font-size: 16px;
+    color: #1e40af;
+}
+
+.investment-returns-display {
+    font-weight: 700;
+    font-size: 15px;
+    color: #059669;
+}
+
+.investment-status-display {
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- Investor ID Styles --- */
+.investor-id-primary {
+    color: var(--admin-primary);
+}
+
+/* --- Responsive Width Utilities --- */
+@media (max-width: 768px) {
+
+    .admin-search-width,
+    .admin-select-width {
+        width: 100%;
+    }
+}

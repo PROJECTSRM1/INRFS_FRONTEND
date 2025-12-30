@@ -53,10 +53,10 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                 content: (
                     <div className="registration-success-box">
                         <Paragraph>Welcome to INRFS. Your account has been created successfully.</Paragraph>
-                        <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '8px', marginBottom: '16px', border: '1px solid #e2e8f0' }}>
-                            <Text type="secondary" style={{ display: 'block', marginBottom: '8px' }}>Your Investor ID:</Text>
-                            <Title level={2} style={{ margin: 0, color: 'var(--primary-color)' }}>{tempRegisterResponse?.inv_reg_id}</Title>
-                            <Text type="secondary" style={{ display: 'block', marginTop: '8px' }}>User ID: {tempRegisterResponse?.user_id}</Text>
+                        <div className="registration-success-info-box">
+                            <Text type="secondary" className="registration-success-label">Your Investor ID:</Text>
+                            <Title level={2} className="registration-success-id">{tempRegisterResponse?.inv_reg_id}</Title>
+                            <Text type="secondary" className="registration-success-user-id">User ID: {tempRegisterResponse?.user_id}</Text>
                         </div>
                         <Text strong>Please use your email to login.</Text>
                     </div>
@@ -239,7 +239,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                     <Title level={3} className="auth-title-text">Verify Email</Title>
                     <Paragraph type="secondary">Enter the 6-digit OTP sent to {verifyingEmail}</Paragraph>
 
-                    <div style={{ margin: '24px 0', display: 'flex', justifyContent: 'center' }}>
+                    <div className="otp-input-container">
                         <Input.OTP
                             length={6}
                             value={otp}
@@ -261,8 +261,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                     <Button
                         block
                         onClick={() => setIsOtpVisible(false)}
-                        className="btn-hero-ghost-dark"
-                        style={{ marginTop: '12px' }}
+                        className="btn-hero-ghost-dark otp-cancel-button"
                     >
                         Cancel
                     </Button>
