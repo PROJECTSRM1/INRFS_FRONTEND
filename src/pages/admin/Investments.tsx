@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Card, Select, Tag, Typography, Input, Button, Tooltip, message } from 'antd';
+import { useLocation } from 'react-router-dom';
 import { MOCK_INVESTMENTS } from '../../data/mockData';
 import { SearchOutlined, CheckCircleOutlined, ClockCircleOutlined, CheckSquareOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import InvestmentCompletionModal from '../../components/admin/InvestmentCompletionModal';
@@ -10,6 +11,7 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 
 const AdminInvestments: React.FC = () => {
+    const location = useLocation();
     const [planFilter, setPlanFilter] = useState('All Plans');
     const [statusFilter, setStatusFilter] = useState('All Status');
     const [searchText, setSearchText] = useState('');
@@ -17,6 +19,17 @@ const AdminInvestments: React.FC = () => {
     const [investments, setInvestments] = useState(MOCK_INVESTMENTS);
     const [isCompletionModalVisible, setIsCompletionModalVisible] = useState(false);
     const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
+
+    // Handle navigation from Dashboard with pre-selected filter
+    useEffect(() => {
+        if (location.state && location.state.defaultStatus) {
+            setStatusFilter(location.state.defaultStatus);
+            // Clear state so it doesn't persist on refresh if not desired, 
+            // though keeping it effectively allows "back" to work nicely? 
+            // Usually standard to just set it once.
+            window.history.replaceState({}, document.title);
+        }
+    }, [location]);
 
     // Helper function to parse date strings
     const parseMaturityDate = (dateStr?: string): Date => {
@@ -131,23 +144,22 @@ const AdminInvestments: React.FC = () => {
                 const isCompleted = status === 'Completed';
                 const isAdjusted = status === 'Adjusted';
 
-                let color = '#faad14'; // Pending default
+                // Determine class based on status for styling
+                let statusClass = 'pending';
                 let icon = <ClockCircleOutlined />;
 
                 if (isCompleted) {
-                    color = '#52c41a';
+                    statusClass = 'completed';
                     icon = <CheckCircleOutlined />;
                 } else if (isAdjusted) {
-                    color = '#faad14'; // Or orange/warning color
+                    statusClass = 'adjusted';
                     icon = <ExclamationCircleOutlined />;
                 }
 
                 return (
-                    // Leaving color inline here as it's dynamic based on status variable, which is complex to map to class names efficiently in one go without a helper function or map.
-                    // However, we can use a style object. 
-                    <div className="settlement-status-container" style={{ color: color }}>
+                    <div className={`settlement-status-container ${statusClass}`}>
                         {icon}
-                        {status}
+                        <span>{status}</span>
                     </div>
                 );
             },
@@ -157,13 +169,13 @@ const AdminInvestments: React.FC = () => {
             key: 'actions',
             width: 100,
             render: (_: any, record: Investment) => (
-                <Tooltip title="Mark as Completed">
+                <Tooltip title={record.status === 'Completed' ? 'Already Completed' : 'Mark as Completed'}>
                     <Button
-                        type="text"
+                        type="default" // Changed to default to use our custom class borders
                         icon={<CheckSquareOutlined />}
                         disabled={record.status === 'Completed' || record.status === 'Closed Early'}
                         onClick={() => handleMarkAsCompleted(record)}
-                        className={record.status === 'Active' || record.status === 'Matured' ? 'action-btn-completed' : 'action-btn-disabled'}
+                        className={`modern-action-btn ${record.status === 'Active' || record.status === 'Matured' ? 'active-action' : ''}`}
                     />
                 </Tooltip>
             ),
@@ -223,6 +235,7 @@ const AdminInvestments: React.FC = () => {
                     </Select>
                     <Select
                         defaultValue="All Status"
+                        value={statusFilter}
                         onChange={setStatusFilter}
                         className="investment-filter-select"
                     >
