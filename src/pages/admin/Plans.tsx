@@ -49,8 +49,9 @@ const Plans: React.FC = () => {
         try {
             const data = await planService.getAllPlans();
             setPlans(data);
-        } catch (error: any) {
-            message.error(error?.response?.data?.message || 'Failed to fetch investment plans');
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to fetch investment plans';
+            message.error(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -74,8 +75,9 @@ const Plans: React.FC = () => {
             await planService.deletePlan(id);
             message.success('Plan deleted successfully');
             fetchPlans();
-        } catch (error: any) {
-            message.error(error?.response?.data?.message || 'Failed to delete plan');
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to delete plan';
+            message.error(errorMessage);
         }
     };
 
@@ -84,8 +86,9 @@ const Plans: React.FC = () => {
             await planService.togglePlanStatus(id, !currentStatus);
             message.success(`Plan ${!currentStatus ? 'activated' : 'deactivated'} successfully`);
             fetchPlans();
-        } catch (error: any) {
-            message.error(error?.response?.data?.message || 'Failed to update plan status');
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to update plan status';
+            message.error(errorMessage);
         }
     };
 
@@ -101,8 +104,9 @@ const Plans: React.FC = () => {
             setModalVisible(false);
             form.resetFields();
             fetchPlans();
-        } catch (error: any) {
-            message.error(error?.response?.data?.message || 'Failed to save plan');
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to save plan';
+            message.error(errorMessage);
         }
     };
 
@@ -160,7 +164,7 @@ const Plans: React.FC = () => {
                 { text: 'Active', value: true },
                 { text: 'Inactive', value: false },
             ],
-            onFilter: (value: any, record: InvestmentPlan) => record.is_active === value,
+            onFilter: (value: boolean | React.Key, record: InvestmentPlan) => record.is_active === value,
             render: (isActive: boolean, record: InvestmentPlan) => (
                 <Switch
                     checked={isActive}
@@ -174,7 +178,7 @@ const Plans: React.FC = () => {
             title: 'Actions',
             key: 'actions',
             width: 120,
-            render: (_: any, record: InvestmentPlan) => (
+            render: (_: unknown, record: InvestmentPlan) => (
                 <Space>
                     <Button
                         type="link"

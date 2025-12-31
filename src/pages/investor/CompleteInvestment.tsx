@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Typography, Input, Checkbox, Button, message, Row, Col } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
@@ -22,20 +22,11 @@ const CompleteInvestment: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
 
-    // Calculated values
-    const [returns, setReturns] = useState(0);
-    const [totalMaturity, setTotalMaturity] = useState(0);
-
-    useEffect(() => {
-        if (amount && typeof amount === 'number') {
-            const result = fintechService.calculateReturns(amount, plan.roi, plan.duration);
-            setReturns(result.interest);
-            setTotalMaturity(result.maturityAmount);
-        } else {
-            setReturns(0);
-            setTotalMaturity(0);
-        }
-    }, [amount, plan.roi, plan.duration]);
+    // Derived values
+    const amountNum = typeof amount === 'number' ? amount : 0;
+    const calculation = fintechService.calculateReturns(amountNum, plan.roi);
+    const returns = calculation.interest;
+    const totalMaturity = calculation.maturityAmount;
 
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = parseFloat(e.target.value);
