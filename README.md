@@ -1,13 +1,13 @@
 # INRFS Frontend
 
-A modern investment and sports facility booking application built with React, TypeScript, and Vite.
+A modern investment  booking application built with React, TypeScript, and Vite.
 
 ## Tech Stack
 
 ### Core
-- **Framework**: [React](https://react.dev/)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Framework**: [React]
+- **Language**: [TypeScript]
+- **Build Tool**: [Vite]
 
 ### UI & Styling
 - **Component Library**: [Ant Design](https://ant.design/)
@@ -55,7 +55,6 @@ The application supports two distinct workflows:
 ### 3. Dashboard Features
 - **Investor Dashboard**:
     - View and manage investments.
-    - Book sports facilities/items.
     - View transaction history and wallet balance.
     - Download investment certificates (generated via jsPDF).
 - **Admin Dashboard**:
