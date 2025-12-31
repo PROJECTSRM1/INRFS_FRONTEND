@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Col, Card, Typography, Button } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import {
     TeamOutlined,
     RiseOutlined,
@@ -13,6 +14,7 @@ import '../../styles/admin.css';
 const { Title, Text } = Typography;
 
 const AdminOverview: React.FC = () => {
+    const navigate = useNavigate();
     const [period, setPeriod] = useState('Monthly');
 
     // Dynamic Data Selection
@@ -82,7 +84,11 @@ const AdminOverview: React.FC = () => {
             <div className="dashboard-stats-row">
                 <Row gutter={[16, 16]} className="h-100">
                     <Col xs={24} md={6} className="h-100">
-                        <Card className="fintech-stat-card compact" bordered={false}>
+                        <Card
+                            className="fintech-stat-card compact clickable-stat-card"
+                            bordered={false}
+                            onClick={() => navigate('/admin/investors')}
+                        >
                             <div className="stat-card-header compact">
                                 <div className="stat-icon-box blue compact">
                                     <TeamOutlined />
@@ -96,7 +102,11 @@ const AdminOverview: React.FC = () => {
                         </Card>
                     </Col>
                     <Col xs={24} md={6} className="h-100">
-                        <Card className="fintech-stat-card compact" bordered={false}>
+                        <Card
+                            className="fintech-stat-card compact clickable-stat-card"
+                            bordered={false}
+                            onClick={() => navigate('/admin/investments', { state: { defaultStatus: 'Active' } })}
+                        >
                             <div className="stat-card-header compact">
                                 <div className="stat-icon-box green compact">
                                     <RiseOutlined />
@@ -110,7 +120,11 @@ const AdminOverview: React.FC = () => {
                         </Card>
                     </Col>
                     <Col xs={24} md={6} className="h-100">
-                        <Card className="fintech-stat-card compact" bordered={false}>
+                        <Card
+                            className="fintech-stat-card compact clickable-stat-card"
+                            bordered={false}
+                            onClick={() => navigate('/admin/investments')}
+                        >
                             <div className="stat-card-header compact">
                                 <div className="stat-icon-box purple compact">
                                     <DollarCircleOutlined />
@@ -124,7 +138,11 @@ const AdminOverview: React.FC = () => {
                         </Card>
                     </Col>
                     <Col xs={24} md={6} className="h-100">
-                        <Card className="fintech-stat-card compact" bordered={false}>
+                        <Card
+                            className="fintech-stat-card compact clickable-stat-card"
+                            bordered={false}
+                            onClick={() => navigate('/admin/reports')}
+                        >
                             <div className="stat-card-header compact">
                                 <div className="stat-icon-box orange compact">
                                     <HistoryOutlined />
