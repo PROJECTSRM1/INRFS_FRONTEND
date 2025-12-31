@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { Modal, Typography, Card } from 'antd';
+import { Modal, Typography, Card, Spin, message } from 'antd';
 import {
     SafetyCertificateOutlined,
     RocketOutlined,
@@ -20,7 +20,8 @@ import {
     PhoneOutlined,
     EnvironmentOutlined
 } from '@ant-design/icons';
-import { INVESTMENT_PLANS } from '../data/mockData';
+import { plansService } from '../services/plansService';
+import type { Plan } from '../services/plansService';
 import '../styles/landing.css';
 
 // Using local paths to generated images. 
@@ -49,6 +50,30 @@ const Landing: React.FC = () => {
     // Modal States
     const [isPlansModalOpen, setIsPlansModalOpen] = useState(false);
     const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
+
+    // Plans State
+    const [plans, setPlans] = useState<Plan[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    // Fetch plans from API on component mount
+    useEffect(() => {
+        const fetchPlans = async () => {
+            try {
+                setLoading(true);
+                const fetchedPlans = await plansService.getPlans();
+                // Filter only active plans
+                const activePlans = fetchedPlans.filter(plan => plan.is_active);
+                setPlans(activePlans);
+            } catch (error) {
+                console.error('Failed to fetch plans:', error);
+                message.error('Failed to load investment plans. Please try again later.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPlans();
+    }, []);
 
     // Mapping plans to card colors and icons for the design
     const getCardStyle = (index: number) => {
@@ -145,27 +170,33 @@ const Landing: React.FC = () => {
 
             {/* Services / Plans Grid */}
             <section className="section-container">
-                <div className="features-grid">
-                    {INVESTMENT_PLANS.map((plan, index) => (
-                        <div key={plan.id} className={`feature-card ${getCardStyle(index)}`}>
-                            <div>
-                                <div className="feature-icon">
-                                    {getIcon(index)}
+                {loading ? (
+                    <div style={{ textAlign: 'center', padding: '60px 0' }}>
+                        <Spin size="large" tip="Loading investment plans..." />
+                    </div>
+                ) : (
+                    <div className="features-grid">
+                        {plans.map((plan: Plan, index: number) => (
+                            <div key={plan.id} className={`feature-card ${getCardStyle(index)}`}>
+                                <div>
+                                    <div className="feature-icon">
+                                        {getIcon(index)}
+                                    </div>
+                                    <h3 className="feature-title">{plan.name}</h3>
+                                    <p className="feature-desc">{plan.description}</p>
                                 </div>
-                                <h3 className="feature-title">{plan.name}</h3>
-                                <p className="feature-desc">{plan.description}</p>
+                                <div style={{ marginTop: 24 }}>
+                                    <div style={{ fontWeight: 'bold', color: 'var(--primary-gold-dark)', fontSize: '1.5rem' }}>
+                                        {plan.returns_percentage}% <span style={{ fontSize: '0.9rem', fontWeight: 'normal' }}>ROI</span>
+                                    </div>
+                                    <div style={{ fontSize: '0.9rem', opacity: 0.8 }}>
+                                        Duration: {plan.duration_months} Months
+                                    </div>
+                                </div>
                             </div>
-                            <div style={{ marginTop: 24 }}>
-                                <div style={{ fontWeight: 'bold', color: 'var(--primary-gold-dark)', fontSize: '1.5rem' }}>
-                                    {plan.roi}% <span style={{ fontSize: '0.9rem', fontWeight: 'normal' }}>ROI</span>
-                                </div>
-                                <div style={{ fontSize: '0.9rem', opacity: 0.8 }}>
-                                    Duration: {plan.duration} Months
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                )}
             </section>
 
             {/* Mobile App Section */}
@@ -270,17 +301,15 @@ const Landing: React.FC = () => {
                 centered
             >
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px', padding: '16px 0' }}>
-                    {INVESTMENT_PLANS.map((plan, index) => (
+                    {plans.map((plan: Plan, index: number) => (
                         <Card key={plan.id} bordered={false} className={`feature-card ${getCardStyle(index)}`} style={{ padding: 16 }}>
                             <Title level={4} style={{ margin: 0 }}>{plan.name}</Title>
-                            <Text type="secondary" style={{ display: 'block', marginBottom: 8 }}>{plan.category} • {plan.type}</Text>
                             <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--primary-gold-dark)', margin: '12px 0' }}>
-                                {plan.roi}% ROI
+                                {plan.returns_percentage}% ROI
                             </div>
                             <Paragraph ellipsis={{ rows: 2 }}>{plan.description}</Paragraph>
                             <div style={{ marginTop: 8 }}>
-                                <Text strong>Min: ${plan.minAmount}</Text>
-                                <div style={{ float: 'right' }}>{plan.duration} Month(s)</div>
+                                <div style={{ float: 'right' }}>{plan.duration_months} Month(s)</div>
                             </div>
                         </Card>
                     ))}
