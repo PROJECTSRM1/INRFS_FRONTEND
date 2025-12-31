@@ -21,7 +21,6 @@ const BondCard: React.FC<BondCardProps> = ({ investment, userName }) => {
         ...investment,
         roi: 18
     };
-
     return (
         <>
             <div className="bond-card-v4">
