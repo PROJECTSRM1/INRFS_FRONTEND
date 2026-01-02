@@ -42,6 +42,14 @@ let mockPlans: InvestmentPlan[] = [
         duration_months: 6,
         description: 'Competitive returns for a 6-month tenure.',
         is_active: true
+    },
+    {
+        id: 4,
+        name: 'Wealth Multiplier',
+        returns_percentage: 15.8,
+        duration_months: 12,
+        description: 'Maximize your wealth with our premium yearly plan.',
+        is_active: true
     }
 ];
 

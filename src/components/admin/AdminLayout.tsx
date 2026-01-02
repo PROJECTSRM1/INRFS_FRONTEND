@@ -14,7 +14,8 @@ import {
     UserOutlined,
     UserAddOutlined,
     BulbOutlined,
-    BulbFilled
+    BulbFilled,
+    DatabaseOutlined
 } from '@ant-design/icons';
 import { useAppContext } from '../../context/AppContext';
 import Logo from '../../components/Logo';
@@ -83,6 +84,11 @@ const AdminLayout: React.FC = () => {
             key: '/admin/users',
             icon: <UserAddOutlined />,
             label: <NavLink to="/admin/users" onClick={() => setDrawerVisible(false)}>Users</NavLink>,
+        },
+        {
+            key: '/admin/master',
+            icon: <DatabaseOutlined />,
+            label: <NavLink to="/admin/master" onClick={() => setDrawerVisible(false)}>Master</NavLink>,
         },
     ];
 

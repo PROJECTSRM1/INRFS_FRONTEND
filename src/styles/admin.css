@@ -1111,21 +1111,36 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg,
-            color-mix(in srgb, var(--accent-color), transparent 95%) 50%,
-            color-mix(in srgb, var(--accent-color), transparent 98%) 25%, transparent 50%);
-    /* Light gradient background */
+    background-color: #f8fafc !important;
+    /* Solid professional background */
+    background-image: none !important;
     padding: 20px;
+    cursor: default !important;
+    overflow: hidden;
+}
+
+/* Absolute Static Enforcement - Global within Login */
+.admin-login-container,
+.admin-login-container *,
+.admin-login-card,
+.admin-login-card * {
+    cursor: default !important;
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    perspective: none !important;
+    backface-visibility: hidden !important;
 }
 
 .admin-login-card {
     width: 100%;
-    max-width: 440px;
+    max-width: 480px;
     background-color: #ffffff !important;
     border-radius: 20px !important;
-    box-shadow: 0 10px 40px rgba(146, 97, 50, 0.08) !important;
+    box-shadow: 0 12px 48px rgba(146, 97, 50, 0.1) !important;
     border: 1px solid rgba(146, 97, 50, 0.1) !important;
-    padding: 40px 32px !important;
+    padding: 48px 40px !important;
+    margin: 0 auto;
 }
 
 .admin-login-header {
@@ -1137,23 +1152,22 @@ body {
     width: 64px;
     height: 64px;
     background: rgba(146, 97, 50, 0.08);
-    border-radius: 50%;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 24px;
     border: 1px solid rgba(146, 97, 50, 0.1);
-    box-shadow: 0 4px 12px rgba(146, 97, 50, 0.1);
     color: #926132;
     font-size: 28px;
 }
 
 .admin-login-title {
     color: #926132 !important;
-    font-size: 26px !important;
+    font-size: 28px !important;
     font-weight: 800 !important;
     margin-bottom: 8px !important;
-    letter-spacing: -0.5px;
+    letter-spacing: -1px;
 }
 
 .admin-login-subtitle {
@@ -1164,10 +1178,10 @@ body {
 }
 
 .admin-restricted-alert {
-    background: rgba(239, 68, 68, 0.1) !important;
-    border: 1px solid rgba(239, 68, 68, 0.2) !important;
-    margin-bottom: 32px !important;
-    border-radius: 8px !important;
+    background: rgba(239, 68, 68, 0.05) !important;
+    border: 1px solid rgba(239, 68, 68, 0.15) !important;
+    margin-bottom: 24px !important;
+    border-radius: 6px !important;
 }
 
 .admin-restricted-alert .ant-alert-message {
@@ -1183,13 +1197,18 @@ body {
 }
 
 /* Custom Light Inputs */
-.admin-input-dark {
-    background-color: #f8fafc !important;
-    border: 1px solid #e2e8f0 !important;
+.admin-input-dark,
+.admin-input-dark:hover,
+.admin-input-dark:focus,
+.admin-input-dark-focused,
+.admin-input-dark:focus-within {
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
     color: #334155 !important;
-    height: 50px !important;
-    border-radius: 12px !important;
-    transition: all 0.2s;
+    height: 48px !important;
+    border-radius: 8px !important;
+    transition: none !important;
+    box-shadow: none !important;
 }
 
 .admin-input-dark input,
@@ -1244,38 +1263,66 @@ body {
     display: block;
 }
 
-.admin-submit-btn {
+.admin-submit-btn,
+.admin-submit-btn:hover,
+.admin-submit-btn:focus,
+.admin-submit-btn:active {
     height: 52px !important;
     font-size: 16px !important;
     font-weight: 700 !important;
     background-color: #926132 !important;
+    color: #ffffff !important;
     border: none !important;
     border-radius: 12px !important;
     margin-top: 12px;
     width: 100%;
-    box-shadow: 0 4px 12px rgba(146, 97, 50, 0.3);
-    transition: all 0.3s;
+    transform: none !important;
+    box-shadow: 0 4px 12px rgba(146, 97, 50, 0.2) !important;
+    cursor: default !important;
 }
 
-.admin-submit-btn:hover {
-    background-color: #7a5028 !important;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(146, 97, 50, 0.4);
+.admin-close-btn,
+.admin-close-btn:hover,
+.admin-close-btn:focus {
+    position: absolute !important;
+    top: 12px;
+    right: 12px;
+    color: #94a3b8 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    cursor: default !important;
+    transform: none !important;
+    transition: none !important;
 }
 
-.back-home-link {
-    color: #94a3b8;
-    font-size: 14px;
-    text-decoration: none;
-    transition: color 0.2s;
+.admin-login-card a,
+.admin-login-card a:hover,
+.admin-login-card a:focus,
+.admin-login-card .ant-btn,
+.admin-login-card .ant-btn:hover,
+.admin-login-card .ant-btn:focus {
+    cursor: default !important;
+    transform: none !important;
+    transition: none !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+}
+
+.back-home-link,
+.back-home-link:hover,
+.back-home-link:focus {
+    color: #94a3b8 !important;
+    font-size: 13px;
+    text-decoration: none !important;
     display: inline-flex;
     align-items: center;
     gap: 8px;
     font-weight: 500;
-}
-
-.back-home-link:hover {
-    color: #926132;
+    cursor: default !important;
+    transform: none !important;
+    transition: none !important;
 }
 
 /* --- Global Ant Design Overrides (Force Bronze) --- */
@@ -1323,11 +1370,12 @@ a:hover {
     .admin-login-container {
         min-height: 100vh;
         min-height: 100dvh;
-        /* Dynamic viewport height support */
         padding: 40px 16px;
         align-items: center;
-        /* Vertical Center */
-        overflow-y: auto;
+        background: linear-gradient(135deg,
+                color-mix(in srgb, var(--accent-color), transparent 95%) 50%,
+                color-mix(in srgb, var(--accent-color), transparent 98%) 25%, transparent 50%) !important;
+        overflow: hidden;
     }
 
     /* Card: Fluid width with max-width constraint */
@@ -1336,7 +1384,7 @@ a:hover {
         max-width: 400px !important;
         margin: 0 auto !important;
         padding: 32px 24px !important;
-        border-radius: 20px !important;
+        border-radius: 16px !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
     }
 
@@ -1390,6 +1438,28 @@ a:hover {
     .admin-restricted-alert .ant-alert-message {
         font-size: 12px !important;
         line-height: 1.5 !important;
+    }
+
+    /* Restore Mobile Interaction */
+    .admin-login-container,
+    .admin-login-container *,
+    .admin-login-card,
+    .admin-login-card * {
+        cursor: auto !important;
+        transition: all 0.2s ease !important;
+        transform: none;
+        /* Reset base to allow hover transforms */
+    }
+
+    .admin-submit-btn,
+    .admin-close-btn,
+    .back-home-link,
+    .admin-login-card a {
+        cursor: pointer !important;
+    }
+
+    .admin-submit-btn:active {
+        transform: scale(0.98) !important;
     }
 }
 

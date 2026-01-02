@@ -117,7 +117,6 @@ const Reports: React.FC = () => {
     return (
         <div className="admin-reports-wrapper">
             <div className="page-header-compact">
-                <div className="breadcrumb-mini">Pages / Reports</div>
                 <div className="header-flex-row">
                     <Title level={1} className="dashboard-main-title">Reports & Analytics</Title>
                 </div>

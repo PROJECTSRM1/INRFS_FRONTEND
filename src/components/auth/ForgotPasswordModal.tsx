@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Radio, Input, Button, Typography, message } from 'antd';
 import '../../styles/theme.css';
 
-const { Title, Text, Link } = Typography;
+const { Title, Text } = Typography;
 
 interface ForgotPasswordModalProps {
     open: boolean;
@@ -104,19 +104,11 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ open, onCance
                         borderColor: 'var(--primary-light-brown)',
                         color: '#fff'
                     }}
-                    onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = 'var(--primary-brown-hover)';
-                        e.currentTarget.style.borderColor = 'var(--primary-brown-hover)';
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'var(--primary-light-brown)';
-                        e.currentTarget.style.borderColor = 'var(--primary-light-brown)';
-                    }}
                 >
                     {method === 'email' ? 'Email Me' : 'Text Me'}
                 </Button>
 
-                <div style={{ textAlign: 'center' }}>
+                {/* <div style={{ textAlign: 'center' }}>
                     <Link
                         href="#"
                         style={{ color: '#000', textDecoration: 'underline', fontSize: '14px', fontWeight: 500 }}
@@ -124,7 +116,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ open, onCance
                     >
                         I can't remember my email address or phone number.
                     </Link>
-                </div>
+                </div> */}
             </div>
         </Modal>
     );
