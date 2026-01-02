@@ -84,14 +84,10 @@ const InvestmentPlans: React.FC = () => {
                                 </div>
 
                                 <div className="plan-features-section">
-                                    <Space direction="vertical" size="middle" className="w-full">
+                                    <Space direction="vertical" size="small" className="w-full">
                                         <div className="feature-item-compact">
                                             <CheckCircleFilled className="feature-icon-green" />
-                                            <Text>{plan.duration_months <= 3 ? 'Quick returns' : plan.duration_months === 6 ? 'High returns' : 'Maximum returns'}</Text>
-                                        </div>
-                                        <div className="feature-item-compact">
-                                            <CheckCircleFilled className="feature-icon-green" />
-                                            <Text>{plan.duration_months <= 3 ? 'Low risk investment' : plan.duration_months === 6 ? 'Best value' : 'Long term growth'}</Text>
+                                            <Text>{plan.description}</Text>
                                         </div>
                                         <div className="feature-item-compact">
                                             <CheckCircleFilled className="feature-icon-green" />

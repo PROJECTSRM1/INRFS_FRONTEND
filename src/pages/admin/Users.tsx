@@ -153,7 +153,6 @@ const Users: React.FC = () => {
     return (
         <div className="admin-dashboard-wrapper">
             <div className="page-header-compact">
-                <div className="breadcrumb-mini">Pages / Users</div>
                 <div className="header-flex-row users-header-row">
                     <div className="users-page-title-container">
                         <Title level={2}>User Management</Title>

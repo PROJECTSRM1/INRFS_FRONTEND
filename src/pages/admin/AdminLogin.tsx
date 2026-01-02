@@ -23,8 +23,66 @@ const AdminLogin: React.FC = () => {
         navigate('/admin/dashboard');
     };
 
+    // Absolute Static Enforcement - Only on Desktop (>768px)
+    React.useEffect(() => {
+        let currentKillMotion: ((e: Event) => void) | null = null;
+
+        const applyMotionKillers = () => {
+            if (currentKillMotion) {
+                window.removeEventListener('mousemove', currentKillMotion as any, true);
+                window.removeEventListener('scroll', currentKillMotion, true);
+            }
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+        };
+
+        const handleResize = () => {
+            const isDesktop = window.innerWidth > 768;
+
+            if (isDesktop) {
+                const killMotion = (e: Event) => {
+                    if (window.innerWidth > 768) { // Re-check in case of rapid resize during event
+                        e.stopImmediatePropagation();
+                    }
+                };
+                applyMotionKillers(); // Clean up previous listeners if any
+                currentKillMotion = killMotion;
+                window.addEventListener('mousemove', currentKillMotion as any, true);
+                window.addEventListener('scroll', currentKillMotion, true);
+                document.body.style.overflow = 'hidden';
+                document.documentElement.style.overflow = 'hidden';
+            } else {
+                applyMotionKillers(); // Remove listeners and reset overflow
+                currentKillMotion = null;
+            }
+        };
+
+        // Initial check
+        handleResize();
+
+        // Listen for resize events
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            applyMotionKillers(); // Final cleanup
+            currentKillMotion = null;
+        };
+    }, []);
+
+    const stopInteraction = (e: React.MouseEvent) => {
+        if (window.innerWidth > 768) {
+            e.stopPropagation();
+        }
+    };
+
     return (
-        <div className="admin-login-container">
+        <div
+            className="admin-login-container"
+            onMouseMove={stopInteraction}
+            onMouseEnter={stopInteraction}
+            onMouseLeave={stopInteraction}
+        >
             <Card className="admin-login-card" bordered={false}>
                 <Button
                     type="text"

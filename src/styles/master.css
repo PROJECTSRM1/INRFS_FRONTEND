@@ -1,0 +1,198 @@
+.master-page-wrapper {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.master-card {
+    border-radius: 16px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.04) !important;
+    background: #ffffff !important;
+    margin-top: 24px;
+}
+
+.master-container {
+    padding: 8px;
+}
+
+.master-tabs .ant-tabs-nav {
+    margin-bottom: 24px !important;
+}
+
+.master-tabs .ant-tabs-tab {
+    padding: 12px 0 !important;
+    margin: 0 32px 0 0 !important;
+    font-weight: 500;
+}
+
+.master-tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: var(--admin-primary) !important;
+}
+
+.master-tabs .ant-tabs-ink-bar {
+    background: var(--admin-primary) !important;
+    height: 3px !important;
+    border-radius: 3px 3px 0 0;
+}
+
+.master-tab-content-plain {
+    padding: 0 16px 16px 16px;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.master-action-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.master-subtitle {
+    flex: 1;
+    min-width: 200px;
+    font-size: 13px;
+    color: #94a3b8 !important;
+}
+
+.master-add-btn {
+    background: #8B5E3C !important;
+    border-color: #8B5E3C !important;
+    border-radius: 8px !important;
+    height: 40px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 12px rgba(139, 94, 60, 0.15) !important;
+    padding: 0 24px !important;
+}
+
+.master-add-btn:hover {
+    background: #724c31 !important;
+    border-color: #724c31 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(139, 94, 60, 0.2) !important;
+}
+
+@media (max-width: 768px) {
+    .master-action-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .master-add-btn {
+        width: 100% !important;
+    }
+
+    .master-subtitle {
+        margin-bottom: 4px;
+    }
+}
+
+.compact-tag-returns {
+    color: #22c55e;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f0fdf4;
+    padding: 4px 10px;
+    border-radius: 6px;
+    width: fit-content;
+    font-size: 12px;
+}
+
+.compact-tag-duration {
+    color: #3b82f6;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #eff6ff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    width: fit-content;
+    font-size: 12px;
+}
+
+.action-icon-edit {
+    color: #8B5E3C !important;
+}
+
+.tab-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.master-table .ant-table {
+    background: transparent !important;
+}
+
+.master-table .ant-table-thead>tr>th {
+    background: #f8fafc !important;
+    font-weight: 600 !important;
+    color: #475569 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    font-size: 12px !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.master-table .ant-table-tbody>tr>td {
+    padding: 12px 8px !important;
+    font-size: 13px !important;
+}
+
+.master-form-input {
+    border-radius: 8px !important;
+}
+
+.admin-submit-btn {
+    border-radius: 8px !important;
+    height: 40px !important;
+    font-weight: 500 !important;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2) !important;
+}
+
+.master-tab-content {
+    padding: 40px;
+    text-align: center;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px dashed #e2e8f0;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dark mode support if applicable */
+[data-theme='dark'] .master-card {
+    background: #1e293b !important;
+}
+
+[data-theme='dark'] .master-tab-content,
+[data-theme='dark'] .master-tab-content-plain {
+    background: transparent;
+}
+
+[data-theme='dark'] .master-table .ant-table-thead>tr>th {
+    background: #0f172a !important;
+    color: #94a3b8 !important;
+    border-bottom-color: #1e293b !important;
+}

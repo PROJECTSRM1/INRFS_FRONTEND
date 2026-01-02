@@ -20,27 +20,35 @@ export interface CreatePlanPayload {
 // Mock data for initial state
 let mockPlans: InvestmentPlan[] = [
     {
-        id: 1,
-        name: 'Short-Term Starter',
+        id: 2,
+        name: 'Short term starter',
         returns_percentage: 6.5,
-        duration_months: 1,
-        description: 'Perfect for testing the platform with a 1-month plan.',
+        duration_months: 3,
+        description: 'Quick returns,Low risk,Flexible amount',
         is_active: true
     },
     {
-        id: 2,
-        name: 'Quarterly Builder',
-        returns_percentage: 9.2,
-        duration_months: 3,
-        description: 'Steady growth for your 3-month goals.',
+        id: 1,
+        name: 'Growth Accelerate',
+        returns_percentage: 12.5,
+        duration_months: 6,
+        description: 'High returns, best values',
         is_active: true
     },
     {
         id: 3,
-        name: 'Growth Accelerate',
-        returns_percentage: 12.5,
-        duration_months: 6,
-        description: 'Competitive returns for a 6-month tenure.',
+        name: 'Higher Earnings',
+        returns_percentage: 20,
+        duration_months: 24,
+        description: 'Higher Earnings and affordable Plans',
+        is_active: true
+    },
+    {
+        id: 4,
+        name: 'Earnings Double',
+        returns_percentage: 60,
+        duration_months: 36,
+        description: 'Affordable Plans & Multiple Returns',
         is_active: true
     }
 ];
