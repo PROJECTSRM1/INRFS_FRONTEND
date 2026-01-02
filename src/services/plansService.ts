@@ -1,22 +1,15 @@
-import apiClient from '../utils/apiClient';
+import { planService } from './planService';
+import type { InvestmentPlan } from './planService';
 
-export interface Plan {
-    id: number;
-    name: string;
-    returns_percentage: number;
-    duration_months: number;
-    description: string;
-    is_active: boolean;
-}
+export type Plan = InvestmentPlan;
 
 export const plansService = {
     /**
-     * Fetch all active investment plans from the API
+     * Fetch all active investment plans from the shared mock service
      */
     getPlans: async (): Promise<Plan[]> => {
         try {
-            const response = await apiClient.get('/plans/');
-            return response.data;
+            return await planService.getAllPlans();
         } catch (error) {
             console.error('Error fetching plans:', error);
             throw error;
@@ -24,12 +17,14 @@ export const plansService = {
     },
 
     /**
-     * Fetch a specific plan by ID
+     * Fetch a specific plan by ID from the shared mock service
      */
     getPlanById: async (id: number): Promise<Plan> => {
         try {
-            const response = await apiClient.get(`/plans/${id}`);
-            return response.data;
+            const plans = await planService.getAllPlans();
+            const plan = plans.find(p => p.id === id);
+            if (!plan) throw new Error('Plan not found');
+            return plan;
         } catch (error) {
             console.error(`Error fetching plan ${id}:`, error);
             throw error;
