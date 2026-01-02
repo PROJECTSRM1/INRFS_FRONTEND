@@ -76,7 +76,6 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
             setLoading(false);
         }
     };
-
     const onFinishInfo = async (values: any) => {
         setLoading(true);
         try {
