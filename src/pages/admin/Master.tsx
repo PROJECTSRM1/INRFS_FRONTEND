@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import axios from "axios";
+
 import {
     Card,
     Typography,
@@ -47,18 +49,32 @@ const Master: React.FC = () => {
         }
     }, [activeTab]);
 
-    const fetchPlans = async () => {
-        setLoading(true);
-        try {
-            const data = await planService.getAllPlans();
-            setPlans(data);
-        } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : 'Failed to fetch investment plans';
-            message.error(errorMessage);
-        } finally {
-            setLoading(false);
-        }
-    };
+   const fetchPlans = async () => {
+  setLoading(true);
+  try {
+    const res = await axios.get("/plans/", {
+      baseURL: "https://inrfs-be.onrender.com",
+    });
+
+    // Convert backend format to match your table
+   const formattedPlans = res.data.map((item: any) => ({
+  id: item.id,
+  name: item.plan_type,
+  returns_percentage: parseFloat(item.percentage),
+  duration_months: parseInt(item.duration),
+  description: item.description ?? "",
+  is_active: item.is_active,
+}));
+
+
+    setPlans(formattedPlans);
+  } catch (err) {
+    message.error("Failed to load plans");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
     const handleCreatePlan = () => {
         setEditingPlan(null);
@@ -68,21 +84,29 @@ const Master: React.FC = () => {
     };
 
     const handleEditPlan = (plan: InvestmentPlan) => {
-        setEditingPlan(plan);
-        form.setFieldsValue(plan);
-        setModalVisible(true);
-    };
+  setEditingPlan(plan);
+  form.setFieldsValue({
+    name: plan.name,
+    percentage: plan.returns_percentage,
+    duration: plan.duration_months,
+    description: plan.description,
+    is_active: plan.is_active,
+  });
+  setModalVisible(true);
+};
 
-    const handleDeletePlan = async (id: number) => {
-        try {
-            await planService.deletePlan(id);
-            message.success('Plan deleted successfully');
-            fetchPlans();
-        } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : 'Failed to delete plan';
-            message.error(errorMessage);
-        }
-    };
+
+   const handleDeletePlan = async (id: number) => {
+  try {
+    await planService.deletePlan(id); // correct API call
+    message.success("Plan deleted successfully");
+    fetchPlans(); // refresh UI to sync with backend
+  } catch (err: any) {
+    console.error("Delete Error:", err.response?.data || err.message);
+    message.error("Failed to delete plan");
+  }
+};
+
 
     const handleToggleStatus = async (id: number, currentStatus: boolean) => {
         try {
@@ -95,94 +119,105 @@ const Master: React.FC = () => {
         }
     };
 
-    const handleSubmit = async (values: CreatePlanPayload) => {
-        try {
-            if (editingPlan) {
-                await planService.updatePlan(editingPlan.id!, values);
-                message.success('Plan updated successfully');
-            } else {
-                await planService.createPlan(values);
-                message.success('Plan created successfully');
-            }
-            setModalVisible(false);
-            form.resetFields();
-            fetchPlans();
-        } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : 'Failed to save plan';
-            message.error(errorMessage);
-        }
+ const handleSubmit = async (values: any) => {
+  try {
+    const payload = {
+      plan_type: values.name,
+     percentage: `${values.percentage} %`,
+duration: `${values.duration} Months`,
+
+      is_active: values.is_active,
+      description: values.description,
     };
 
-    const columns = [
-        {
-            title: 'Plan Name',
-            dataIndex: 'name',
-            key: 'name',
-            render: (text: string) => <Text strong>{text}</Text>,
-        },
-        {
-            title: 'Returns (%)',
-            dataIndex: 'returns_percentage',
-            key: 'returns_percentage',
-            render: (value: number) => (
-                <div className="compact-tag-returns">
-                    <DollarOutlined /> {value}%
-                </div>
-            ),
-        },
-        {
-            title: 'Duration',
-            dataIndex: 'duration_months',
-            key: 'duration_months',
-            render: (value: number) => (
-                <div className="compact-tag-duration">
-                    <ClockCircleOutlined /> {value} Months
-                </div>
-            ),
-        },
-        {
-            title: 'Status',
-            dataIndex: 'is_active',
-            key: 'is_active',
-            render: (isActive: boolean, record: InvestmentPlan) => (
-                <Switch
-                    checked={isActive}
-                    onChange={() => handleToggleStatus(record.id!, isActive)}
-                    checkedChildren={<CheckCircleOutlined />}
-                    unCheckedChildren={<CloseCircleOutlined />}
-                    size="small"
-                />
-            ),
-        },
-        {
-            title: 'Actions',
-            key: 'actions',
-            render: (_: any, record: InvestmentPlan) => (
-                <Space>
-                    <Button
-                        type="text"
-                        icon={<EditOutlined className="action-icon-edit" />}
-                        onClick={() => handleEditPlan(record)}
-                        size="small"
-                    />
-                    <Popconfirm
-                        title="Delete Plan"
-                        description="Are you sure you want to delete this plan?"
-                        onConfirm={() => handleDeletePlan(record.id!)}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <Button
-                            type="text"
-                            danger
-                            icon={<DeleteOutlined />}
-                            size="small"
-                        />
-                    </Popconfirm>
-                </Space>
-            ),
-        },
-    ];
+
+    if (editingPlan) {
+      await axios.put(`/plans/${editingPlan.id}`, payload, {
+  baseURL: "https://inrfs-be.onrender.com",
+});
+
+      message.success("Plan updated successfully");
+    } else {
+      await axios.post("/plans/", payload, {
+        baseURL: "https://inrfs-be.onrender.com",
+      });
+      message.success("Plan created successfully");
+    }
+
+    setModalVisible(false);
+    form.resetFields();
+    fetchPlans(); // refresh table dynamically
+  } catch (err) {
+    message.error("Failed to save plan");
+  }
+};
+
+
+   const columns = [
+  {
+    title: "Plan Name",
+    dataIndex: "name",
+    key: "name",
+  },
+  {
+    title: "Returns (%)",
+    dataIndex: "returns_percentage",
+    key: "returns_percentage",
+    render: (value: number) => (
+      <div className="compact-tag-returns">
+        <DollarOutlined /> {value}%
+      </div>
+    ),
+  },
+  {
+    title: "Duration",
+    dataIndex: "duration_months",
+    key: "duration_months",
+    render: (value: number) => (
+      <div className="compact-tag-duration">
+        <ClockCircleOutlined /> {value} Months
+      </div>
+    ),
+  },
+  {
+    title: "Status",
+    dataIndex: "is_active",
+    key: "is_active",
+    render: (isActive: boolean, record: any) => (
+      <Switch
+        checked={isActive}
+        onChange={() => handleToggleStatus(record.id, isActive)}
+        size="small"
+      />
+    ),
+  },
+  {
+    title: "Actions",
+    key: "actions",
+    render: (_: any, record: any) => (
+      <Space>
+        <Button
+          type="text"
+          icon={<EditOutlined />}
+          onClick={() => handleEditPlan(record)}
+          size="small"
+        />
+        <Popconfirm
+          title="Delete this plan?"
+          onConfirm={() => handleDeletePlan(record.id)}
+        >
+          <Button
+            type="text"
+            danger
+            icon={<DeleteOutlined />}
+            size="small"
+          />
+        </Popconfirm>
+      </Space>
+    ),
+  },
+];
+
 
     const tabItems = [
         {
@@ -271,7 +306,8 @@ const Master: React.FC = () => {
                     <Row gutter={16}>
                         <Col span={12}>
                             <Form.Item
-                                name="returns_percentage"
+                                name="percentage"
+
                                 label="Returns (%)"
                                 rules={[{ required: true, message: 'Required' }]}
                             >
@@ -280,7 +316,8 @@ const Master: React.FC = () => {
                         </Col>
                         <Col span={12}>
                             <Form.Item
-                                name="duration_months"
+                                name="duration"
+
                                 label="Duration (Months)"
                                 rules={[{ required: true, message: 'Required' }]}
                             >
