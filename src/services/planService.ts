@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export interface InvestmentPlan {
     id?: number;
     name: string;
@@ -54,49 +56,59 @@ let mockPlans: InvestmentPlan[] = [
 ];
 
 export const planService = {
-    getAllPlans: async (): Promise<InvestmentPlan[]> => {
-        // Simulating API delay
-        return new Promise((resolve) => {
-            setTimeout(() => resolve([...mockPlans]), 500);
-        });
-    },
+   getAllPlans: async (): Promise<InvestmentPlan[]> => {
+  const res = await axios.get("/plans/", {
+    baseURL: "https://inrfs-be.onrender.com",
+  });
+  return res.data.map((item: any) => ({
+    id: item.id,
+    name: item.plan_type,
+    returns_percentage: parseFloat(item.percentage),
+    duration_months: parseInt(item.duration),
+    description: item.description ?? "",
+    is_active: item.is_active,
+    created_at: item.created_at,
+    updated_at: item.updated_at,
+  }));
+},
 
     createPlan: async (payload: CreatePlanPayload): Promise<InvestmentPlan> => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const newPlan: InvestmentPlan = {
-                    ...payload,
-                    id: mockPlans.length > 0 ? Math.max(...mockPlans.map(p => p.id!)) + 1 : 1,
-                    created_at: new Date().toISOString()
-                };
-                mockPlans.push(newPlan);
-                resolve(newPlan);
-            }, 500);
-        });
-    },
+  const apiPayload = {
+    plan_type: payload.name,
+    percentage: `${payload.returns_percentage} %`,
+    duration: `${payload.duration_months} Months`,
+    is_active: payload.is_active,
+    description: payload.description,
+  };
 
-    updatePlan: async (id: number, payload: CreatePlanPayload): Promise<InvestmentPlan> => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                const index = mockPlans.findIndex(p => p.id === id);
-                if (index !== -1) {
-                    mockPlans[index] = { ...mockPlans[index], ...payload, updated_at: new Date().toISOString() };
-                    resolve(mockPlans[index]);
-                } else {
-                    reject(new Error('Plan not found'));
-                }
-            }, 500);
-        });
-    },
+  const res = await axios.post("/plans/", apiPayload, {
+    baseURL: "https://inrfs-be.onrender.com",
+  });
+  return res.data;
+},
 
-    deletePlan: async (id: number): Promise<void> => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                mockPlans = mockPlans.filter(p => p.id !== id);
-                resolve();
-            }, 500);
-        });
-    },
+
+   updatePlan: async (id: number, payload: CreatePlanPayload): Promise<InvestmentPlan> => {
+  const apiPayload = {
+    plan_type: payload.name,
+    percentage: `${payload.returns_percentage} %`,
+    duration: `${payload.duration_months} Months`,
+    is_active: payload.is_active,
+    description: payload.description,
+  };
+
+  return axios.put(`/plans/${id}`, apiPayload, {
+    baseURL: "https://inrfs-be.onrender.com",
+  }).then(res => res.data);
+},
+
+
+   deletePlan: async (id: number): Promise<void> => {
+  return axios.delete(`/plans/${id}`, {
+    baseURL: "https://inrfs-be.onrender.com",
+  }).then(res => res.data);
+},
+
 
     togglePlanStatus: async (id: number, isActive: boolean): Promise<InvestmentPlan> => {
         return new Promise((resolve, reject) => {
