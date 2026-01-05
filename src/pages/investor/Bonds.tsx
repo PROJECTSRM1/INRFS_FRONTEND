@@ -1,84 +1,169 @@
-import React, { useState } from 'react';
-import { Table, Tag, Button, Empty } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Table, Tag, Button, Empty, Spin, message } from 'antd';
 import { DownloadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
 import { fintechService } from '../../services/fintechService';
+import { investmentService, type Investment } from '../../services/investmentService';
 import CertificateModal from '../../components/CertificateModal';
 import '../../styles/dashboard.css';
 
 const Bonds: React.FC = () => {
-    const { investments, user } = useAppContext();
+    const { investments: contextInvestments, user } = useAppContext();
     const navigate = useNavigate();
     const [selectedBond, setSelectedBond] = useState<any>(null);
     const [isCertModalVisible, setIsCertModalVisible] = useState(false);
+    const [apiInvestments, setApiInvestments] = useState<Investment[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    // Fetch investments from API on component mount
+    useEffect(() => {
+        const fetchInvestments = async () => {
+            try {
+                setLoading(true);
+                const investments = await investmentService.getInvestments();
+                console.log('Fetched investments from API:', investments);
+                setApiInvestments(investments);
+            } catch (error) {
+                console.error('Failed to fetch investments:', error);
+                message.warning('Using local investment data');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchInvestments();
+    }, []);
+
+    // Use API investments if available, otherwise fallback to context
+    const investments = apiInvestments.length > 0 ? apiInvestments : contextInvestments;
 
     const handleDownload = (investment: any) => {
         setSelectedBond({ ...investment, roi: 18 });
         setIsCertModalVisible(true);
     };
 
-    const columns = [
+
+    const columns: any[] = [
         {
             title: 'Bond ID',
-            dataIndex: 'id',
-            key: 'id',
-            render: (text: string) => <span className="bond-id-text">{text}</span>
+            dataIndex: 'wk_inv_id',
+            key: 'wk_inv_id',
+            render: (text: string, record: Investment) => (
+                <span className="bond-id-text">{text || record.id || 'N/A'}</span>
+            )
         },
         {
             title: 'Plan Name',
-            dataIndex: 'planName',
-            key: 'planName',
-            render: (text: string) => <span className="bond-plan-text">{text} Bond</span>
+            dataIndex: 'plan_name',
+            key: 'plan_name',
+            render: (text: string, record: Investment) => (
+                <span className="bond-plan-text">{text || record.planName || 'N/A'}</span>
+            )
         },
         {
             title: 'Invested Amount',
-            dataIndex: 'amount',
-            key: 'amount',
-            render: (val: number) => <span className="bond-amount-text">{fintechService.formatCurrency(val)}</span>
+            dataIndex: 'principal_amount',
+            key: 'principal_amount',
+            render: (val: number, record: Investment) => (
+                <span className="bond-amount-text">
+                    {fintechService.formatCurrency(val || record.amount || 0)}
+                </span>
+            )
         },
         {
             title: 'Maturity Value',
-            dataIndex: 'maturityAmount',
-            key: 'maturityAmount',
-            render: (val: number) => <span className="bond-maturity-text">{fintechService.formatCurrency(val)}</span>
+            dataIndex: 'maturity_amount',
+            key: 'maturity_amount',
+            render: (val: number, record: Investment) => (
+                <span className="bond-maturity-text">
+                    {fintechService.formatCurrency(val || record.maturityAmount || 0)}
+                </span>
+            )
         },
         {
             title: 'Tenure',
-            dataIndex: 'tenure',
-            key: 'tenure',
-            render: (val: number) => <span>{val} Months</span>
+            dataIndex: 'duration_months',
+            key: 'duration_months',
+            render: (val: number, record: Investment) => (
+                <span>{val || record.tenure || 'N/A'} Months</span>
+            )
         },
         {
             title: 'Interest',
-            key: 'interest',
-            render: () => <span>18% p.a.</span>
+            dataIndex: 'interest_rate',
+            key: 'interest_rate',
+            render: (val: number) => <span>{val ? `${val}% p.a.` : '18% p.a.'}</span>
         },
         {
-            title: 'INFRC No.',
-            dataIndex: 'infrcNumber',
-            key: 'infrcNumber',
-            render: (text: string) => <span className="infrc-text">{text}</span>
+            title: 'User ID',
+            dataIndex: 'user_id',
+            key: 'user_id',
+            render: (text: number) => <span>{text || 'N/A'}</span>
         },
         {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
             render: (status: string) => (
-                <Tag className="bond-status-tag-active">{status}</Tag>
+                <Tag className={`bond-status-tag-${status?.toLowerCase() || 'active'}`}>
+                    {status || 'Active'}
+                </Tag>
             )
         },
         {
-            title: 'Date',
-            dataIndex: 'date',
-            key: 'date',
+            title: 'Created Date',
+            dataIndex: 'created_date',
+            key: 'created_date',
+            render: (date: string, record: Investment) => {
+                const displayDate = date || record.date || record.startDate;
+                if (!displayDate) return 'N/A';
+
+                try {
+                    const dateObj = new Date(displayDate);
+                    return dateObj.toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                    });
+                } catch {
+                    return displayDate;
+                }
+            }
+        },
+        {
+            title: 'Maturity Date',
+            dataIndex: 'maturity_date',
+            key: 'maturity_date',
+            render: (date: string) => {
+                if (!date) return 'N/A';
+
+                try {
+                    const dateObj = new Date(date);
+                    return dateObj.toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                    });
+                } catch {
+                    return date;
+                }
+            }
+        },
+        {
+            title: 'Bond Certificate',
+            dataIndex: 'bond_certificate',
+            key: 'bond_certificate',
+            render: (cert: string) => (
+                <span className="infrc-text">{cert || 'Pending'}</span>
+            )
         },
         {
             title: 'Actions',
             key: 'actions',
+            fixed: 'right' as const,
             render: (_: any, record: any) => (
                 <div className="bond-action-buttons">
-
                     <Button
                         size="small"
                         icon={<DownloadOutlined />}
@@ -92,6 +177,16 @@ const Bonds: React.FC = () => {
             )
         }
     ];
+
+    if (loading) {
+        return (
+            <div className="investor-dashboard-refined">
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+                    <Spin size="large" tip="Loading investments..." />
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="investor-dashboard-refined">
@@ -113,10 +208,10 @@ const Bonds: React.FC = () => {
                 <div className="bonds-table-card">
                     <Table
                         columns={columns}
-                        dataSource={investments.map((inv, idx) => ({ ...inv, key: idx }))}
+                        dataSource={investments.map((inv, idx) => ({ ...inv, key: inv.id || idx }))}
                         pagination={{ pageSize: 10, showSizeChanger: true }}
                         className="bonds-table"
-                        scroll={{ x: 1400 }}
+                        scroll={{ x: 1800 }}
                     />
                 </div>
             ) : (
