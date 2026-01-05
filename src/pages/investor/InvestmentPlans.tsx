@@ -89,10 +89,10 @@ const InvestmentPlans: React.FC = () => {
                                             <CheckCircleFilled className="feature-icon-green" />
                                             <Text>{plan.description}</Text>
                                         </div>
-                                        <div className="feature-item-compact">
+                                        {/* <div className="feature-item-compact">
                                             <CheckCircleFilled className="feature-icon-green" />
                                             <Text>Digital bond issued</Text>
-                                        </div>
+                                        </div> */}
                                     </Space>
                                 </div>
 
