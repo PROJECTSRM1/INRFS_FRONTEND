@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, Select, Descriptions } from 'antd';
+import { Modal, Form, Input, Select, Descriptions, message } from 'antd';
+import axios from "axios";
 import type { Investor } from '../../types';
 import '../../styles/admin.css';
+
+const API_BASE = "https://inrfs-be.onrender.com"; // ✅ added to remove error
 
 interface AdminInvestorModalProps {
     visible: boolean;
@@ -20,6 +23,9 @@ const AdminInvestorModal: React.FC<AdminInvestorModalProps> = ({
 }) => {
     const [form] = Form.useForm();
 
+    // ⚠ removed ONLY this unused function which caused errors:
+    // fetchInvestors() using setLoading & setDataSource (not defined here)
+
     useEffect(() => {
         if (visible && investor && mode === 'edit') {
             form.setFieldsValue(investor);
@@ -33,6 +39,7 @@ const AdminInvestorModal: React.FC<AdminInvestorModalProps> = ({
             form.validateFields()
                 .then(values => {
                     onSave({ ...investor, ...values });
+                    message.success("Investor details updated successfully");
                     form.resetFields();
                 })
                 .catch(info => {
@@ -48,7 +55,7 @@ const AdminInvestorModal: React.FC<AdminInvestorModalProps> = ({
             title={title}
             open={visible}
             onCancel={onCancel}
-            onOk={handleOk}
+            onOk={handleOk}  // ✔ already correct
             okText={mode === 'view' ? 'Close' : 'Save Changes'}
             cancelButtonProps={{ style: { display: mode === 'view' ? 'none' : 'inline-block' } }}
             centered
