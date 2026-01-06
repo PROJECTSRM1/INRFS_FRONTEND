@@ -43,12 +43,18 @@ export interface Investment {
     settlementStatus?: 'Completed' | 'Pending' | 'Adjusted';
 }
 
-export interface Investor extends User {
-    mobile: string;
-    totalInvested: number;
-    activeInvestments: number;
-    status: 'Active' | 'Pending' | 'Inactive';
+export interface Investor {
+  id: number;
+  inv_reg_id?: string;  // optional
+  name: string;         // this is what table uses
+  email: string;
+  mobile: string;
+  status?: string;
+  totalInvested?: number;
+  activeInvestments?: number;
+  customerId: string;   // keep this since you use it in UI
 }
+
 
 export interface DashboardStats {
     totalInvestors: number;
