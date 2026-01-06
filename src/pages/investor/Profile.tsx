@@ -3,7 +3,6 @@ import { Typography, Row, Col, Spin, Alert, Button, message } from 'antd';
 import {
     UserOutlined,
     MailOutlined,
-    PhoneOutlined,
     SafetyCertificateOutlined,
     BankOutlined,
     WalletOutlined,
@@ -112,13 +111,13 @@ const Profile: React.FC = () => {
                                 <Text className="profile-value">{userProfile.email}</Text>
                             </div>
                         </div>
-                        <div className="profile-field-row">
+                        {/* <div className="profile-field-row">
                             <div className="profile-icon-brown"><PhoneOutlined /></div>
                             <div className="profile-field-content">
                                 <Text className="profile-label">Phone Number</Text>
                                 <Text className="profile-value">{userProfile.phone}</Text>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </Col>
 

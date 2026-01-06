@@ -134,7 +134,7 @@ const CompleteInvestment: React.FC = () => {
             addInvestment(newInvestment);
             setIsPaymentModalVisible(false);
             message.success('Investment created successfully!');
-            navigate('/dashboard/bonds');
+            navigate('/dashboard/my-investments');
         } catch (error: any) {
             console.error('Error creating investment:', error);
             const errorMessage = error.response?.data?.message || error.message || 'Failed to create investment';
