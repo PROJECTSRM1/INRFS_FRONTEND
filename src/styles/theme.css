@@ -406,27 +406,106 @@ body {
     margin-bottom: 32px;
 }
 
-.otp-grid {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin: 32px 0;
+/* Precision OTP Alignment - Industry Standard */
+.otp-modal-refined .ant-modal-content {
+    padding: 32px 24px !important;
+    border-radius: 16px !important;
 }
 
-.otp-input {
-    width: 48px !important;
-    height: 56px !important;
+.otp-modal-refined .registration-header {
+    margin-bottom: 24px !important;
     text-align: center !important;
-    font-size: 1.25rem !important;
-    font-weight: 700 !important;
-    border-radius: 12px !important;
-    border: 2px solid #e2e8f0 !important;
-    transition: all 0.3s ease !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.otp-input:focus {
+.otp-modal-refined .auth-title-text {
+    margin-bottom: 8px !important;
+    line-height: 1.2 !important;
+}
+
+.otp-modal-refined .auth-subtitle-text {
+    margin-bottom: 0 !important;
+    padding: 0 12px;
+}
+
+.otp-input-container {
+    display: flex;
+    justify-content: center;
+    margin: 32px 0 !important;
+}
+
+.otp-input-container .ant-otp {
+    gap: 12px !important;
+}
+
+.otp-input-container .ant-otp-input {
+    /* Perfectly Square */
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 12px !important;
+    border: 1.5px solid #e2e8f0 !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.otp-input-container .ant-otp-input:focus {
     border-color: var(--primary-color) !important;
-    box-shadow: 0 0 0 4px rgba(197, 165, 114, 0.2) !important;
+    box-shadow: 0 0 0 2px rgba(197, 165, 114, 0.1) !important;
+}
+
+.otp-button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.otp-cancel-button {
+    margin-top: 0 !important;
+    border-color: #e2e8f0 !important;
+    color: #475569 !important;
+}
+
+/* Mobile Responsiveness for OTP Input - Precise Scaling */
+@media (max-width: 480px) {
+    .otp-modal-refined .ant-modal-content {
+        padding: 24px 16px !important;
+    }
+
+    .otp-input-container .ant-otp {
+        gap: 8px !important;
+    }
+
+    .otp-input-container .ant-otp-input {
+        width: 42px !important;
+        height: 42px !important;
+        font-size: 18px !important;
+        border-radius: 8px !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .otp-input-container .ant-otp {
+        gap: 6px !important;
+    }
+
+    .otp-input-container .ant-otp-input {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 16px !important;
+    }
+}
+
+.otp-cancel-button:hover {
+    border-color: #cbd5e1 !important;
+    color: #1e293b !important;
+    background: #f8fafc !important;
 }
 
 .registration-success-box {
