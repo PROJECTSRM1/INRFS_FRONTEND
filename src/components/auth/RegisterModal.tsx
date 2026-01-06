@@ -99,7 +99,9 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                 password: values.password,
                 gender_id: genderMap[values.gender] || 0,
                 age: age,
-                dob: dob
+                dob: dob,
+                role_id: 1
+
             };
 
             const response = await authService.registerUser(payload);
