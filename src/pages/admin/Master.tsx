@@ -24,11 +24,9 @@ import {
     DeleteOutlined,
     DollarOutlined,
     ClockCircleOutlined,
-    CheckCircleOutlined,
-    CloseCircleOutlined,
     DatabaseOutlined
 } from '@ant-design/icons';
-import { planService, type InvestmentPlan, type CreatePlanPayload } from '../../services/planService';
+import { planService, type InvestmentPlan} from '../../services/planService';
 import '../../styles/admin.css';
 import '../../styles/master.css';
 
