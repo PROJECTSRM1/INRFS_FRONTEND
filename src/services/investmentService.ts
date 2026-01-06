@@ -24,21 +24,30 @@ export interface InvestmentApiResponse {
     plan_name?: string;
 }
 
-// Frontend Investment interface
+// API Response from GET /investments/my
 export interface Investment {
     id?: number;
-    wk_inv_id?: string;
+    wk_inv_id?: string;  // Old field name (deprecated)
+    uk_inv_id?: string;  // Unique investment ID (e.g., "INV0077")
     user_id?: number;
     plan_type_id?: number;
     principal_amount?: number;
+    interest_amount?: number;
     maturity_amount?: number;
     maturity_date?: string;
     created_date?: string;
-    status?: string;
-    bond_certificate?: string;
+    modified_date?: string | null;
+    modified_by?: number | null;
+    is_active?: boolean;
+    upload_file?: string | null;
+
+    // Additional fields that might come from joined data
+    plan_name?: string;
     interest_rate?: number;
     duration_months?: number;
-    plan_name?: string;
+    status?: string;
+    bond_certificate?: string;
+
     // Legacy fields for compatibility
     planId?: string;
     planName?: string;
@@ -74,11 +83,11 @@ export const investmentService = {
 
     /**
      * Get all investments for the current user
-     * Endpoint: GET https://inrfs-be.onrender.com/investments/
+     * Endpoint: GET https://inrfs-be.onrender.com/investments/my
      */
     getInvestments: async (): Promise<Investment[]> => {
         try {
-            const response = await apiClient.get('/investments/');
+            const response = await apiClient.get('/investments/my');
             console.log('Investments fetched:', response.data);
 
             // Handle different response structures
