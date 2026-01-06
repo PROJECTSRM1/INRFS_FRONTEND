@@ -1,22 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Card, Input, Button, Tag, Space, Typography, Tooltip, message } from 'antd';
 import { SearchOutlined, DownloadOutlined, EyeOutlined, EditOutlined } from '@ant-design/icons';
-import { MOCK_INVESTORS } from '../../data/mockData';
 import AdminInvestorModal from '../../components/admin/AdminInvestorModal';
 import type { Investor } from '../../types';
 import '../../styles/admin.css';
+
+import axios from "axios";
+
+const API_BASE = "https://inrfs-be.onrender.com";
+
+export const getInvestors = async () => {
+  const response = await axios.get(`${API_BASE}/users/users/`);
+  return response.data;
+};
+
 
 const { Title, Text } = Typography;
 
 const AdminInvestors: React.FC = () => {
     const [searchText, setSearchText] = useState('');
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-    const [dataSource, setDataSource] = useState<Investor[]>(MOCK_INVESTORS);
+   const [dataSource, setDataSource] = useState<Investor[]>([]);
+const [loading, setLoading] = useState(false);
+
 
     // Modal State
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedInvestor, setSelectedInvestor] = useState<Investor | null>(null);
     const [modalMode, setModalMode] = useState<'view' | 'edit'>('view');
+
+useEffect(() => {
+  const fetchInvestors = async () => {
+    try {
+      setLoading(true);
+
+      const res = await axios.get(`${API_BASE}/users`);
+      console.log("API SUCCESS:", res);
+
+      const mapped: Investor[] = res.data.map((u: any) => ({
+        id: u.id,
+        customerId: u.inv_reg_id,
+        name: `${u.first_name} ${u.last_name}`,
+        email: u.email,
+        mobile: u.mobile,
+        status: "Active",
+        totalInvested: 0,
+        activeInvestments: 0,
+      }));
+
+      setDataSource(mapped);
+
+    } catch (err: any) {
+      console.error("API ERROR:", err);
+
+      // Better error message
+      if (err.response) {
+        console.error("Response data:", err.response.data);
+        console.error("Response status:", err.response.status);
+        message.error(`Error ${err.response.status}: Failed to load investors`);
+      } else if (err.request) {
+        message.error("Network Error: Failed to load investors");
+      } else {
+        message.error("Unknown Error: Failed to load investors");
+      }
+
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchInvestors();
+}, []);
+
+
+
+
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -26,22 +84,24 @@ const AdminInvestors: React.FC = () => {
 
     // Filter logic
     const filteredData = dataSource.filter(item =>
-        item.name.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.customerId?.toLowerCase().includes(searchText.toLowerCase())
-    );
+  item.name?.toLowerCase().includes(searchText.toLowerCase()) ||
+  item.email?.toLowerCase().includes(searchText.toLowerCase()) ||
+  item.customerId?.toLowerCase().includes(searchText.toLowerCase())
+);
 
-    const handleView = (record: Investor) => {
-        setSelectedInvestor(record);
-        setModalMode('view');
-        setIsModalVisible(true);
-    };
 
-    const handleEdit = (record: Investor) => {
-        setSelectedInvestor(record);
-        setModalMode('edit');
-        setIsModalVisible(true);
-    };
+   const handleView = (record: Investor) => {
+  setSelectedInvestor(record);
+  setModalMode('view');        // ✅ correct state
+  setIsModalVisible(true);     // ✅ correct state
+};
+
+const handleEdit = (record: Investor) => {
+  setSelectedInvestor(record);
+  setModalMode('edit');        // ✅ correct state
+  setIsModalVisible(true);     // ✅ correct state
+};
+
 
     const handleModalCancel = () => {
         setIsModalVisible(false);
@@ -92,7 +152,8 @@ const AdminInvestors: React.FC = () => {
             dataIndex: 'totalInvested',
             key: 'totalInvested',
             render: (val: number) => <Text strong>${val.toLocaleString()}</Text>,
-            sorter: (a: Investor, b: Investor) => a.totalInvested - b.totalInvested,
+            sorter: (a: Investor, b: Investor) => (a.totalInvested ?? 0) - (b.totalInvested ?? 0),
+
         },
         {
             title: 'Status',
@@ -163,19 +224,21 @@ const AdminInvestors: React.FC = () => {
                         Export
                     </Button>
                 </div>
-                <Table
-                    columns={columns}
-                    dataSource={filteredData}
-                    rowKey="id"
-                    size="small"
-                    scroll={{ x: 800 }}
-                    pagination={{
-                        pageSize: 8,
-                        showSizeChanger: false,
-                        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
-                        className: "compact-pagination"
-                    }}
-                />
+               <Table
+  loading={loading}
+  columns={columns}
+  dataSource={filteredData}
+  rowKey="id"
+  size="small"
+  scroll={{ x: 800 }}
+  pagination={{
+    pageSize: 8,
+    showSizeChanger: false,
+    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+    className: "compact-pagination"
+  }}
+/>
+
             </Card>
 
             <AdminInvestorModal
