@@ -235,37 +235,41 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                 centered
                 width={420}
                 title={null}
+                className="otp-modal-refined"
             >
                 <div className="registration-header">
                     <Title level={3} className="auth-title-text">Verify Email</Title>
                     <Paragraph type="secondary">Enter the 6-digit OTP sent to {verifyingEmail}</Paragraph>
+                    <div className="registration-content">
+                        <div className="otp-input-container">
+                            <Input.OTP
+                                length={6}
+                                value={otp}
+                                onChange={(val) => setOtp(val)}
+                            />
+                        </div>
 
-                    <div className="otp-input-container">
-                        <Input.OTP
-                            length={6}
-                            value={otp}
-                            onChange={(val) => setOtp(val)}
-                            size="large"
-                        />
+                        <div className="otp-button-group">
+                            <Button
+                                type="primary"
+                                block
+                                loading={loading}
+                                onClick={handleVerifyOtp}
+                                className="btn-solid-primary"
+                                size="large"
+                            >
+                                Verify Email
+                            </Button>
+                            <Button
+                                block
+                                onClick={() => setIsOtpVisible(false)}
+                                className="btn-hero-ghost-dark otp-cancel-button"
+                                size="large"
+                            >
+                                Cancel
+                            </Button>
+                        </div>
                     </div>
-
-                    <Button
-                        type="primary"
-                        block
-                        loading={loading}
-                        onClick={handleVerifyOtp}
-                        className="btn-hero-primary"
-                    >
-                        Verify Email
-                    </Button>
-
-                    <Button
-                        block
-                        onClick={() => setIsOtpVisible(false)}
-                        className="btn-hero-ghost-dark otp-cancel-button"
-                    >
-                        Cancel
-                    </Button>
                 </div>
             </Modal>
         </>
