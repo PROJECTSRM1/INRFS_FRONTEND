@@ -2512,7 +2512,7 @@
 .cert-details-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
     border: 1px solid #9ca3af;
     background: transparent !important;
     /* Visual transparency for watermark */
@@ -2540,10 +2540,10 @@
 }
 
 .cert-footer {
-    margin-top: auto;
+    margin-top: 60px;
     display: flex;
     justify-content: flex-end;
-    padding-top: 40px;
+    padding-top: 20px;
 }
 
 .cert-sig-block {
@@ -2568,7 +2568,8 @@
     font-size: 12px;
     text-align: center;
     color: #9ca3af;
-    margin-top: 20px;
+    margin-top: 30px;
+    margin-bottom: 40px;
     font-style: italic;
 }
 
