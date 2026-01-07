@@ -10,11 +10,17 @@ interface StatMiniCardProps {
     icon: React.ReactNode;
     colorClass: string;
     trend?: string;
+    onClick?: () => void;
 }
 
-const StatMiniCard: React.FC<StatMiniCardProps> = ({ title, value, icon, colorClass, trend }) => {
+const StatMiniCard: React.FC<StatMiniCardProps> = ({ title, value, icon, colorClass, trend, onClick }) => {
     return (
-        <Card className={`stat-card-refined ${colorClass}`} bordered={false}>
+        <Card
+            className={`stat-card-refined ${colorClass}`}
+            bordered={false}
+            onClick={onClick}
+            style={{ cursor: onClick ? 'pointer' : 'default' }}
+        >
             <div className="stat-card-content">
                 <div className="stat-header-row">
                     <div className="stat-icon-box">
