@@ -34,36 +34,38 @@ useEffect(() => {
     try {
       setLoading(true);
 
-      const res = await axios.get(`${API_BASE}/users`);
+      const res = await axios.get(`${API_BASE}/users`); 
       console.log("API SUCCESS:", res);
 
-      const mapped: Investor[] = res.data.map((u: any) => ({
-        id: u.id,
-        customerId: u.inv_reg_id,
-        name: `${u.first_name} ${u.last_name}`,
-        email: u.email,
-        mobile: u.mobile,
-        status: "Active",
-        totalInvested: 0,
-        activeInvestments: 0,
-      }));
+      /**
+       * FILTER: Only role_id === 1
+       * AND map totalInvested & activeInvestments from backend
+       */
+      const filtered = res.data
+        .filter((u: any) => u.role_id === 1) // ✅ role_id filter
+        .map((u: any) => ({
+          id: u.id,
+          customerId: u.inv_reg_id,
+          name: `${u.first_name} ${u.last_name}`,
+          email: u.email,
+          mobile: u.mobile,
+          status: u.status ?? "Active", // backend might provide
+           totalInvested: parseFloat(u.total_principal_amount) || 0,
+    activeInvestments: u.active_investments_count ?? 0, 
+        }));
 
-      setDataSource(mapped);
+      setDataSource(filtered);
 
     } catch (err: any) {
       console.error("API ERROR:", err);
 
-      // Better error message
       if (err.response) {
-        console.error("Response data:", err.response.data);
-        console.error("Response status:", err.response.status);
         message.error(`Error ${err.response.status}: Failed to load investors`);
       } else if (err.request) {
         message.error("Network Error: Failed to load investors");
       } else {
         message.error("Unknown Error: Failed to load investors");
       }
-
     } finally {
       setLoading(false);
     }
@@ -71,6 +73,8 @@ useEffect(() => {
 
   fetchInvestors();
 }, []);
+
+
 
 
 
