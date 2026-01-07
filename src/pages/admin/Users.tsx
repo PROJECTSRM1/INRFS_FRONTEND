@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Table, Card, Input, Button, Tag, Space, Typography, Tooltip, Modal, Form, Select, Row, Col, message } from 'antd';
+import { Table, Card, Input, Button, Tag, Space, Typography, Modal, Form, Select, Row, Col, message } from 'antd';
 import { SearchOutlined, DownloadOutlined, UserAddOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { MOCK_SYSTEM_USERS } from '../../data/mockData';
+// import { MOCK_SYSTEM_USERS } from '../../data/mockData';
 import '../../styles/admin.css';
+import { fetchUsers } from "../../utils/usersService";
+import type { User } from "../../utils/usersService";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -14,26 +16,44 @@ const Users: React.FC = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     // Initialize users with mock data
-    const [users, setUsers] = useState(MOCK_SYSTEM_USERS);
+    
+const [users, setUsers] = useState<User[]>([]);
 
     React.useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 768);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+    React.useEffect(() => {
+  const loadUsers = async () => {
+    try {
+      setLoading(true);
+      const apiUsers = await fetchUsers();
+      setUsers(apiUsers);
+    } catch (err) {
+      message.error("Failed to load users");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  loadUsers();
+}, []);
+
 
     const onFinish = (values: any) => {
         setLoading(true);
         setTimeout(() => {
-            const newUser = {
-                id: (users.length + 1).toString(),
-                name: `${values.firstName} ${values.lastName}`,
-                email: values.email,
-                role: values.role === 'super_admin' ? 'Super Admin' : 'Admin',
-                status: 'Active',
-                mobile: `+91 ${values.mobile}`,
-                joinedDate: new Date().toISOString().split('T')[0]
-            };
+           const newUser: User = {
+  id: Number(users.length + 1),
+  first_name: values.firstName,
+  last_name: values.lastName,
+  email: values.email,
+  mobile: `+91 ${values.mobile}`,
+  role_id: values.role === "super_admin" ? 3 : 2,
+  dob: new Date().toISOString().split("T")[0],
+};
+
 
             setUsers([...users, newUser]);
             console.log('Success:', newUser);
@@ -52,7 +72,8 @@ const Users: React.FC = () => {
             okType: 'danger',
             cancelText: 'Cancel',
             onOk: () => {
-                setUsers(users.filter((user: any) => user.id !== id));
+                setUsers(users.filter((user: any) => String(user.id) !== id
+));
                 message.success('Admin deleted successfully');
             }
         });
@@ -60,14 +81,18 @@ const Users: React.FC = () => {
 
     const exportToCSV = () => {
         // Define headers
-        const headers = ['ID,Name,Email,Role,Mobile,Status,Joined Date'];
+        const headers = ["ID,Name,Email,Role,Mobile,Status,Joined Date"];
 
-        // Format rows
-        const rows = users.map(user => {
-            // Escape quotes in name if present
-            const safeName = user.name.includes(',') ? `"${user.name}"` : user.name;
-            return `${user.id},${safeName},${user.email},${user.role},${user.mobile},${user.status},${user.joinedDate}`;
-        });
+const rows = users.map(user => {
+  const fullName = `${user.first_name} ${user.last_name}`;
+  const role = user.role_id === 3 ? "Super Admin" : "Admin";
+  const status = "Active";
+  const joinedDate = user.dob;
+
+  const safeName = fullName.includes(",") ? `"${fullName}"` : fullName;
+  return `${user.id},${safeName},${user.email},${role},${user.mobile},${status},${joinedDate}`;
+});
+
 
         // Combine and create blob
         const csvContent = [headers, ...rows].join("\n");
@@ -88,67 +113,66 @@ const Users: React.FC = () => {
         }
     };
 
-    const columns: any = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-            render: (text: string) => <Text strong>{text}</Text>,
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
-            responsive: ['md'],
-        },
-        {
-            title: 'Role',
-            dataIndex: 'role',
-            key: 'role',
-            render: (role: string) => <Tag color={role === 'Super Admin' ? 'purple' : 'blue'}>{role}</Tag>,
-        },
-        {
-            title: 'Mobile',
-            dataIndex: 'mobile',
-            key: 'mobile',
-            responsive: ['lg'],
-        },
-        {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
-            render: (status: string) => {
-                let color = 'default';
-                if (status === 'Active') color = 'success';
-                if (status === 'Inactive') color = 'error';
-                return <Tag color={color} className="users-status-tag">{status}</Tag>;
-            },
-        },
-        {
-            title: 'Actions',
-            key: 'actions',
-            render: (record: any) => (
-                <Space size="middle">
-                    <Tooltip title="Edit">
-                        <Button type="text" icon={<EditOutlined style={{ color: '#3b82f6' }} />} size="small" />
-                    </Tooltip>
-                    <Tooltip title="Delete">
-                        <Button
-                            type="text"
-                            icon={<DeleteOutlined style={{ color: '#ef4444' }} />}
-                            size="small"
-                            onClick={() => deleteUser(record.id, record.name)}
-                        />
-                    </Tooltip>
-                </Space>
-            ),
-        },
-    ];
+   const columns = [
+  {
+    title: "Name",
+    key: "name",
+    render: (record: User) => (
+      <Text strong>{record.first_name} {record.last_name}</Text>
+    ),
+  },
+  {
+    title: "Email",
+    dataIndex: "email",
+    key: "email",
+  },
+  {
+    title: "Role",
+    dataIndex: "role_id",
+    key: "role",
+    render: (role_id: number) => (
+      <Tag>{role_id === 3 ? "Super Admin" : "Admin"}</Tag>
+    ),
+  },
+  {
+    title: "Mobile",
+    dataIndex: "mobile",
+    key: "mobile",
+  },
+  {
+    title: "Status",
+    key: "status",
+    render: () => <Tag>Active</Tag>,
+  },
+  {
+    title: "Joined Date",
+    key: "joinedDate",
+    render: (record: User) => <Text>{record.dob}</Text>,
+  },
+  {
+    title: "Actions",
+    key: "actions",
+    render: (record: User) => (
+      <Space>
+        <Button type="text" icon={<EditOutlined />} size="small" />
+        <Button
+          type="text"
+          icon={<DeleteOutlined />}
+          size="small"
+          onClick={() => deleteUser(String(record.id), `${record.first_name} ${record.last_name}`)}
+        />
+      </Space>
+    ),
+  }
+];
 
-    const dataSource = users.filter((item: any) =>
-        item.name.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchText.toLowerCase())
-    );
+
+
+    const dataSource = users.filter(user =>
+  `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchText.toLowerCase()) ||
+  user.email.toLowerCase().includes(searchText.toLowerCase())
+);
+
 
     return (
         <div className="admin-dashboard-wrapper">
