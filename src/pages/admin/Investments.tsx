@@ -1,41 +1,131 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Card, Select, Tag, Typography, Input, Button, Tooltip, message } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
 import { useLocation } from 'react-router-dom';
-import { MOCK_INVESTMENTS } from '../../data/mockData';
 import { SearchOutlined, CheckCircleOutlined, ClockCircleOutlined, CheckSquareOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import InvestmentCompletionModal from '../../components/admin/InvestmentCompletionModal';
 import type { Investment } from '../../types';
 import '../../styles/admin.css';
+import axios from 'axios';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
+const PLAN_NAME_MAP: Record<number, string> = {
+    1: "3 Month",
+    2: "6 Month",
+    3: "Yearly",
+    4: "Quarterly",
+};
 
 const AdminInvestments: React.FC = () => {
     const location = useLocation();
     const [planFilter, setPlanFilter] = useState('All Plans');
-    const [statusFilter, setStatusFilter] = useState('All Status');
+    const [statusFilter, setStatusFilter] = useState(() => location.state?.defaultStatus || 'All Status');
     const [searchText, setSearchText] = useState('');
-    // isMobile removed as we use CSS media queries now
-    const [investments, setInvestments] = useState(MOCK_INVESTMENTS);
+    const [investments, setInvestments] = useState<Investment[]>([]);
+    const [loading, setLoading] = useState(false);
     const [isCompletionModalVisible, setIsCompletionModalVisible] = useState(false);
     const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
+
+    const getTokens = () => ({
+        access: localStorage.getItem("access_token"),
+        refresh: localStorage.getItem("refresh_token"),
+    });
+
+    const saveAccessToken = (token: string) => localStorage.setItem("access_token", token);
+
+    const refreshAccessToken = async () => {
+        const { refresh } = getTokens();
+        try {
+            const res = await axios.post("https://inrfs-be.onrender.com/users/refresh", {
+                refresh_token: refresh,
+            });
+            const newAccess = res.data.access_token;
+            saveAccessToken(newAccess);
+            return newAccess;
+        } catch (error) {
+            console.error("Failed to refresh token", error);
+            throw error;
+        }
+    };
+
+    const fetchInvestmentData = async () => {
+        try {
+            setLoading(true);
+            let { access } = getTokens();
+
+            const res = await axios.get("https://inrfs-be.onrender.com/investments/", {
+                headers: { Authorization: `Bearer ${access}` },
+            });
+
+            const mapped: Investment[] = res.data.map((item: any) => ({
+                id: item.uk_inv_id || String(item.id),
+                investorName: `ID-${item.created_by}`,
+                planName: PLAN_NAME_MAP[item.plan_type_id] || "Unknown",
+                amount: item.principal_amount || 0,
+                interest: item.interest_amount || 0,
+                maturityDate: item.maturity_date || '',
+                status: item.is_active ? "Active" : "Completed",
+                settlementStatus: item.is_active ? "Pending" : "Completed",
+                maturityAmount: (item.principal_amount || 0) + (item.interest_amount || 0),
+                tenure: item.tenure || 0,
+                date: item.maturity_date || '',
+                planId: String(item.plan_type_id || ''),
+                infrcNumber: item.infrc_number || ''
+            }));
+
+            setInvestments(mapped);
+        } catch (err: any) {
+            console.error("Error fetching investments:", err);
+            if (err.response?.status === 401) {
+                try {
+                    const newAccess = await refreshAccessToken();
+                    const retry = await axios.get("https://inrfs-be.onrender.com/investments/", {
+                        headers: { Authorization: `Bearer ${newAccess}` },
+                    });
+
+                    const mappedRetry: Investment[] = retry.data.map((item: any) => ({
+                        id: item.uk_inv_id || String(item.id),
+                        investorName: `ID-${item.created_by}`,
+                        planName: PLAN_NAME_MAP[item.plan_type_id] || "Unknown",
+                        amount: item.principal_amount || 0,
+                        interest: item.interest_amount || 0,
+                        maturityDate: item.maturity_date || '',
+                        status: item.is_active ? "Active" : "Completed",
+                        settlementStatus: item.is_active ? "Pending" : "Completed",
+                        maturityAmount: (item.principal_amount || 0) + (item.interest_amount || 0),
+                        tenure: item.tenure || 0,
+                        date: item.maturity_date || '',
+                        planId: String(item.plan_type_id || ''),
+                        infrcNumber: item.infrc_number || ''
+                    }));
+                    setInvestments(mappedRetry);
+                } catch (retryErr) {
+                    console.error("Retry fetch failed:", retryErr);
+                    message.error("Session expired. Please login again.");
+                }
+            } else {
+                message.error("Failed to load investments from backend");
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchInvestmentData();
+    }, []);
 
     // Handle navigation from Dashboard with pre-selected filter
     useEffect(() => {
         if (location.state && location.state.defaultStatus) {
-            setStatusFilter(location.state.defaultStatus);
-            // Clear state so it doesn't persist on refresh if not desired, 
-            // though keeping it effectively allows "back" to work nicely? 
-            // Usually standard to just set it once.
             window.history.replaceState({}, document.title);
         }
     }, [location]);
 
     // Helper function to parse date strings
     const parseMaturityDate = (dateStr?: string): Date => {
-        if (!dateStr) return new Date(9999, 11, 31); // Far future for items without dates
-
-        // Handle formats like "Jun 15, 2024" or "Apr 20, 2024"
+        if (!dateStr) return new Date(9999, 11, 31);
         const parsed = new Date(dateStr);
         return isNaN(parsed.getTime()) ? new Date(9999, 11, 31) : parsed;
     };
@@ -52,7 +142,6 @@ const AdminInvestments: React.FC = () => {
             if (inv.id === selectedInvestment.id) {
                 const isEarly = mode === 'Early';
                 const originalInterest = inv.interest || 0;
-                // No penalty as per user request
                 const adjustedInterest = originalInterest;
 
                 return {
@@ -60,7 +149,6 @@ const AdminInvestments: React.FC = () => {
                     status: isEarly ? 'Closed Early' : 'Completed',
                     settlementStatus: isEarly ? 'Adjusted' : 'Completed',
                     interest: adjustedInterest,
-                    // Maturity amount remains same as interest is not reduced
                     maturityAmount: inv.amount + adjustedInterest
                 } as Investment;
             }
@@ -73,7 +161,7 @@ const AdminInvestments: React.FC = () => {
         message.success(mode === 'Early' ? 'Investment closed early with adjustment' : 'Investment marked as completed successfully');
     };
 
-    const columns: any = [
+    const columns: ColumnsType<Investment> = [
         {
             title: 'ID',
             dataIndex: 'id',
@@ -99,7 +187,7 @@ const AdminInvestments: React.FC = () => {
             dataIndex: 'amount',
             key: 'amount',
             render: (val: number) => <Text strong>₹{val.toLocaleString()}</Text>,
-            sorter: (a: any, b: any) => a.amount - b.amount,
+            sorter: (a: Investment, b: Investment) => a.amount - b.amount,
         },
         {
             title: 'Interest',
@@ -168,7 +256,7 @@ const AdminInvestments: React.FC = () => {
             title: 'Actions',
             key: 'actions',
             width: 100,
-            render: (_: any, record: Investment) => (
+            render: (_: unknown, record: Investment) => (
                 <Tooltip title={record.status === 'Completed' ? 'Already Completed' : 'Mark as Completed'}>
                     <Button
                         type="default" // Changed to default to use our custom class borders
@@ -249,6 +337,7 @@ const AdminInvestments: React.FC = () => {
                     columns={columns}
                     dataSource={dataSource}
                     rowKey="id"
+                    loading={loading}
                     size="small"
                     scroll={{ x: 800 }}
                     pagination={{
