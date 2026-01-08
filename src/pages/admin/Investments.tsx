@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Card, Select, Tag, Typography, Input, Button, Tooltip, message } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
 import { useLocation } from 'react-router-dom';
 import { MOCK_INVESTMENTS } from '../../data/mockData';
 import { SearchOutlined, CheckCircleOutlined, ClockCircleOutlined, CheckSquareOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
@@ -13,7 +14,7 @@ const { Option } = Select;
 const AdminInvestments: React.FC = () => {
     const location = useLocation();
     const [planFilter, setPlanFilter] = useState('All Plans');
-    const [statusFilter, setStatusFilter] = useState('All Status');
+    const [statusFilter, setStatusFilter] = useState(() => location.state?.defaultStatus || 'All Status');
     const [searchText, setSearchText] = useState('');
     // isMobile removed as we use CSS media queries now
     const [investments, setInvestments] = useState(MOCK_INVESTMENTS);
@@ -23,7 +24,6 @@ const AdminInvestments: React.FC = () => {
     // Handle navigation from Dashboard with pre-selected filter
     useEffect(() => {
         if (location.state && location.state.defaultStatus) {
-            setStatusFilter(location.state.defaultStatus);
             // Clear state so it doesn't persist on refresh if not desired, 
             // though keeping it effectively allows "back" to work nicely? 
             // Usually standard to just set it once.
@@ -73,7 +73,7 @@ const AdminInvestments: React.FC = () => {
         message.success(mode === 'Early' ? 'Investment closed early with adjustment' : 'Investment marked as completed successfully');
     };
 
-    const columns: any = [
+    const columns: ColumnsType<Investment> = [
         {
             title: 'ID',
             dataIndex: 'id',
@@ -99,7 +99,7 @@ const AdminInvestments: React.FC = () => {
             dataIndex: 'amount',
             key: 'amount',
             render: (val: number) => <Text strong>₹{val.toLocaleString()}</Text>,
-            sorter: (a: any, b: any) => a.amount - b.amount,
+            sorter: (a: Investment, b: Investment) => a.amount - b.amount,
         },
         {
             title: 'Interest',
@@ -168,7 +168,7 @@ const AdminInvestments: React.FC = () => {
             title: 'Actions',
             key: 'actions',
             width: 100,
-            render: (_: any, record: Investment) => (
+            render: (_: unknown, record: Investment) => (
                 <Tooltip title={record.status === 'Completed' ? 'Already Completed' : 'Mark as Completed'}>
                     <Button
                         type="default" // Changed to default to use our custom class borders
