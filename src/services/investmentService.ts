@@ -120,6 +120,31 @@ export const investmentService = {
      */
     getCurrentDate: (): string => {
         return new Date().toISOString();
+    },
+
+    /**
+     * Save bond certificate to database
+     * Endpoint: POST/PUT endpoint for saving bond certificate
+     * TODO: Update with actual API endpoint when available
+     */
+    saveBondCertificate: async (investmentId: string, bondData: any): Promise<any> => {
+        try {
+            console.log('Saving bond certificate:', { investmentId, bondData });
+
+            // TODO: Replace with actual API endpoint
+            // Example: const response = await apiClient.post(`/investments/${investmentId}/bond`, bondData);
+
+            // For now, return a mock success response
+            // Remove this and uncomment the actual API call when endpoint is ready
+            return {
+                success: true,
+                message: 'Bond certificate saved successfully',
+                data: bondData
+            };
+        } catch (error) {
+            console.error('Error saving bond certificate:', error);
+            throw error;
+        }
     }
 };
 

@@ -55,8 +55,14 @@ const Dashboard: React.FC = () => {
     const activeInvestments = investments.filter(inv => inv.is_active).length;
     const digitalBonds = investments.length;
 
-    // Prepare recent investments for table (last 3)
+    // Prepare recent investments for table (last 3 most recent)
     const recentInvestments = investments
+        .sort((a, b) => {
+            // Sort by created_date in descending order (most recent first)
+            const dateA = new Date(a.created_date || 0).getTime();
+            const dateB = new Date(b.created_date || 0).getTime();
+            return dateB - dateA;
+        })
         .slice(0, 3)
         .map(inv => ({
             id: inv.uk_inv_id || 'N/A',
@@ -141,6 +147,7 @@ const Dashboard: React.FC = () => {
                                 value={fintechService.formatCurrency(totalInvested)}
                                 icon={<WalletOutlined />}
                                 colorClass="stat-blue"
+                                onClick={() => navigate('/dashboard/my-investments')}
                             />
                         </Col>
                         <Col xs={24} sm={12} lg={6}>
@@ -149,6 +156,7 @@ const Dashboard: React.FC = () => {
                                 value={fintechService.formatCurrency(totalReturns)}
                                 icon={<LineChartOutlined />}
                                 colorClass="stat-green"
+                                onClick={() => navigate('/dashboard/my-investments')}
                             />
                         </Col>
                         <Col xs={24} sm={12} lg={6}>
@@ -157,6 +165,7 @@ const Dashboard: React.FC = () => {
                                 value={activeInvestments.toString()}
                                 icon={<PieChartOutlined />}
                                 colorClass="stat-purple"
+                                onClick={() => navigate('/dashboard/my-investments')}
                             />
                         </Col>
                         <Col xs={24} sm={12} lg={6}>
@@ -165,6 +174,7 @@ const Dashboard: React.FC = () => {
                                 value={digitalBonds.toString()}
                                 icon={<FileTextOutlined />}
                                 colorClass="stat-orange"
+                                onClick={() => navigate('/dashboard/my-investments')}
                             />
                         </Col>
                     </Row>
