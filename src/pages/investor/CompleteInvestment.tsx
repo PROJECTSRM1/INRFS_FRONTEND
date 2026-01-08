@@ -117,24 +117,10 @@ const CompleteInvestment: React.FC = () => {
         setLoading(true);
 
         try {
-            // Prepare payload for POST API
-            const payload = {
-                principal_amount: Number(amount),
-                plan_type_id: planTypeId,
-                maturity_date: investmentService.calculateMaturityDate(displayPlan.duration),
-                created_date: investmentService.getCurrentDate()
-            };
-
-            console.log('Submitting investment:', payload);
-
-            // Call the POST API
-            const response = await investmentService.createInvestment(payload);
-
-            console.log('Investment created:', response);
-
-            // Generate bond data
+            // Generate bond data first (before API call)
+            const infrcNumber = `${displayPlan.infrcPrefix}-${Math.floor(100000 + Math.random() * 900000)}`;
             const bondData = {
-                id: response.wk_inv_id || fintechService.generateInvestmentId(investments.length),
+                id: fintechService.generateInvestmentId(investments.length),
                 planId: displayPlan.id,
                 planName: displayPlan.name,
                 amount: Number(amount),
@@ -145,17 +131,20 @@ const CompleteInvestment: React.FC = () => {
                 status: 'Active' as const,
                 date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
                 startDate: new Date().toISOString(),
-                infrcNumber: `${displayPlan.infrcPrefix}-${Math.floor(100000 + Math.random() * 900000)}`,
-                apiResponse: response
+                infrcNumber: infrcNumber,
+                maturityDate: investmentService.calculateMaturityDate(displayPlan.duration)
             };
 
+            // Store bond data for later save
             setGeneratedBond(bondData);
+
+            // Close payment modal and show bond certificate
             setIsPaymentModalVisible(false);
             setShowBondCertificate(true);
             message.success('Payment successful! Your bond certificate is ready.');
         } catch (error: any) {
-            console.error('Error creating investment:', error);
-            const errorMessage = error.response?.data?.message || error.message || 'Failed to create investment';
+            console.error('Error processing payment:', error);
+            const errorMessage = error.response?.data?.message || error.message || 'Failed to process payment';
             message.error(errorMessage);
         } finally {
             setLoading(false);
@@ -192,17 +181,31 @@ const CompleteInvestment: React.FC = () => {
         setSavingBond(true);
 
         try {
-            // Call API to save bond certificate to database
-            await investmentService.saveBondCertificate(
-                generatedBond.id,
-                {
-                    bond_certificate: generatedBond.infrcNumber,
-                    investment_data: generatedBond
-                }
-            );
+            // Prepare complete payload for POST API with bond certificate
+            const payload = {
+                principal_amount: Number(amount),
+                plan_type_id: planTypeId,
+                maturity_date: generatedBond.maturityDate,
+                upload_file: generatedBond.infrcNumber, // Store bond certificate number
+                created_date: investmentService.getCurrentDate()
+            };
+
+            console.log('Saving investment to database:', payload);
+
+            // Call the POST API to save investment
+            const response = await investmentService.createInvestment(payload);
+
+            console.log('Investment saved successfully:', response);
+
+            // Update bond data with API response
+            const updatedBondData = {
+                ...generatedBond,
+                id: response.wk_inv_id || response.uk_inv_id || generatedBond.id,
+                apiResponse: response
+            };
 
             // Add to local context for immediate UI update
-            addInvestment(generatedBond);
+            addInvestment(updatedBondData);
 
             message.success('Bond saved successfully!');
 
@@ -212,7 +215,8 @@ const CompleteInvestment: React.FC = () => {
             }, 500);
         } catch (error: any) {
             console.error('Error saving bond:', error);
-            message.error('Failed to save bond. Please try again.');
+            const errorMessage = error.response?.data?.message || error.message || 'Failed to save bond. Please try again.';
+            message.error(errorMessage);
         } finally {
             setSavingBond(false);
         }
