@@ -11,6 +11,15 @@ const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
+interface ReportItem {
+    key: string;
+    name: string;
+    date: string;
+    type: string;
+    category: string;
+    format: string;
+}
+
 const Reports: React.FC = () => {
     const [isMobile, setIsMobile] = useState(false);
     // State to hold filters
@@ -18,6 +27,8 @@ const Reports: React.FC = () => {
     const [selectedFormat, setSelectedFormat] = useState('all');
     const [dateRange, setDateRange] = useState<[dayjs.Dayjs | null, dayjs.Dayjs | null] | null>(null);
     const [activeDateRange, setActiveDateRange] = useState<[dayjs.Dayjs | null, dayjs.Dayjs | null] | null>(null);
+    const [loading] = useState(false);
+
 
 
     useEffect(() => {
@@ -27,7 +38,7 @@ const Reports: React.FC = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const handleDownload = (record: any, format: 'pdf' | 'csv') => {
+    const handleDownload = (record: ReportItem, format: 'pdf' | 'csv') => {
         message.loading(`Generating ${format.toUpperCase()} for ${record.name}...`, 1.5)
             .then(() => message.success(`${format.toUpperCase()} Downloaded Successfully`));
     };
@@ -68,8 +79,8 @@ const Reports: React.FC = () => {
             title: 'Action',
             key: 'action',
             width: 140,
-            fixed: (isMobile ? false : 'right') as any,
-            render: (_: any, record: any) => (
+            fixed: (isMobile ? false : 'right') as boolean | 'right' | 'left',
+            render: (_: unknown, record: ReportItem) => (
                 <Space size="middle">
                     {record.format === 'pdf' || record.format === 'all' ? (
                         <Button
@@ -91,7 +102,7 @@ const Reports: React.FC = () => {
     ];
 
     // Mock data with format property
-    const allReportData = [
+    const allReportData: ReportItem[] = [
         { key: '1', name: 'Q3 Investor Demographics', date: '2025-09-30', type: 'Investor Report', category: 'investor', format: 'pdf' },
         { key: '2', name: 'New Investors - Nov 2025', date: '2025-11-30', type: 'Investor Report', category: 'investor', format: 'csv' },
         { key: '3', name: 'Annual Investment Summary', date: '2025-12-15', type: 'Investments Report', category: 'investments', format: 'pdf' },
@@ -143,7 +154,7 @@ const Reports: React.FC = () => {
                             <div className="reports-range-picker-container">
                                 <RangePicker
                                     className="reports-range-picker-full"
-                                    onChange={(dates) => setDateRange(dates as any)}
+                                    onChange={(dates) => setDateRange(dates as [dayjs.Dayjs | null, dayjs.Dayjs | null] | null)}
                                 />
                             </div>
                         </Col>
@@ -184,10 +195,13 @@ const Reports: React.FC = () => {
                 <Table
                     columns={reportColumns}
                     dataSource={filteredData}
+                    loading={loading}
                     pagination={{ pageSize: 5 }}
                     scroll={{ x: 700 }}
                     size={isMobile ? 'small' : 'middle'}
-                    locale={{ emptyText: 'No reports found for these filters' }}
+                    locale={{
+                        emptyText: loading ? "Loading..." : "No reports found for these filters"
+                    }}
                 />
             </Card>
         </div>

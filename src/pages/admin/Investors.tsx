@@ -10,8 +10,8 @@ import axios from "axios";
 const API_BASE = "https://inrfs-be.onrender.com";
 
 export const getInvestors = async () => {
-  const response = await axios.get(`${API_BASE}/users/users/`);
-  return response.data;
+    const response = await axios.get(`${API_BASE}/users/users/`);
+    return response.data;
 };
 
 
@@ -20,8 +20,8 @@ const { Title, Text } = Typography;
 const AdminInvestors: React.FC = () => {
     const [searchText, setSearchText] = useState('');
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-   const [dataSource, setDataSource] = useState<Investor[]>([]);
-const [loading, setLoading] = useState(false);
+    const [dataSource, setDataSource] = useState<Investor[]>([]);
+    const [loading, setLoading] = useState(false);
 
 
     // Modal State
@@ -29,50 +29,50 @@ const [loading, setLoading] = useState(false);
     const [selectedInvestor, setSelectedInvestor] = useState<Investor | null>(null);
     const [modalMode, setModalMode] = useState<'view' | 'edit'>('view');
 
-useEffect(() => {
-  const fetchInvestors = async () => {
-    try {
-      setLoading(true);
+    useEffect(() => {
+        const fetchInvestors = async () => {
+            try {
+                setLoading(true);
 
-      const res = await axios.get(`${API_BASE}/users`); 
-      console.log("API SUCCESS:", res);
+                const res = await axios.get(`${API_BASE}/users`);
+                console.log("API SUCCESS:", res);
 
-      /**
-       * FILTER: Only role_id === 1
-       * AND map totalInvested & activeInvestments from backend
-       */
-      const filtered = res.data
-        .filter((u: any) => u.role_id === 1) // ✅ role_id filter
-        .map((u: any) => ({
-          id: u.id,
-          customerId: u.inv_reg_id,
-          name: `${u.first_name} ${u.last_name}`,
-          email: u.email,
-          mobile: u.mobile,
-          status: u.status ?? "Active", // backend might provide
-           totalInvested: parseFloat(u.total_principal_amount) || 0,
-    activeInvestments: u.active_investments_count ?? 0, 
-        }));
+                /**
+                 * FILTER: Only role_id === 1
+                 * AND map totalInvested & activeInvestments from backend
+                 */
+                const filtered = res.data
+                    .filter((u: any) => u.role_id === 1) // ✅ role_id filter
+                    .map((u: any) => ({
+                        id: u.id,
+                        customerId: u.inv_reg_id,
+                        name: `${u.first_name} ${u.last_name}`,
+                        email: u.email,
+                        mobile: u.mobile,
+                        status: u.status ?? "Active", // backend might provide
+                        totalInvested: parseFloat(u.total_principal_amount) || 0,
+                        activeInvestments: u.active_investments_count ?? 0,
+                    }));
 
-      setDataSource(filtered);
+                setDataSource(filtered);
 
-    } catch (err: any) {
-      console.error("API ERROR:", err);
+            } catch (err: any) {
+                console.error("API ERROR:", err);
 
-      if (err.response) {
-        message.error(`Error ${err.response.status}: Failed to load investors`);
-      } else if (err.request) {
-        message.error("Network Error: Failed to load investors");
-      } else {
-        message.error("Unknown Error: Failed to load investors");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+                if (err.response) {
+                    message.error(`Error ${err.response.status}: Failed to load investors`);
+                } else if (err.request) {
+                    message.error("Network Error: Failed to load investors");
+                } else {
+                    message.error("Unknown Error: Failed to load investors");
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
 
-  fetchInvestors();
-}, []);
+        fetchInvestors();
+    }, []);
 
 
 
@@ -88,23 +88,23 @@ useEffect(() => {
 
     // Filter logic
     const filteredData = dataSource.filter(item =>
-  item.name?.toLowerCase().includes(searchText.toLowerCase()) ||
-  item.email?.toLowerCase().includes(searchText.toLowerCase()) ||
-  item.customerId?.toLowerCase().includes(searchText.toLowerCase())
-);
+        item.name?.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.email?.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.customerId?.toLowerCase().includes(searchText.toLowerCase())
+    );
 
 
-   const handleView = (record: Investor) => {
-  setSelectedInvestor(record);
-  setModalMode('view');        // ✅ correct state
-  setIsModalVisible(true);     // ✅ correct state
-};
+    const handleView = (record: Investor) => {
+        setSelectedInvestor(record);
+        setModalMode('view');        // ✅ correct state
+        setIsModalVisible(true);     // ✅ correct state
+    };
 
-const handleEdit = (record: Investor) => {
-  setSelectedInvestor(record);
-  setModalMode('edit');        // ✅ correct state
-  setIsModalVisible(true);     // ✅ correct state
-};
+    const handleEdit = (record: Investor) => {
+        setSelectedInvestor(record);
+        setModalMode('edit');        // ✅ correct state
+        setIsModalVisible(true);     // ✅ correct state
+    };
 
 
     const handleModalCancel = () => {
@@ -228,20 +228,23 @@ const handleEdit = (record: Investor) => {
                         Export
                     </Button>
                 </div>
-               <Table
-  loading={loading}
-  columns={columns}
-  dataSource={filteredData}
-  rowKey="id"
-  size="small"
-  scroll={{ x: 800 }}
-  pagination={{
-    pageSize: 8,
-    showSizeChanger: false,
-    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
-    className: "compact-pagination"
-  }}
-/>
+                <Table
+                    loading={loading}
+                    columns={columns}
+                    dataSource={filteredData}
+                    rowKey="id"
+                    size="small"
+                    scroll={{ x: 800 }}
+                    pagination={{
+                        pageSize: 8,
+                        showSizeChanger: false,
+                        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                        className: "compact-pagination"
+                    }}
+                    locale={{
+                        emptyText: loading ? "Loading..." : "No investors found"
+                    }}
+                />
 
             </Card>
 
