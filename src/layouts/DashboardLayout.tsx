@@ -89,13 +89,13 @@ const DashboardLayout: React.FC = () => {
                         >
                             My Investments
                         </Link>
-                        <Link
+                        {/* <Link
                             to="/dashboard/bonds"
                             className={`mobile-nav-link ${location.pathname === '/dashboard/bonds' ? 'active' : ''}`}
                             onClick={handleNavClick}
                         >
                             Bonds
-                        </Link>
+                        </Link> */}
                         <Link
                             to="/dashboard/profile"
                             className={`mobile-nav-link ${location.pathname === '/dashboard/profile' ? 'active' : ''}`}

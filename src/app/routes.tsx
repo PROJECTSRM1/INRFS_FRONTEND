@@ -31,7 +31,7 @@ const AdminLogin = lazy(() => import('../pages/admin/AdminLogin'));
 const AdminOverview = lazy(() => import('../pages/admin/Overview'));
 const AdminInvestors = lazy(() => import('../pages/admin/Investors'));
 const AdminInvestments = lazy(() => import('../pages/admin/Investments'));
-const AdminBonds = lazy(() => import('../pages/admin/Bonds'));
+// const AdminBonds = lazy(() => import('../pages/admin/Bonds'));
 const AdminReports = lazy(() => import('../pages/admin/Reports'));
 const Users = lazy(() => import('../pages/admin/Users'));
 const Master = lazy(() => import('../pages/admin/Master'));
@@ -62,7 +62,7 @@ const AppRoutes: React.FC = () => {
                     <Route path="dashboard" element={<AdminOverview />} />
                     <Route path="investors" element={<AdminInvestors />} />
                     <Route path="investments" element={<AdminInvestments />} />
-                    <Route path="bonds" element={<AdminBonds />} />
+                    {/* <Route path="bonds" element={<AdminBonds />} /> */}
                     <Route path="reports" element={<AdminReports />} />
                     <Route path="users" element={<Users />} />
                     <Route path="master" element={<Master />} />
@@ -80,7 +80,7 @@ const AppRoutes: React.FC = () => {
                             <Route path="overview" element={<AdminOverview />} />
                             <Route path="investors" element={<AdminInvestors />} />
                             <Route path="investments" element={<AdminInvestments />} />
-                            <Route path="bonds" element={<AdminBonds />} />
+                            {/* <Route path="bonds" element={<AdminBonds />} /> */}
                             <Route path="reports" element={<AdminReports />} />
                             <Route path="master" element={<Master />} />
                         </>

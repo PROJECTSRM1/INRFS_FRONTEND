@@ -8,10 +8,59 @@ import {
     HistoryOutlined
 } from '@ant-design/icons';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import type { TooltipProps } from 'recharts';
 import { MOCK_DASHBOARD_STATS, MOCK_MONTHLY_DATA, MOCK_STATS_BY_PERIOD, MOCK_CHART_DATA_BY_PERIOD, MOCK_PIE_DATA } from '../../data/mockData';
 import '../../styles/admin.css';
 
 const { Title, Text } = Typography;
+
+interface ChartDataItem {
+    name: string;
+    value: number;
+    count: number;
+}
+
+interface PieDataItem {
+    name: string;
+    value: number;
+    count: number;
+    color: string;
+}
+
+const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="custom-tooltip" style={{ backgroundColor: '#fff', padding: '10px', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', border: '1px solid #f0f0f0' }}>
+                <p className="label" style={{ margin: 0, fontWeight: 600, color: '#1e293b' }}>{label}</p>
+                <p className="intro" style={{ margin: '4px 0 0', color: '#64748b', fontSize: '12px' }}>
+                    Invested: <span style={{ color: '#f24c52', fontWeight: 600 }}>₹{payload[0].value?.toLocaleString()}</span>
+                </p>
+                <p className="desc" style={{ margin: 0, color: '#64748b', fontSize: '12px' }}>
+                    Investors: <span style={{ color: '#0f172a', fontWeight: 600 }}>{payload[0].payload.count}</span>
+                </p>
+            </div>
+        );
+    }
+    return null;
+};
+
+const CustomPieTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+    if (active && payload && payload.length) {
+        const data = payload[0];
+        return (
+            <div className="custom-tooltip" style={{ backgroundColor: '#fff', padding: '10px', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', border: '1px solid #f0f0f0' }}>
+                <p className="label" style={{ margin: 0, fontWeight: 600, color: data.payload.color }}>{data.name}</p>
+                <p className="intro" style={{ margin: '4px 0 0', color: '#64748b', fontSize: '12px' }}>
+                    Amount: <span style={{ color: '#0f172a', fontWeight: 600 }}>₹{data.value ? (data.value / 1000).toFixed(0) : 0}K</span>
+                </p>
+                <p className="desc" style={{ margin: 0, color: '#64748b', fontSize: '12px' }}>
+                    Investors: <span style={{ color: '#0f172a', fontWeight: 600 }}>{data.payload.count}</span>
+                </p>
+            </div>
+        );
+    }
+    return null;
+};
 
 const AdminOverview: React.FC = () => {
     const navigate = useNavigate();
@@ -26,40 +75,7 @@ const AdminOverview: React.FC = () => {
 
     const periods = ['Daily', 'Monthly', 'Quarterly', 'Annually'];
 
-    const CustomTooltip = ({ active, payload, label }: any) => {
-        if (active && payload && payload.length) {
-            return (
-                <div className="custom-tooltip" style={{ backgroundColor: '#fff', padding: '10px', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', border: '1px solid #f0f0f0' }}>
-                    <p className="label" style={{ margin: 0, fontWeight: 600, color: '#1e293b' }}>{label}</p>
-                    <p className="intro" style={{ margin: '4px 0 0', color: '#64748b', fontSize: '12px' }}>
-                        Invested: <span style={{ color: '#f24c52', fontWeight: 600 }}>₹{payload[0].value.toLocaleString()}</span>
-                    </p>
-                    <p className="desc" style={{ margin: 0, color: '#64748b', fontSize: '12px' }}>
-                        Investors: <span style={{ color: '#0f172a', fontWeight: 600 }}>{payload[0].payload.count}</span>
-                    </p>
-                </div>
-            );
-        }
-        return null;
-    };
 
-    const CustomPieTooltip = ({ active, payload }: any) => {
-        if (active && payload && payload.length) {
-            const data = payload[0];
-            return (
-                <div className="custom-tooltip" style={{ backgroundColor: '#fff', padding: '10px', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', border: '1px solid #f0f0f0' }}>
-                    <p className="label" style={{ margin: 0, fontWeight: 600, color: data.payload.color }}>{data.name}</p>
-                    <p className="intro" style={{ margin: '4px 0 0', color: '#64748b', fontSize: '12px' }}>
-                        Amount: <span style={{ color: '#0f172a', fontWeight: 600 }}>₹{(data.value / 1000).toFixed(0)}K</span>
-                    </p>
-                    <p className="desc" style={{ margin: 0, color: '#64748b', fontSize: '12px' }}>
-                        Investors: <span style={{ color: '#0f172a', fontWeight: 600 }}>{data.payload.count}</span>
-                    </p>
-                </div>
-            );
-        }
-        return null;
-    };
 
     return (
         <div className="dashboard-fixed-container">
@@ -176,7 +192,7 @@ const AdminOverview: React.FC = () => {
                             </div>
                             <div className="chart-responsive-container flex-grow-chart">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <LineChart data={chartData} margin={{ top: 20, right: 20, left: 10, bottom: 0 }}>
+                                    <LineChart data={chartData as ChartDataItem[]} margin={{ top: 20, right: 20, left: 10, bottom: 0 }}>
                                         <CartesianGrid strokeDasharray="3 3" vertical={true} horizontal={true} stroke="#f0f0f0" />
                                         <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#64748b' }} dy={10} />
                                         <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#64748b' }} tickFormatter={(val) => `₹${val}K`} dx={-10} />
@@ -211,7 +227,7 @@ const AdminOverview: React.FC = () => {
                                             paddingAngle={2}
                                             dataKey="value"
                                         >
-                                            {pieData.map((entry: any, index: number) => (
+                                            {pieData.map((entry: PieDataItem, index: number) => (
                                                 <Cell key={`cell-${index}`} fill={entry.color} />
                                             ))}
                                         </Pie>
@@ -220,7 +236,7 @@ const AdminOverview: React.FC = () => {
                                 </ResponsiveContainer>
                             </div>
                             <div className="pie-legend-container horizontal compact">
-                                {pieData.map((item: any) => (
+                                {pieData.map((item: PieDataItem) => (
                                     <div key={item.name} className="flex-align-center">
                                         <div className="legend-dot" style={{ background: item.color }}></div>
                                         <Text className="text-small-muted">{item.name}</Text>

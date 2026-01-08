@@ -17,6 +17,19 @@ const PLAN_NAME_MAP: Record<number, string> = {
     4: "Quarterly",
 };
 
+interface InvestmentApiItem {
+    id: number;
+    uk_inv_id?: string;
+    created_by: number;
+    plan_type_id: number;
+    principal_amount: number;
+    interest_amount: number;
+    maturity_date: string;
+    is_active: boolean;
+    tenure: number;
+    infrc_number?: string;
+}
+
 const AdminInvestments: React.FC = () => {
     const location = useLocation();
     const [planFilter, setPlanFilter] = useState('All Plans');
@@ -34,7 +47,7 @@ const AdminInvestments: React.FC = () => {
 
     const saveAccessToken = (token: string) => localStorage.setItem("access_token", token);
 
-    const refreshAccessToken = async () => {
+    const refreshAccessToken = React.useCallback(async () => {
         const { refresh } = getTokens();
         try {
             const res = await axios.post("https://inrfs-be.onrender.com/users/refresh", {
@@ -47,18 +60,18 @@ const AdminInvestments: React.FC = () => {
             console.error("Failed to refresh token", error);
             throw error;
         }
-    };
+    }, []);
 
-    const fetchInvestmentData = async () => {
+    const fetchInvestmentData = React.useCallback(async () => {
         try {
             setLoading(true);
-            let { access } = getTokens();
+            const { access } = getTokens();
 
             const res = await axios.get("https://inrfs-be.onrender.com/investments/", {
                 headers: { Authorization: `Bearer ${access}` },
             });
 
-            const mapped: Investment[] = res.data.map((item: any) => ({
+            const mapped: Investment[] = res.data.map((item: InvestmentApiItem) => ({
                 id: item.uk_inv_id || String(item.id),
                 investorName: `ID-${item.created_by}`,
                 planName: PLAN_NAME_MAP[item.plan_type_id] || "Unknown",
@@ -75,16 +88,16 @@ const AdminInvestments: React.FC = () => {
             }));
 
             setInvestments(mapped);
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error("Error fetching investments:", err);
-            if (err.response?.status === 401) {
+            if (axios.isAxiosError(err) && err.response?.status === 401) {
                 try {
                     const newAccess = await refreshAccessToken();
                     const retry = await axios.get("https://inrfs-be.onrender.com/investments/", {
                         headers: { Authorization: `Bearer ${newAccess}` },
                     });
 
-                    const mappedRetry: Investment[] = retry.data.map((item: any) => ({
+                    const mappedRetry: Investment[] = retry.data.map((item: InvestmentApiItem) => ({
                         id: item.uk_inv_id || String(item.id),
                         investorName: `ID-${item.created_by}`,
                         planName: PLAN_NAME_MAP[item.plan_type_id] || "Unknown",
@@ -110,11 +123,11 @@ const AdminInvestments: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [refreshAccessToken]);
 
     useEffect(() => {
         fetchInvestmentData();
-    }, []);
+    }, [fetchInvestmentData]);
 
     // Handle navigation from Dashboard with pre-selected filter
     useEffect(() => {

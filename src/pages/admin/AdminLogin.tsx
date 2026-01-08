@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Input, Button, Card, Typography, Alert,message } from 'antd';
+import { Form, Input, Button, Card, Typography, Alert, message } from 'antd';
 import {
     LockOutlined,
     SafetyCertificateFilled,
@@ -23,21 +23,21 @@ const AdminLogin: React.FC = () => {
     const navigate = useNavigate();
     const [isForgotModalOpen, setIsForgotModalOpen] = React.useState(false);
 
-   const onFinish = async (values: any) => {
-    const payload: AdminLoginPayload = {
-        email: values.username,   // mapping form field → API field
-        password: values.password
-    };
+    const onFinish = async (values: Record<string, string>) => {
+        const payload: AdminLoginPayload = {
+            email: values.username,   // mapping form field → API field
+            password: values.password
+        };
 
-    try {
-        const response = await loginAdmin(payload);  // calling TS file
-        localStorage.setItem("admin_token", response.access_token); // storing token
-        message.success("Login successful");
-        navigate("/admin/dashboard");
-    } catch (error) {
-        message.error("Invalid email or password");
-    }
-};
+        try {
+            const response = await loginAdmin(payload);  // calling TS file
+            localStorage.setItem("admin_token", response.access_token); // storing token
+            message.success("Login successful");
+            navigate("/admin/dashboard");
+        } catch {
+            message.error("Invalid email or password");
+        }
+    };
 
 
     // Absolute Static Enforcement - Only on Desktop (>768px)
@@ -46,7 +46,7 @@ const AdminLogin: React.FC = () => {
 
         const applyMotionKillers = () => {
             if (currentKillMotion) {
-                window.removeEventListener('mousemove', currentKillMotion as any, true);
+                window.removeEventListener('mousemove', currentKillMotion as EventListenerOrEventListenerObject, true);
                 window.removeEventListener('scroll', currentKillMotion, true);
             }
             document.body.style.overflow = '';
@@ -64,7 +64,7 @@ const AdminLogin: React.FC = () => {
                 };
                 applyMotionKillers(); // Clean up previous listeners if any
                 currentKillMotion = killMotion;
-                window.addEventListener('mousemove', currentKillMotion as any, true);
+                window.addEventListener('mousemove', currentKillMotion as EventListenerOrEventListenerObject, true);
                 window.addEventListener('scroll', currentKillMotion, true);
                 document.body.style.overflow = 'hidden';
                 document.documentElement.style.overflow = 'hidden';
