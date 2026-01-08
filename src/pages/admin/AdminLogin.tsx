@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Input, Button, Card, Typography, Alert } from 'antd';
+import { Form, Input, Button, Card, Typography, Alert,message } from 'antd';
 import {
     LockOutlined,
     SafetyCertificateFilled,
@@ -11,6 +11,11 @@ import {
 import '../../styles/admin.css';
 
 import ForgotPasswordModal from '../../components/auth/ForgotPasswordModal';
+import { loginAdmin } from '../../utils/apiadminauth';
+import type { AdminLoginPayload } from '../../utils/apiadminauth';
+
+
+
 
 const { Title, Text } = Typography;
 
@@ -18,10 +23,22 @@ const AdminLogin: React.FC = () => {
     const navigate = useNavigate();
     const [isForgotModalOpen, setIsForgotModalOpen] = React.useState(false);
 
-    const onFinish = (values: any) => {
-        console.log('Login attempt:', values);
-        navigate('/admin/dashboard');
+   const onFinish = async (values: any) => {
+    const payload: AdminLoginPayload = {
+        email: values.username,   // mapping form field → API field
+        password: values.password
     };
+
+    try {
+        const response = await loginAdmin(payload);  // calling TS file
+        localStorage.setItem("admin_token", response.access_token); // storing token
+        message.success("Login successful");
+        navigate("/admin/dashboard");
+    } catch (error) {
+        message.error("Invalid email or password");
+    }
+};
+
 
     // Absolute Static Enforcement - Only on Desktop (>768px)
     React.useEffect(() => {

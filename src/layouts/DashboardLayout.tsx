@@ -43,9 +43,9 @@ const DashboardLayout: React.FC = () => {
                         <Link to="/dashboard/my-investments" className={`nav-text-link ${location.pathname === '/dashboard/my-investments' ? 'active' : ''}`}>
                             My Investments
                         </Link>
-                        <Link to="/dashboard/bonds" className={`nav-text-link ${location.pathname === '/dashboard/bonds' ? 'active' : ''}`}>
+                        {/* <Link to="/dashboard/bonds" className={`nav-text-link ${location.pathname === '/dashboard/bonds' ? 'active' : ''}`}>
                             Bonds
-                        </Link>
+                        </Link> */}
                         <Link to="/dashboard/profile" className={`nav-text-link ${location.pathname === '/dashboard/profile' ? 'active' : ''}`}>
                             Profile
                         </Link>

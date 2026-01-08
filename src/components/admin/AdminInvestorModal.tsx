@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Select, Descriptions, message } from 'antd';
-import axios from "axios";
+// import axios from "axios";
 import type { Investor } from '../../types';
 import '../../styles/admin.css';
 
-const API_BASE = "https://inrfs-be.onrender.com"; // ✅ added to remove error
+// const API_BASE = "https://inrfs-be.onrender.com"; // ✅ added to remove error
 
 interface AdminInvestorModalProps {
     visible: boolean;

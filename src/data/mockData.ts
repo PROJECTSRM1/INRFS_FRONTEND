@@ -1,4 +1,4 @@
-import type { InvestmentPlan, Investment, Investor, DashboardStats, Activity } from '../types';
+import type { InvestmentPlan, Investment, DashboardStats, Activity } from '../types';
 
 export const INVESTMENT_PLANS: InvestmentPlan[] = [
     // ... existing plans (I'll keep them as is in the replacement content)
@@ -52,52 +52,52 @@ export const INVESTMENT_PLANS: InvestmentPlan[] = [
     }
 ];
 
-export const MOCK_INVESTORS: Investor[] = [
-    {
-        id: '1',
-        name: 'John Doe',
-        email: 'john.doe@email.com',
-        role: 'investor',
-        customerId: 'I1234',
-        mobile: '+91 98765 43210',
-        totalInvested: 45000,
-        activeInvestments: 5,
-        status: 'Active'
-    },
-    {
-        id: '2',
-        name: 'Sarah Smith',
-        email: 'sarah.smith@email.com',
-        role: 'investor',
-        customerId: 'I1235',
-        mobile: '+91 98765 43211',
-        totalInvested: 32500,
-        activeInvestments: 3,
-        status: 'Active'
-    },
-    {
-        id: '3',
-        name: 'Michael Johnson',
-        email: 'michael.j@email.com',
-        role: 'investor',
-        customerId: 'I1236',
-        mobile: '+91 98765 43212',
-        totalInvested: 78000,
-        activeInvestments: 8,
-        status: 'Active'
-    },
-    {
-        id: '4',
-        name: 'Emily Davis',
-        email: 'emily.davis@email.com',
-        role: 'investor',
-        customerId: 'I1237',
-        mobile: '+91 98765 43213',
-        totalInvested: 21000,
-        activeInvestments: 2,
-        status: 'Pending'
-    }
-];
+// export const MOCK_INVESTORS: Investor[] = [
+//     {
+//         id: '1',
+//         name: 'John Doe',
+//         email: 'john.doe@email.com',
+//         role: 'investor',
+//         customerId: 'I1234',
+//         mobile: '+91 98765 43210',
+//         totalInvested: 45000,
+//         activeInvestments: 5,
+//         status: 'Active'
+//     },
+//     {
+//         id: '2',
+//         name: 'Sarah Smith',
+//         email: 'sarah.smith@email.com',
+//         role: 'investor',
+//         customerId: 'I1235',
+//         mobile: '+91 98765 43211',
+//         totalInvested: 32500,
+//         activeInvestments: 3,
+//         status: 'Active'
+//     },
+//     {
+//         id: '3',
+//         name: 'Michael Johnson',
+//         email: 'michael.j@email.com',
+//         role: 'investor',
+//         customerId: 'I1236',
+//         mobile: '+91 98765 43212',
+//         totalInvested: 78000,
+//         activeInvestments: 8,
+//         status: 'Active'
+//     },
+//     {
+//         id: '4',
+//         name: 'Emily Davis',
+//         email: 'emily.davis@email.com',
+//         role: 'investor',
+//         customerId: 'I1237',
+//         mobile: '+91 98765 43213',
+//         totalInvested: 21000,
+//         activeInvestments: 2,
+//         status: 'Pending'
+//     }
+// ];
 
 export const MOCK_INVESTMENTS: Investment[] = [
     {

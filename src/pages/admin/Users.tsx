@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { Table, Card, Input, Button, Tag, Space, Typography, Tooltip, Modal, Form, Select, Row, Col, message } from 'antd';
+import { Table, Card, Input, Button, Tag, Space, Typography, Modal, Form, Select, Row, Col, message } from 'antd';
 import { SearchOutlined, DownloadOutlined, UserAddOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { MOCK_SYSTEM_USERS } from '../../data/mockData';
+// import { MOCK_SYSTEM_USERS } from '../../data/mockData';
 import '../../styles/admin.css';
+import { fetchUsers } from "../../utils/usersService";
+import type { User } from "../../utils/usersService";
+import axios from "axios";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -14,60 +19,147 @@ const Users: React.FC = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     // Initialize users with mock data
-    const [users, setUsers] = useState(MOCK_SYSTEM_USERS);
+    const [isEditOpen, setIsEditOpen] = useState(false);
+const [editingUser, setEditingUser] = useState<User | null>(null);
+
+    
+const [users, setUsers] = useState<User[]>([]);
 
     React.useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 768);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+    React.useEffect(() => {
+  const loadUsers = async () => {
+    try {
+      setLoading(true);
+      const apiUsers = await fetchUsers();
+      setUsers(apiUsers);
+    } catch (err) {
+      message.error("Failed to load users");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const onFinish = (values: any) => {
+  loadUsers();
+}, []);
+
+const handleUpdateUser = async (values: any) => {
+  if (!editingUser) return;
+
+  const name = `${editingUser.first_name} ${editingUser.last_name}`;
+
+  try {
+    setLoading(true);
+
+  const payload = {
+  first_name: values.firstName,
+  last_name: values.lastName,
+  email: values.email,
+  mobile: values.mobile.replace(/\D/g, "").slice(-10),
+  password: values.password,
+  gender_id: values.gender,
+  age: 0,
+  dob: values.dob ? dayjs(values.dob).format("YYYY-MM-DD") : undefined,
+  role_id: values.role === "super_admin" ? 2 : 3
+};
+
+
+
+    await axios.put(`https://inrfs-be.onrender.com/users/${editingUser.id}`, payload);
+
+    setUsers(users.map(u => u.id === editingUser.id ? { ...u, ...payload } : u));
+    message.success(`${name} updated successfully`);
+    setIsEditOpen(false); // close modal after success ✔
+
+  } catch (err: any) {
+    console.error(err);
+    message.error("Failed to update user");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+const handleDeleteUser = (id: number, name: string) => {
+  Modal.confirm({
+    title: "Delete User",
+    content: `Are you sure you want to delete ${name}?`,
+    okText: "Yes, Delete",
+    okType: "danger",
+    cancelText: "Cancel",
+    onOk: async () => {
+      try {
         setLoading(true);
-        setTimeout(() => {
-            const newUser = {
-                id: (users.length + 1).toString(),
-                name: `${values.firstName} ${values.lastName}`,
-                email: values.email,
-                role: values.role === 'super_admin' ? 'Super Admin' : 'Admin',
-                status: 'Active',
-                mobile: `+91 ${values.mobile}`,
-                joinedDate: new Date().toISOString().split('T')[0]
-            };
+        await axios.delete(`https://inrfs-be.onrender.com/users/${id}`);
+        setUsers(users.filter(u => u.id !== id));
+        message.success(`${name} deleted successfully`);
+      } catch {
+        message.error("Failed to delete user");
+      } finally {
+        setLoading(false);
+      }
+    }
+  });
+};
 
-            setUsers([...users, newUser]);
-            console.log('Success:', newUser);
-            message.success('New admin created successfully');
-            setLoading(false);
-            setIsModalOpen(false);
-            form.resetFields();
-        }, 800);
-    };
+const handleAddUser = async (values: any) => {
+  try {
+    setLoading(true);
 
-    const deleteUser = (id: string, name: string) => {
-        Modal.confirm({
-            title: 'Delete Admin',
-            content: `Are you sure you want to delete ${name}?`,
-            okText: 'Yes, Delete',
-            okType: 'danger',
-            cancelText: 'Cancel',
-            onOk: () => {
-                setUsers(users.filter((user: any) => user.id !== id));
-                message.success('Admin deleted successfully');
-            }
-        });
-    };
+    const payload = {
+  first_name: values.firstName,
+  last_name: values.lastName,
+  email: values.email,
+  mobile: values.mobile.replace(/\D/g, "").slice(-10),
+  password: values.password,
+  gender_id: values.gender,
+  age: 0,
+  dob: values.dob ? dayjs(values.dob).format("YYYY-MM-DD") : undefined,
+  role_id: values.role === "super_admin" ? 2 : 3
+};
+
+    const res = await axios.post("https://inrfs-be.onrender.com/users/register", payload);
+    
+
+
+    console.log("CREATE RES:", res.data);
+    setUsers(prev => [...prev, res.data]);
+    message.success("Admin created successfully");
+    setIsModalOpen(false);
+    form.resetFields();
+
+  } catch (err: any) {
+    console.error("API ERROR:", err.response?.data ?? err);
+    message.error("Failed to create admin");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+
+
+   
+  
 
     const exportToCSV = () => {
         // Define headers
-        const headers = ['ID,Name,Email,Role,Mobile,Status,Joined Date'];
+        const headers = ["ID,Name,Email,Role,Mobile,Status,Joined Date"];
 
-        // Format rows
-        const rows = users.map(user => {
-            // Escape quotes in name if present
-            const safeName = user.name.includes(',') ? `"${user.name}"` : user.name;
-            return `${user.id},${safeName},${user.email},${user.role},${user.mobile},${user.status},${user.joinedDate}`;
-        });
+const rows = users.map(user => {
+  const fullName = `${user.first_name} ${user.last_name}`;
+  const role = user.role_id === 3 ? "Super Admin" : "Admin";
+  const status = "Active";
+  const joinedDate = user.dob;
+
+  const safeName = fullName.includes(",") ? `"${fullName}"` : fullName;
+  return `${user.id},${safeName},${user.email},${role},${user.mobile},${status},${joinedDate}`;
+});
+
 
         // Combine and create blob
         const csvContent = [headers, ...rows].join("\n");
@@ -88,67 +180,88 @@ const Users: React.FC = () => {
         }
     };
 
-    const columns: any = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-            render: (text: string) => <Text strong>{text}</Text>,
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
-            responsive: ['md'],
-        },
-        {
-            title: 'Role',
-            dataIndex: 'role',
-            key: 'role',
-            render: (role: string) => <Tag color={role === 'Super Admin' ? 'purple' : 'blue'}>{role}</Tag>,
-        },
-        {
-            title: 'Mobile',
-            dataIndex: 'mobile',
-            key: 'mobile',
-            responsive: ['lg'],
-        },
-        {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
-            render: (status: string) => {
-                let color = 'default';
-                if (status === 'Active') color = 'success';
-                if (status === 'Inactive') color = 'error';
-                return <Tag color={color} className="users-status-tag">{status}</Tag>;
-            },
-        },
-        {
-            title: 'Actions',
-            key: 'actions',
-            render: (record: any) => (
-                <Space size="middle">
-                    <Tooltip title="Edit">
-                        <Button type="text" icon={<EditOutlined style={{ color: '#3b82f6' }} />} size="small" />
-                    </Tooltip>
-                    <Tooltip title="Delete">
-                        <Button
-                            type="text"
-                            icon={<DeleteOutlined style={{ color: '#ef4444' }} />}
-                            size="small"
-                            onClick={() => deleteUser(record.id, record.name)}
-                        />
-                    </Tooltip>
-                </Space>
-            ),
-        },
-    ];
+   const columns = [
+  {
+    title: "Name",
+    key: "name",
+    render: (record: User) => (
+      <Text strong>{record.first_name} {record.last_name}</Text>
+    ),
+  },
+  {
+    title: "Email",
+    dataIndex: "email",
+    key: "email",
+  },
+  {
+    title: "Role",
+    dataIndex: "role_id",
+    key: "role_id",
+    render: (role_id: number) => (
+  <Tag>{role_id === 2 ? "Super Admin" : "Admin"}</Tag>
+)
 
-    const dataSource = users.filter((item: any) =>
-        item.name.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchText.toLowerCase())
-    );
+  },
+  {
+    title: "Mobile",
+    dataIndex: "mobile",
+    key: "mobile",
+  },
+  {
+    title: "Status",
+    key: "status",
+    render: () => <Tag>Active</Tag>,
+  },
+  {
+    title: "Joined Date",
+    key: "joinedDate",
+    render: (record: User) => <Text>{record.dob}</Text>,
+  },
+ {
+  title: "Actions",
+  key: "actions",
+  render: (record: User) => (
+    <Space>
+      <Button
+        type="text"
+        icon={<EditOutlined />}
+        size="small"
+        onClick={() => {
+  setEditingUser(record);
+  setIsEditOpen(true);
+  form.setFieldsValue({
+    firstName: record.first_name,
+    lastName: record.last_name,
+    email: record.email,
+    mobile: record.mobile.replace(/\D/g, "").slice(-10),
+    role: record.role_id === 2 ? "super_admin" : "admin", // ✔ only set string in form
+    gender: record.gender_id ?? 1,
+    dob: record.dob ? dayjs(record.dob) : null // ✔ must be dayjs object for DatePicker
+  });
+
+
+
+        }}
+      />
+      <Button
+        type="text"
+        icon={<DeleteOutlined />}
+        size="small"
+        onClick={() => handleDeleteUser(record.id, `${record.first_name} ${record.last_name}`)}
+
+      />
+    </Space>
+  ),
+}
+   ];
+
+
+
+const dataSource = users.filter(user =>
+  `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchText.toLowerCase()) ||
+  user.email.toLowerCase().includes(searchText.toLowerCase())
+);
+
 
     return (
         <div className="admin-dashboard-wrapper">
@@ -166,6 +279,7 @@ const Users: React.FC = () => {
                             onClick={() => setIsModalOpen(true)}
                             className="admin-submit-btn users-add-btn"
                         >
+                            
                             Add New Admin
                         </Button>
                     </div>
@@ -180,6 +294,8 @@ const Users: React.FC = () => {
                         onChange={(e) => setSearchText(e.target.value)}
                         className="compact-input users-search-input"
                     />
+                 
+
                     <Button
                         type="primary"
                         icon={<DownloadOutlined />}
@@ -211,7 +327,7 @@ const Users: React.FC = () => {
                 <Form
                     form={form}
                     layout="vertical"
-                    onFinish={onFinish}
+                    onFinish={handleAddUser}
                     initialValues={{ role: 'admin' }}
                     requiredMark="optional"
                 >
@@ -283,6 +399,37 @@ const Users: React.FC = () => {
                             </Form.Item>
                         </Col>
                     </Row>
+<Row gutter={16}>
+  <Col span={12}>
+    <Form.Item
+      name="gender"
+      label="Gender"
+      rules={[{ required: true, message: "Please select gender" }]}
+    >
+      <Select placeholder="Select gender">
+        <Option value={1}>Male</Option>
+        <Option value={2}>Female</Option>
+        <Option value={3}>Other</Option>
+      </Select>
+    </Form.Item>
+  </Col>
+
+  <Col span={12}>
+    <Form.Item
+      name="dob"
+      label="Date of Birth"
+      rules={[{ required: true, message: "Please select DOB" }]}
+     
+    >
+      <DatePicker
+        placeholder="YYYY-MM-DD"
+        format="YYYY-MM-DD"
+        style={{ width: "100%" }}
+      />
+    </Form.Item>
+  </Col>
+</Row>
+
 
                     <Form.Item
                         name="password"
@@ -307,7 +454,84 @@ const Users: React.FC = () => {
                     </Form.Item>
                 </Form>
             </Modal>
+            {/* Edit Modal */}
+<Modal
+  title="Edit Admin"
+  open={isEditOpen}
+  onCancel={() => setIsEditOpen(false)}
+  footer={null}
+  centered
+>
+ <Form layout="vertical" onFinish={handleUpdateUser} form={form}>
+
+    <Row gutter={16}>
+      <Col span={12}>
+        <Form.Item name="firstName" label="First Name" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+      </Col>
+      <Col span={12}>
+        <Form.Item name="lastName" label="Last Name" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+      </Col>
+    </Row>
+
+    <Form.Item name="email" label="Email" rules={[{ required: true, type: "email" }]}>
+      <Input />
+    </Form.Item>
+
+    <Form.Item name="mobile" label="Mobile" rules={[{ required: true, pattern: /^[0-9]{10}$/ }]}>
+      <Input addonBefore="+91" maxLength={10} />
+    </Form.Item>
+
+    <Form.Item name="role" label="Role" rules={[{ required: true }]}>
+      <Select>
+        <Option value="admin">Admin</Option>
+        <Option value="super_admin">Super Admin</Option>
+      </Select>
+    </Form.Item>
+<Row gutter={16}>
+  <Col span={12}>
+    <Form.Item
+      name="gender"
+      label="Gender"
+      rules={[{ required: true, message: "Please select gender" }]}
+    >
+      <Select placeholder="Select gender">
+        <Option value={1}>Male</Option>
+        <Option value={2}>Female</Option>
+        <Option value={3}>Other</Option>
+      </Select>
+    </Form.Item>
+  </Col>
+
+  <Col span={12}>
+    <Form.Item
+      name="dob"
+      label="Date of Birth"
+      rules={[{ required: true, message: "Please select DOB" }]}
+      
+    >
+      <DatePicker
+        placeholder="YYYY-MM-DD"
+        format="YYYY-MM-DD"
+        style={{ width: "100%" }}
+      />
+    </Form.Item>
+  </Col>
+</Row>
+
+
+    <Button type="primary" htmlType="submit" block loading={loading}>
+      Update Admin
+    </Button>
+  </Form>
+</Modal>
+
         </div>
+        
+
     );
 };
 
