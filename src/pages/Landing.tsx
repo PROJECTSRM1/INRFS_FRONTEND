@@ -300,20 +300,35 @@ const Landing: React.FC = () => {
                 width={800}
                 centered
             >
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px', padding: '16px 0' }}>
-                    {plans.map((plan: Plan, index: number) => (
-                        <Card key={plan.id} bordered={false} className={`feature-card ${getCardStyle(index)}`} style={{ padding: 16 }}>
-                            <Title level={4} style={{ margin: 0 }}>{plan.name}</Title>
-                            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--primary-gold-dark)', margin: '12px 0' }}>
-                                {plan.returns_percentage}% ROI
-                            </div>
-                            <Paragraph ellipsis={{ rows: 2 }}>{plan.description}</Paragraph>
-                            <div style={{ marginTop: 8 }}>
-                                <div style={{ float: 'right' }}>{plan.duration_months} Month(s)</div>
-                            </div>
-                        </Card>
-                    ))}
-                </div>
+                {loading ? (
+                    <div style={{ textAlign: 'center', padding: '100px 0' }}>
+                        <Spin size="large" />
+                        <div style={{ marginTop: 16 }}><Text>Loading investment plans...</Text></div>
+                    </div>
+                ) : plans.length > 0 ? (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px', padding: '16px 0' }}>
+                        {plans.map((plan: Plan, index: number) => (
+                            <Card key={plan.id} bordered={false} className={`feature-card ${getCardStyle(index)}`} style={{ padding: 16 }}>
+                                <Title level={4} style={{ margin: 0 }}>{plan.name}</Title>
+                                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--primary-gold-dark)', margin: '12px 0' }}>
+                                    {plan.returns_percentage}% ROI
+                                </div>
+                                <Paragraph ellipsis={{ rows: 2 }}>{plan.description}</Paragraph>
+                                <div style={{ marginTop: 8 }}>
+                                    <div style={{ float: 'right' }}>{plan.duration_months} Month(s)</div>
+                                </div>
+                            </Card>
+                        ))}
+                    </div>
+                ) : (
+                    <div style={{ textAlign: 'center', padding: '60px 0' }}>
+                        <div style={{ fontSize: '48px', marginBottom: '16px', color: '#ccc' }}>
+                            <LineChartOutlined />
+                        </div>
+                        <Title level={4}>No Active Plans Available</Title>
+                        <Paragraph type="secondary"> Please check back later for our new investment opportunities.</Paragraph>
+                    </div>
+                )}
             </Modal>
 
             <Modal

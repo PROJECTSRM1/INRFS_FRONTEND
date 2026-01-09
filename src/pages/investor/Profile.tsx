@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Row, Col, Spin, Alert, Button, message } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import '../../styles/profile-refinement.css';
 import {
     UserOutlined,
     MailOutlined,
@@ -10,7 +12,8 @@ import {
     ReloadOutlined,
     CheckCircleOutlined,
     ExclamationCircleOutlined,
-    PlusOutlined
+    PlusOutlined,
+    ArrowLeftOutlined
 } from '@ant-design/icons';
 import { useAppContext } from '../../context/AppContext';
 import { bankService } from '../../services/bankService';
@@ -21,6 +24,7 @@ import AddBankDetailsModal from '../../components/bank/AddBankDetailsModal';
 const { Title, Text } = Typography;
 
 const Profile: React.FC = () => {
+    const navigate = useNavigate();
     const { user } = useAppContext();
     const [bankDetails, setBankDetails] = useState<BankDetails | null>(null);
     const [loading, setLoading] = useState(false);
@@ -79,11 +83,19 @@ const Profile: React.FC = () => {
 
     return (
         <div className="profile-page-container">
+            <Button
+                type="text"
+                icon={<ArrowLeftOutlined />}
+                onClick={() => navigate(-1)}
+                className="btn-back-refined"
+            >
+                Back
+            </Button>
             <Title level={2} className="page-main-title">My Profile</Title>
 
             <Row gutter={[24, 24]}>
                 {/* Personal Information Card */}
-                <Col xs={24} md={12} lg={8}>
+                <Col xs={24} md={24} lg={8}>
                     <div className="profile-card">
                         <div className="profile-avatar-placeholder">
                             <UserOutlined />
@@ -101,14 +113,14 @@ const Profile: React.FC = () => {
                             <div className="profile-icon-brown"><SafetyCertificateOutlined /></div>
                             <div className="profile-field-content">
                                 <Text className="profile-label">Customer Login ID</Text>
-                                <Text className="profile-value" style={{ color: '#2563eb' }}>{userProfile.customerId}</Text>
+                                <Text className="profile-value profile-value-highlight">{userProfile.customerId}</Text>
                             </div>
                         </div>
                         <div className="profile-field-row">
                             <div className="profile-icon-brown"><MailOutlined /></div>
                             <div className="profile-field-content">
                                 <Text className="profile-label">Email Address</Text>
-                                <Text className="profile-value">{userProfile.email}</Text>
+                                <Text className="profile-value profile-value-wrap">{userProfile.email}</Text>
                             </div>
                         </div>
                         {/* <div className="profile-field-row">
@@ -122,11 +134,11 @@ const Profile: React.FC = () => {
                 </Col>
 
                 {/* Bank Details Card - Now with Real API Integration */}
-                <Col xs={24} md={12} lg={16}>
+                <Col xs={24} md={24} lg={16}>
                     <div className="profile-card">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                        <div className="profile-card-header">
                             <Title level={4} className="profile-section-title" style={{ margin: 0 }}>Bank Information</Title>
-                            <div style={{ display: 'flex', gap: '8px' }}>
+                            <div className="profile-card-header-actions">
                                 {!bankDetails && (
                                     <Button
                                         type="primary"
@@ -159,6 +171,7 @@ const Profile: React.FC = () => {
                                 type="warning"
                                 showIcon
                                 icon={<ExclamationCircleOutlined />}
+                                className="premium-alert"
                             />
                         ) : bankDetails ? (
                             <>
@@ -177,7 +190,7 @@ const Profile: React.FC = () => {
                                             <div className="profile-icon-brown"><WalletOutlined /></div>
                                             <div className="profile-field-content">
                                                 <Text className="profile-label">Account Number</Text>
-                                                <Text className="profile-value" style={{ letterSpacing: '1px' }}>
+                                                <Text className="profile-value profile-value-wrap" style={{ letterSpacing: '1px' }}>
                                                     {bankDetails.bank_account_no || bankDetails.account_number || 'N/A'}
                                                 </Text>
                                             </div>
@@ -258,7 +271,7 @@ const Profile: React.FC = () => {
 
                                 <div style={{ marginTop: '24px', padding: '16px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #f1f5f9' }}>
                                     <Text type="secondary" style={{ fontSize: '13px' }}>
-                                        To update your bank details or personal information, please contact our support team at <a href="mailto:support@inrfs.com" style={{ color: '#2563eb' }}>support@inrfs.com</a>.
+                                        To update your bank details or personal information, please contact our support team at <a href="mailto:support@inrfs.com" className="support-link">support@inrfs.com</a>.
                                     </Text>
                                 </div>
                             </>

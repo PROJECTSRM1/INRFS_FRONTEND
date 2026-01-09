@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Menu, Button, Avatar, Badge, Typography, Space, Drawer, Switch } from 'antd';
+import { Layout, Menu, Button, Typography, Space, Drawer, Switch, Avatar, Badge, } from 'antd';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
     DashboardOutlined,
     TeamOutlined,
     LineChartOutlined,
     FileTextOutlined,
-
     BellOutlined,
     LogoutOutlined,
     MenuFoldOutlined,
@@ -15,7 +14,7 @@ import {
     UserAddOutlined,
     BulbOutlined,
     BulbFilled,
-    DatabaseOutlined
+    DatabaseOutlined,
 } from '@ant-design/icons';
 import { useAppContext } from '../../context/AppContext';
 import Logo from '../../components/Logo';
@@ -69,12 +68,6 @@ const AdminLayout: React.FC = () => {
             icon: <LineChartOutlined />,
             label: <NavLink to="/admin/investments" onClick={() => setDrawerVisible(false)}>Investments</NavLink>,
         },
-        // {
-        //     key: '/admin/bonds',
-        //     icon: <FileTextOutlined />,
-        //     label: <NavLink to="/admin/bonds" onClick={() => setDrawerVisible(false)}>Bonds</NavLink>,
-        // },
-
         {
             key: '/admin/reports',
             icon: <FileTextOutlined />,
@@ -92,6 +85,7 @@ const AdminLayout: React.FC = () => {
         },
     ];
 
+
     const SideMenuContent = (
         <div className="admin-side-menu-container">
             <div className="admin-sider-logo" style={{ height: 'auto', padding: '24px', flexDirection: 'column', alignItems: 'flex-start', borderBottom: 'none' }}>
@@ -99,7 +93,6 @@ const AdminLayout: React.FC = () => {
                     <Logo size={32} showText={false} />
                     {(!collapsed || isMobile) && <span className="logo-text" style={{ fontSize: '18px', fontWeight: 800 }}>Admin Panel</span>}
                 </div>
-
             </div>
             <div className="admin-menu-scrollable">
                 <Menu
@@ -125,7 +118,6 @@ const AdminLayout: React.FC = () => {
 
     return (
         <Layout className="admin-layout-container">
-            {/* Desktop Sider: Only visible on desktop/tablet */}
             {!isMobile && (
                 <Sider
                     trigger={null}
@@ -138,7 +130,6 @@ const AdminLayout: React.FC = () => {
                 </Sider>
             )}
 
-            {/* Mobile Drawer: Only visible on mobile (<=768px) */}
             <Drawer
                 placement="left"
                 closable={false}
@@ -175,19 +166,21 @@ const AdminLayout: React.FC = () => {
                                 checked={darkMode}
                                 onChange={toggleDarkMode}
                             />
-                            <Badge count={5} size="small" offset={[2, 2]}>
+
+                            <Badge count={2} size="small" offset={[2, 2]}>
                                 <Button type="text" icon={<BellOutlined />} className="icon-btn" />
                             </Badge>
-                            <div className="user-profile-compact">
+
+                            <div className="user-profile-compact" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                 <Avatar
                                     icon={<UserOutlined />}
                                     size="small"
-                                    style={{ backgroundColor: 'var(--admin-primary)', cursor: 'pointer' }}
+                                    style={{ backgroundColor: 'var(--admin-primary)' }}
                                 />
                                 {!isMobile && (
-                                    <div className="user-info-text">
-                                        <Text strong className="user-name">Admin User</Text>
-                                        <Text type="secondary" className="user-role">Super Admin</Text>
+                                    <div className="user-info-text" style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}>
+                                        <Text strong style={{ fontSize: '13px' }}>Admin User</Text>
+                                        <Text type="secondary" style={{ fontSize: '11px' }}>Super Admin</Text>
                                     </div>
                                 )}
                             </div>
