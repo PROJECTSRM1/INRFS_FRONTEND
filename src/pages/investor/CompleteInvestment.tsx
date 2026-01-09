@@ -181,42 +181,191 @@ const CompleteInvestment: React.FC = () => {
         setSavingBond(true);
 
         try {
-            // Prepare complete payload for POST API with bond certificate
-            const payload = {
-                principal_amount: Number(amount),
-                plan_type_id: planTypeId,
-                maturity_date: generatedBond.maturityDate,
-                upload_file: generatedBond.infrcNumber, // Store bond certificate number
-                created_date: investmentService.getCurrentDate()
-            };
+            // Validate that we have all required data
+            if (!generatedBond) {
+                message.error('Bond data not found. Please try again.');
+                setSavingBond(false);
+                return;
+            }
 
-            console.log('Saving investment to database:', payload);
+            if (!amount || !planTypeId || !generatedBond.maturityDate || !generatedBond.infrcNumber) {
+                message.error('Missing required investment data. Please try again.');
+                console.error('Missing data:', {
+                    amount,
+                    planTypeId,
+                    maturityDate: generatedBond.maturityDate,
+                    infrcNumber: generatedBond.infrcNumber
+                });
+                setSavingBond(false);
+                return;
+            }
 
-            // Call the POST API to save investment
-            const response = await investmentService.createInvestment(payload);
+            if (!certRef.current) {
+                message.error('Bond certificate not found. Please try again.');
+                setSavingBond(false);
+                return;
+            }
 
-            console.log('Investment saved successfully:', response);
+            // Show loading message
+            const hideLoading = message.loading('Generating and uploading bond certificate...', 0);
 
-            // Update bond data with API response
-            const updatedBondData = {
-                ...generatedBond,
-                id: response.wk_inv_id || response.uk_inv_id || generatedBond.id,
-                apiResponse: response
-            };
+            try {
+                // Generate PDF from bond certificate
+                console.log('Generating bond certificate PDF...');
+                const canvas = await html2canvas(certRef.current, {
+                    scale: 3,
+                    useCORS: true,
+                    backgroundColor: '#ffffff'
+                });
 
-            // Add to local context for immediate UI update
-            addInvestment(updatedBondData);
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
 
-            message.success('Bond saved successfully!');
+                // Get PDF as blob
+                const pdfBlob = pdf.output('blob');
+                console.log('PDF generated, size:', pdfBlob.size, 'bytes');
 
-            // Navigate to my-investments page
-            setTimeout(() => {
-                navigate('/dashboard/my-investments');
-            }, 500);
+                // Create File object from blob
+                const pdfFile = new File(
+                    [pdfBlob],
+                    `${generatedBond.infrcNumber}_Certificate.pdf`,
+                    { type: 'application/pdf' }
+                );
+
+                hideLoading();
+
+                // Prepare payload with PDF file
+                const payload = {
+                    principal_amount: Number(amount),
+                    plan_type_id: planTypeId,
+                    maturity_date: generatedBond.maturityDate,
+                    upload_file: pdfFile // Send the actual PDF file
+                };
+
+                console.log('=== INVESTMENT CREATION REQUEST ===');
+                console.log('Payload Details:', {
+                    principal_amount: payload.principal_amount,
+                    plan_type_id: payload.plan_type_id,
+                    maturity_date: payload.maturity_date,
+                    upload_file: {
+                        name: pdfFile.name,
+                        size: pdfFile.size,
+                        type: pdfFile.type
+                    }
+                });
+
+                // Call the POST API to save investment
+                // This endpoint requires authorization and will send an email confirmation
+                console.log('Calling API: POST /investments/');
+                const response = await investmentService.createInvestment(payload);
+
+                console.log('=== INVESTMENT CREATION RESPONSE ===');
+                console.log('Full Response:', JSON.stringify(response, null, 2));
+                console.log('Response Details:', {
+                    uk_inv_id: response.uk_inv_id,
+                    wk_inv_id: response.wk_inv_id,
+                    user_id: response.user_id,
+                    principal_amount: response.principal_amount,
+                    maturity_date: response.maturity_date,
+                    message: response.message
+                });
+
+                // Update bond data with API response
+                const updatedBondData = {
+                    ...generatedBond,
+                    id: response.wk_inv_id || response.uk_inv_id || generatedBond.id,
+                    apiResponse: response
+                };
+
+                // Add to local context for immediate UI update
+                addInvestment(updatedBondData);
+
+                // Check if email was sent successfully
+                const emailSent = response.email_sent !== false && response.email_status !== 'failed';
+
+                if (emailSent) {
+                    // Email sent successfully
+                    message.success({
+                        content: 'Investment created successfully! A confirmation email with your bond certificate has been sent to your registered email address.',
+                        duration: 5,
+                        style: {
+                            marginTop: '20vh',
+                        }
+                    });
+                } else {
+                    // Email failed but investment created
+                    message.warning({
+                        content: 'Investment created successfully! However, the confirmation email could not be sent at this time. You can download your bond certificate from My Investments page.',
+                        duration: 8,
+                        style: {
+                            marginTop: '20vh',
+                        }
+                    });
+
+                    // Log email error for debugging
+                    if (response.email_error) {
+                        console.warn('Email delivery failed:', response.email_error);
+                    }
+                }
+
+                // Navigate to my-investments page after a brief delay
+                setTimeout(() => {
+                    navigate('/dashboard/my-investments');
+                }, 1500);
+            } catch (pdfError) {
+                hideLoading();
+                throw pdfError;
+            }
         } catch (error: any) {
-            console.error('Error saving bond:', error);
-            const errorMessage = error.response?.data?.message || error.message || 'Failed to save bond. Please try again.';
-            message.error(errorMessage);
+            console.error('Error saving investment:', error);
+            console.error('Error details:', {
+                response: error.response?.data,
+                status: error.response?.status,
+                message: error.message
+            });
+
+            // Enhanced error handling
+            let errorMessage = 'Failed to create investment. Please try again.';
+
+            if (error.response) {
+                // Server responded with error
+                if (error.response.status === 401) {
+                    errorMessage = 'Session expired. Please login again.';
+                    setTimeout(() => {
+                        localStorage.removeItem('access_token');
+                        localStorage.removeItem('refresh_token');
+                        navigate('/');
+                    }, 2000);
+                } else if (error.response.status === 400) {
+                    errorMessage = error.response.data?.message || 'Invalid investment data. Please check your inputs.';
+                } else if (error.response.status === 422) {
+                    // Validation error - show detailed message
+                    const details = error.response.data?.detail;
+                    if (Array.isArray(details)) {
+                        const fields = details.map((d: any) => d.loc?.join('.') || 'unknown').join(', ');
+                        errorMessage = `Validation error: Missing or invalid fields (${fields})`;
+                    } else {
+                        errorMessage = error.response.data?.message || 'Validation error. Please check your data.';
+                    }
+                } else if (error.response.status === 413) {
+                    errorMessage = 'Bond certificate file is too large. Please try again.';
+                } else if (error.response.status === 500) {
+                    errorMessage = 'Server error. Please try again later.';
+                } else {
+                    errorMessage = error.response.data?.message || error.response.data?.detail || errorMessage;
+                }
+            } else if (error.request) {
+                // Request made but no response
+                errorMessage = 'Network error. Please check your connection.';
+            } else if (error.message?.includes('html2canvas')) {
+                errorMessage = 'Failed to generate bond certificate. Please try again.';
+            }
+
+            message.error({
+                content: errorMessage,
+                duration: 5,
+            });
         } finally {
             setSavingBond(false);
         }
