@@ -1,12 +1,16 @@
-import React from 'react';
-import { Row, Col, Card, Tag, Button, Typography, Space, Input, message } from 'antd';
-import { DownloadOutlined, MailOutlined, FilePdfOutlined, CheckCircleFilled, SearchOutlined } from '@ant-design/icons';
-import { MOCK_INVESTMENTS } from '../../data/mockData';
-import '../../styles/admin.css';
+// import { Row, Col, Card, Tag, Button, Typography, Space, Input, message } from 'antd';
+// import { Typography } from 'antd';
 
-const { Title, Text } = Typography;
+// import { DownloadOutlined, MailOutlined, FilePdfOutlined, CheckCircleFilled, SearchOutlined } from '@ant-design/icons';
 
-const AdminBonds: React.FC = () => {
+// import { MOCK_INVESTMENTS } from '../../data/mockData';
+
+// import '../../styles/admin.css';
+
+// const { Title, Text } = Typography;
+
+// const AdminBonds: React.FC = () => {
+    /* 
     const [searchText, setSearchText] = React.useState('');
 
     const bonds = MOCK_INVESTMENTS.filter(inv => {
@@ -16,7 +20,10 @@ const AdminBonds: React.FC = () => {
             (inv.investorName || '').toLowerCase().includes(searchText.toLowerCase());
         return isBond && matchSearch;
     });
+    */
 
+
+    /* 
     const handleDownload = (bondId: string) => {
         message.loading({ content: `Generating certificate for ${bondId}...`, key: 'download' });
         setTimeout(() => {
@@ -27,19 +34,22 @@ const AdminBonds: React.FC = () => {
     const handleResend = (bondId: string) => {
         message.success(`Bond certificate for ${bondId} resent to investor email`);
     };
+    */
 
-    return (
-        <div className="admin-dashboard-wrapper">
-            <div className="page-header-compact">
-                {/* Breadcrumb removed */}
-                <div className="header-flex-row">
-                    <div>
-                        <Title level={2} className="page-title-compact">Bond Management</Title>
-                        <Text type="secondary">Manage issued investment bonds and digital certificates.</Text>
-                    </div>
-                </div>
-            </div>
 
+    // return (
+    //     <div className="admin-dashboard-wrapper">
+    //         <div className="page-header-compact">
+    //             {/* Breadcrumb removed */}
+    //             <div className="header-flex-row">
+    //                 <div>
+    //                     <Title level={2} className="page-title-compact">Bond Management</Title>
+    //                     <Text type="secondary">Manage issued investment bonds and digital certificates.</Text>
+    //                 </div>
+    //             </div>
+    //         </div>
+
+            {/* 
             <div className="bond-search-container">
                 <Input
                     placeholder="Search Bonds by ID or Investor..."
@@ -59,24 +69,6 @@ const AdminBonds: React.FC = () => {
                             hoverable
                             className="bond-card-compact"
                             bordered={false}
-                            // bodyStyle is replaced by CSS class if possible, but Card 'bodyStyle' prop overrides class usually. 
-                            // admin.css has .bond-card-body { padding: 16px !important } which should work if applied to body.
-                            // But Antd Card doesn't accept className for body. It accepts bodyStyle.
-                            // However, we used .dashboard-card-container .ant-card-body in Overview.
-                            // Here we can use .bond-card-compact .ant-card-body in admin.css (which I added as .bond-card-body usage intent).
-                            // Wait, I didn't add the selector rule in admin.css, I just added .bond-card-body class. 
-                            // Ant Card doesn't have a 'bodyClassName' prop.
-                            // So I will stick to bodyStyle={{ padding: 16 }} OR rely on global .ant-card-body override if safe.
-                            // Better: use the style attribute on bodyStyle since it is just one property, OR modify admin.css to target it.
-                            // I added .bond-card-body, but I can't pass it.
-                            // I will use `className="bond-card-compact"` and I should have added `.bond-card-compact .ant-card-body { padding: 16px }` in CSS.
-                            // Let's assume I did or I will fix it. Actually in step 321 I added `.bond-card-body { padding: 16px !important }` which is a loose class.
-                            // I will use bodyStyle={{ padding: 0 }} and wrap content in a div with that class? No that's messy.
-                            // I will just use `bodyStyle={{ padding: '16px' }}` for now as it's a Prop, not style attribute.
-                            // User said "external css".
-                            // Okay, I will modify the CSS in the next step to be correct selector if needed, 
-                            // OR I will rely on the fact that I can't add class to body easily without `bodyProps` (not in v4).
-                            // I'll leave bodyStyle={{ padding: '16px' }} as it's minor, but replace ALL standard style={{}} props.
                             bodyStyle={{ padding: '16px' }}
                         >
                             <div className="bond-card-header-row">
@@ -128,8 +120,9 @@ const AdminBonds: React.FC = () => {
                     </Col>
                 ))}
             </Row>
-        </div>
-    );
-};
+            */}
+//         </div>
+//     );
+// };
 
-export default AdminBonds;
+// export default AdminBonds;

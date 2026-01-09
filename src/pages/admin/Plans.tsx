@@ -279,6 +279,9 @@ const Plans: React.FC = () => {
                         showTotal: (total) => `Total ${total} plans`,
                     }}
                     scroll={{ x: 1000 }}
+                    locale={{
+                        emptyText: loading ? "Loading..." : "No investment plans found"
+                    }}
                 />
             </Card>
 
