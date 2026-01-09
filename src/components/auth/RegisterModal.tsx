@@ -13,13 +13,25 @@ interface RegisterModalProps {
     onSuccess?: (email: string) => void;
 }
 
+interface RegisterFormValues {
+    firstName: string;
+    lastName: string;
+    email: string;
+    mobile: string;
+    dob: dayjs.Dayjs;
+    gender: string;
+    password: string;
+    confirm: string;
+    agree: boolean;
+}
+
 const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess }) => {
     const [loading, setLoading] = useState(false);
     const [isOtpVisible, setIsOtpVisible] = useState(false);
     const [otp, setOtp] = useState('');
     const [verifyingEmail, setVerifyingEmail] = useState('');
     const [submittable, setSubmittable] = useState(false);
-    const [tempRegisterResponse, setTempRegisterResponse] = useState<any>(null); // Store register response temporarily
+    const [tempRegisterResponse, setTempRegisterResponse] = useState<{ inv_reg_id?: string; user_id?: number } | null>(null); // Store register response temporarily
     const [form] = Form.useForm();
 
     // Watch all values to trigger validation check
@@ -69,14 +81,15 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                 }
             });
 
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('OTP Verification Error:', error);
-            message.error(error.response?.data?.detail || 'Invalid OTP. Please try again.');
+            const err = error as { response?: { data?: { detail?: string } } };
+            message.error(err.response?.data?.detail || 'Invalid OTP. Please try again.');
         } finally {
             setLoading(false);
         }
     };
-    const onFinishInfo = async (values: any) => {
+    const onFinishInfo = async (values: RegisterFormValues) => {
         setLoading(true);
         try {
             const dob = values.dob.format('YYYY-MM-DD');
@@ -112,14 +125,15 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
             setIsOtpVisible(true);
             message.success('Registration initiated. OTP sent to your email!');
 
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Registration Error:', error);
-            if (error.response && error.response.data) {
-                if (Array.isArray(error.response.data.detail)) {
-                    const firstError = error.response.data.detail[0];
+            const err = error as { response?: { data?: { detail?: unknown; message?: string } } };
+            if (err.response && err.response.data) {
+                if (err.response.data.detail && Array.isArray(err.response.data.detail)) {
+                    const firstError = err.response.data.detail[0];
                     message.error(`${firstError.loc.join(' -> ')}: ${firstError.msg}`);
                 } else {
-                    message.error(error.response.data.detail || error.response.data.message || 'Registration failed.');
+                    message.error((err.response.data.detail as string) || err.response.data.message || 'Registration failed.');
                 }
             } else {
                 message.error('Registration failed. Please check your connection.');

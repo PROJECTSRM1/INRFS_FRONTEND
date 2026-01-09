@@ -38,7 +38,7 @@ const Dashboard: React.FC = () => {
                 const data = await investmentService.getInvestments();
                 console.log('Dashboard - Fetched investments:', data);
                 setInvestments(data);
-            } catch (error: any) {
+            } catch (error) {
                 console.error('Error fetching investments:', error);
                 message.error('Failed to load investments data');
             } finally {
