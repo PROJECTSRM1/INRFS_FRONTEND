@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Table, Card, Select, Tag, Typography, Input, Button, Tooltip, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useLocation } from 'react-router-dom';
-import { SearchOutlined, CheckCircleOutlined, ClockCircleOutlined, CheckSquareOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { DownloadOutlined, CheckCircleOutlined, ClockCircleOutlined, CheckSquareOutlined, ExclamationCircleOutlined , SearchOutlined} from '@ant-design/icons';
 import InvestmentCompletionModal from '../../components/admin/InvestmentCompletionModal';
 import type { Investment } from '../../types';
 import '../../styles/admin.css';
@@ -350,7 +350,7 @@ const AdminInvestments: React.FC = () => {
                         allowClear
                     />
      <Button
-  icon={<SearchOutlined />}
+  icon={<DownloadOutlined />}
   className="investment-csv-btn"
   onClick={() => {
     // Use the already filtered `dataSource` (DO NOT recalc)
