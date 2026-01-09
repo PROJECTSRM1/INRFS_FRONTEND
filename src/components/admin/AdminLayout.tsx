@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Menu, Button, Avatar, Badge, Typography, Space, Drawer, Switch } from 'antd';
+import { Layout, Menu, Button, Avatar, Typography, Space, Drawer, Switch } from 'antd';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
     DashboardOutlined,
     TeamOutlined,
     LineChartOutlined,
-    FileTextOutlined,
+    // FileTextOutlined,
 
-    BellOutlined,
+    // BellOutlined,
     LogoutOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -175,9 +175,9 @@ const AdminLayout: React.FC = () => {
                                 checked={darkMode}
                                 onChange={toggleDarkMode}
                             />
-                            <Badge count={5} size="small" offset={[2, 2]}>
+                            {/* <Badge count={5} size="small" offset={[2, 2]}>
                                 <Button type="text" icon={<BellOutlined />} className="icon-btn" />
-                            </Badge>
+                            </Badge> */}
                             <div className="user-profile-compact">
                                 <Avatar
                                     icon={<UserOutlined />}

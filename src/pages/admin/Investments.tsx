@@ -149,11 +149,11 @@ const AdminInvestments: React.FC = () => {
     }, [location]);
 
     // Helper function to parse date strings
-    const parseMaturityDate = (dateStr?: string): Date => {
-        if (!dateStr) return new Date(9999, 11, 31);
-        const parsed = new Date(dateStr);
-        return isNaN(parsed.getTime()) ? new Date(9999, 11, 31) : parsed;
-    };
+    // const parseMaturityDate = (dateStr?: string): Date => {
+    //     if (!dateStr) return new Date(9999, 11, 31);
+    //     const parsed = new Date(dateStr);
+    //     return isNaN(parsed.getTime()) ? new Date(9999, 11, 31) : parsed;
+    // };
 
     const handleMarkAsCompleted = (investment: Investment) => {
         setSelectedInvestment(investment);
