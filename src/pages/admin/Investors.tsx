@@ -8,6 +8,9 @@ import '../../styles/admin.css';
 import axios from "axios";
 
 const API_BASE = "https://inrfs-be.onrender.com";
+import { DatePicker } from 'antd';
+import dayjs from 'dayjs';
+
 
 export const getInvestors = async () => {
     const response = await axios.get(`${API_BASE}/users/users/`);
@@ -16,6 +19,7 @@ export const getInvestors = async () => {
 
 
 const { Title, Text } = Typography;
+
 
 const AdminInvestors: React.FC = () => {
     const [searchText, setSearchText] = useState('');
@@ -28,6 +32,8 @@ const AdminInvestors: React.FC = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedInvestor, setSelectedInvestor] = useState<Investor | null>(null);
     const [modalMode, setModalMode] = useState<'view' | 'edit'>('view');
+    const [dateRange, setDateRange] = useState<[string, string] | null>(null);
+
 
     useEffect(() => {
         const fetchInvestors = async () => {
@@ -52,7 +58,9 @@ const AdminInvestors: React.FC = () => {
                         status: u.status ?? "Active", // backend might provide
                         totalInvested: parseFloat(u.total_principal_amount) || 0,
                         activeInvestments: u.active_investments_count ?? 0,
+                         investment_created_date: u.investment_created_date, 
                     }));
+
 
                 setDataSource(filtered);
 
@@ -74,6 +82,34 @@ const AdminInvestors: React.FC = () => {
         fetchInvestors();
     }, []);
 
+const handleView = (record: Investor) => {
+  setSelectedInvestor(record);
+  setModalMode('view');
+  setIsModalVisible(true);
+};
+
+const handleEdit = (record: Investor) => {
+  setSelectedInvestor(record);
+  setModalMode('edit');
+  setIsModalVisible(true);
+};
+
+const handleModalCancel = () => {
+  setIsModalVisible(false);
+  setSelectedInvestor(null);
+};
+
+const handleModalSave = (updatedInvestor: Partial<Investor>) => {
+  const newData = dataSource.map(item => {
+    if (item.id === updatedInvestor.id) {
+      return { ...item, ...updatedInvestor } as Investor;
+    }
+    return item;
+  });
+  setDataSource(newData);
+  setIsModalVisible(false);
+  message.success('Investor details updated successfully');
+};
 
 
 
@@ -85,45 +121,28 @@ const AdminInvestors: React.FC = () => {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+    
 
     // Filter logic
-    const filteredData = dataSource.filter(item =>
-        item.name?.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.email?.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.customerId?.toLowerCase().includes(searchText.toLowerCase())
-    );
+  const filteredData = dataSource.filter(item => {
+  const matchSearch =
+    item.name?.toLowerCase().includes(searchText.toLowerCase()) ||
+    item.email?.toLowerCase().includes(searchText.toLowerCase()) ||
+    item.customerId?.toLowerCase().includes(searchText.toLowerCase());
+
+const matchDate = dateRange
+  ? dayjs((item as any).investment_created_date ?? "").isAfter(dateRange[0], "day") &&
+    dayjs((item as any).investment_created_date ?? "").isBefore(dateRange[1], "day")
+  : true;
 
 
-    const handleView = (record: Investor) => {
-        setSelectedInvestor(record);
-        setModalMode('view');        // ✅ correct state
-        setIsModalVisible(true);     // ✅ correct state
-    };
-
-    const handleEdit = (record: Investor) => {
-        setSelectedInvestor(record);
-        setModalMode('edit');        // ✅ correct state
-        setIsModalVisible(true);     // ✅ correct state
-    };
 
 
-    const handleModalCancel = () => {
-        setIsModalVisible(false);
-        setSelectedInvestor(null);
-    };
+  return matchSearch && matchDate;
+});
 
-    const handleModalSave = (updatedInvestor: Partial<Investor>) => {
-        // Update local state to mimic backend update
-        const newData = dataSource.map(item => {
-            if (item.id === updatedInvestor.id) {
-                return { ...item, ...updatedInvestor } as Investor;
-            }
-            return item;
-        });
-        setDataSource(newData);
-        setIsModalVisible(false);
-        message.success('Investor details updated successfully');
-    };
+
+       
 
     const columns: any = [
         {
@@ -210,6 +229,23 @@ const AdminInvestors: React.FC = () => {
             </div>
 
             <Card bordered={false} className="table-card-compact table-card-top-margin">
+                <div className="investor-date-filter-row">
+  <DatePicker.RangePicker
+    format="YYYY-MM-DD"
+    onChange={(dates) => {
+      if (!dates) {
+        setDateRange(null);
+      } else {
+        setDateRange([
+          dayjs(dates[0]).format("YYYY-MM-DD"),
+          dayjs(dates[1]).format("YYYY-MM-DD"),
+        ]);
+      }
+    }}
+    className="investor-date-picker"
+  />
+</div>
+
                 <div className="investor-toolbar">
                     <Input
                         placeholder="Search investors..."
@@ -224,9 +260,47 @@ const AdminInvestors: React.FC = () => {
                         onChange={(e) => setSearchText(e.target.value)}
                         className="compact-input search-input-responsive"
                     />
-                    <Button type="primary" icon={<DownloadOutlined />} className="compact-btn" block={isMobile}>
-                        Export
-                    </Button>
+                   <Button
+  type="primary"
+  icon={<DownloadOutlined />}
+  className="investor-csv-download-btn"
+  block={isMobile}
+  onClick={() => {
+    const downloadData = dateRange ? filteredData : dataSource;
+
+    if (downloadData.length === 0) {
+      message.warning("No data available to download");
+      return;
+    }
+
+    const csvRows = [
+      ["Customer ID", "Name", "Email", "Mobile", "Status", "Total Invested", "Active Investments"],
+      ...downloadData.map((inv: Investor) => [
+        inv.customerId,
+        inv.name,
+        inv.email,
+        inv.mobile,
+        inv.status,
+        inv.totalInvested,
+        inv.activeInvestments,
+      ]),
+    ];
+
+    const csvContent = csvRows.map(row => row.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = dateRange
+      ? `investors-${dateRange[0]}-to-${dateRange[1]}.csv`
+      : "investors-all.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  }}
+>
+  Export CSV
+</Button>
+
                 </div>
                 <Table
                     loading={loading}
