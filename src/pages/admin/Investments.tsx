@@ -7,15 +7,22 @@ import InvestmentCompletionModal from '../../components/admin/InvestmentCompleti
 import type { Investment } from '../../types';
 import '../../styles/admin.css';
 import axios from 'axios';
+import { deleteInvestment } from '../../utils/investmentsapi';
+import { DatePicker } from 'antd';
+import dayjs from 'dayjs';
+
+
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 const PLAN_NAME_MAP: Record<number, string> = {
-    1: "3 Month",
-    2: "6 Month",
-    3: "Yearly",
-    4: "Quarterly",
+  1: "Monthly",
+  2: "Quarterly",
+  3: "Yearly",
+  4: "Half Yearly",
+  
 };
+
 
 interface InvestmentApiItem {
     id: number;
@@ -28,6 +35,8 @@ interface InvestmentApiItem {
     is_active: boolean;
     tenure: number;
     infrc_number?: string;
+    inv_reg_id?:number|string;
+    
 }
 
 const AdminInvestments: React.FC = () => {
@@ -39,6 +48,7 @@ const AdminInvestments: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [isCompletionModalVisible, setIsCompletionModalVisible] = useState(false);
     const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
+    const [dateRange, setDateRange] = useState<[string, string] | null>(null);
 
     const getTokens = () => ({
         access: localStorage.getItem("access_token"),
@@ -73,7 +83,7 @@ const AdminInvestments: React.FC = () => {
 
             const mapped: Investment[] = res.data.map((item: InvestmentApiItem) => ({
                 id: item.uk_inv_id || String(item.id),
-                investorName: `ID-${item.created_by}`,
+                investorName: item.inv_reg_id,
                 planName: PLAN_NAME_MAP[item.plan_type_id] || "Unknown",
                 amount: item.principal_amount || 0,
                 interest: item.interest_amount || 0,
@@ -84,6 +94,7 @@ const AdminInvestments: React.FC = () => {
                 tenure: item.tenure || 0,
                 date: item.maturity_date || '',
                 planId: String(item.plan_type_id || ''),
+                
                 infrcNumber: item.infrc_number || ''
             }));
 
@@ -110,6 +121,7 @@ const AdminInvestments: React.FC = () => {
                         tenure: item.tenure || 0,
                         date: item.maturity_date || '',
                         planId: String(item.plan_type_id || ''),
+                        
                         infrcNumber: item.infrc_number || ''
                     }));
                     setInvestments(mappedRetry);
@@ -148,31 +160,34 @@ const AdminInvestments: React.FC = () => {
         setIsCompletionModalVisible(true);
     };
 
-    const handleConfirmCompletion = (mode: 'Maturity' | 'Early') => {
-        if (!selectedInvestment) return;
+   const handleConfirmCompletion = async (mode: 'Maturity' | 'Early') => {
+    if (!selectedInvestment) return;
 
-        const updatedInvestments = investments.map(inv => {
-            if (inv.id === selectedInvestment.id) {
-                const isEarly = mode === 'Early';
-                const originalInterest = inv.interest || 0;
-                const adjustedInterest = originalInterest;
+    try {
+        setLoading(true);
 
-                return {
-                    ...inv,
-                    status: isEarly ? 'Closed Early' : 'Completed',
-                    settlementStatus: isEarly ? 'Adjusted' : 'Completed',
-                    interest: adjustedInterest,
-                    maturityAmount: inv.amount + adjustedInterest
-                } as Investment;
-            }
-            return inv;
-        });
+        // Call DELETE API using uk_inv_id (your ID field stores uk_inv_id if exists)
+        await deleteInvestment(selectedInvestment.id);
 
-        setInvestments(updatedInvestments);
+        message.success(
+            mode === 'Early'
+                ? 'Investment closed early with adjustment'
+                : 'Investment marked as completed successfully'
+        );
+
+        // Refresh list from backend so state is permanent
+        await fetchInvestmentData();
+
         setIsCompletionModalVisible(false);
         setSelectedInvestment(null);
-        message.success(mode === 'Early' ? 'Investment closed early with adjustment' : 'Investment marked as completed successfully');
-    };
+    } catch (error) {
+        console.error("DELETE failed:", error);
+        message.error("Failed to update investment status");
+    } finally {
+        setLoading(false);
+    }
+};
+
 
     const columns: ColumnsType<Investment> = [
         {
@@ -283,24 +298,32 @@ const AdminInvestments: React.FC = () => {
         },
     ];
 
-    // Filter and sort data
     const dataSource = investments
-        .filter(item => {
-            const matchPlan = planFilter === 'All Plans' || item.planName === planFilter;
-            const matchStatus = statusFilter === 'All Status' || item.status === statusFilter;
-            const matchSearch =
-                item.id.toLowerCase().includes(searchText.toLowerCase()) ||
-                (item.investorName || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                item.planName.toLowerCase().includes(searchText.toLowerCase());
+  .filter(item => {
+    const matchPlan = planFilter === "All Plans" || item.planName === planFilter;
+    const matchStatus = statusFilter === "All Status" || item.status === statusFilter;
+    const matchSearch =
+      item.id.toLowerCase().includes(searchText.toLowerCase()) ||
+      (item.investorName ?? "").toString().toLowerCase().includes(searchText.toLowerCase());
 
-            return matchPlan && matchStatus && matchSearch;
-        })
-        .sort((a, b) => {
-            // Sort by maturity date (nearest first)
-            const dateA = parseMaturityDate(a.maturityDate);
-            const dateB = parseMaturityDate(b.maturityDate);
-            return dateA.getTime() - dateB.getTime();
-        });
+    const matchDate = dateRange
+      ? (dayjs(item.maturityDate ?? "").isSame(dateRange[0], 'day') ||
+         dayjs(item.maturityDate ?? "").isAfter(dateRange[0], 'day')) &&
+        (dayjs(item.maturityDate ?? "").isSame(dateRange[1], 'day') ||
+         dayjs(item.maturityDate ?? "").isBefore(dateRange[1], 'day'))
+      : true;
+
+    return matchPlan && matchStatus && matchSearch && matchDate;
+  })
+  .sort((a, b) => {
+    const dateA = new Date(a.maturityDate ?? "");
+    const dateB = new Date(b.maturityDate ?? "");
+    return dateA.getTime() - dateB.getTime();
+  });
+
+
+
+        
 
     return (
         <div className="admin-dashboard-wrapper">
@@ -314,6 +337,8 @@ const AdminInvestments: React.FC = () => {
                 </div>
             </div>
 
+
+
             <Card bordered={false} className="table-card-compact table-card-top-margin">
                 <div className="investment-filter-container">
                     <Input
@@ -324,16 +349,59 @@ const AdminInvestments: React.FC = () => {
                         className="investment-search-input"
                         allowClear
                     />
+     <Button
+  icon={<SearchOutlined />}
+  className="investment-csv-btn"
+  onClick={() => {
+    // Use the already filtered `dataSource` (DO NOT recalc)
+
+    if (dataSource.length === 0) {
+      message.warning("No data available to download");
+      return;
+    }
+
+    const csvRows = [
+      ["ID", "Investor", "Plan", "Amount", "Interest", "Maturity Date", "Status", "Settlement", "Maturity Amount"],
+      ...dataSource.map(inv => [
+        inv.id,
+        inv.investorName,
+        inv.planName,
+        inv.amount,
+        inv.interest,
+        inv.maturityDate,
+        inv.status,
+        inv.settlementStatus,
+        inv.maturityAmount,
+      ]),
+    ];
+
+    const csvContent = csvRows.map(e => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${planFilter === "All Plans" ? "all-investments" : planFilter.toLowerCase()}-investments.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }}
+>
+  Export CSV
+</Button>
+
+
                     <Select
-                        defaultValue="All Plans"
-                        onChange={setPlanFilter}
-                        className="investment-filter-select"
-                    >
-                        <Option value="All Plans">All Plans</Option>
-                        <Option value="6 Month">6 Month</Option>
-                        <Option value="3 Month">3 Month</Option>
-                        <Option value="Yearly">Yearly</Option>
-                    </Select>
+  defaultValue="All Plans"
+  onChange={setPlanFilter}
+  className="investment-filter-select"
+>
+  <Option value="All Plans">All Plans</Option>
+  <Option value="Monthly">Monthly (1 Month)</Option>
+  <Option value="Quarterly">Quarterly (3 Months)</Option>
+  <Option value="Half Yearly">Half Yearly (6 Months)</Option>
+    
+  <Option value="Yearly">Yearly (12 Months)</Option>
+</Select>
+
                     <Select
                         defaultValue="All Status"
                         value={statusFilter}
@@ -346,6 +414,23 @@ const AdminInvestments: React.FC = () => {
                         <Option value="Matured">Matured</Option>
                     </Select>
                 </div>
+                <div className="investment-date-filter-row">
+  <DatePicker.RangePicker
+    format="YYYY-MM-DD"
+    onChange={(dates) => {
+      if (!dates) {
+        setDateRange(null);
+      } else {
+        setDateRange([
+          dayjs(dates[0]).format("YYYY-MM-DD"),
+          dayjs(dates[1]).format("YYYY-MM-DD"),
+        ]);
+      }
+    }}
+    className="investment-date-picker"
+  />
+</div>
+
                 <Table
                     columns={columns}
                     dataSource={dataSource}

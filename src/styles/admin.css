@@ -750,6 +750,30 @@ body {
     /* Fixed width for consistent look */
     flex-shrink: 0;
 }
+.investment-date-filter-row {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  padding: 6px 0;
+}
+
+.investment-date-picker {
+  border-radius: 6px;
+  border: 1px solid #926132;
+  padding: 4px 10px;
+}
+
+.investment-csv-btn {
+  background: #926132;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.investment-date-filter-row .ant-picker-input input {
+  font-weight: 500;
+}
 
 @media (max-width: 900px) {
     .investment-filter-container {
@@ -812,6 +836,32 @@ body {
     font-weight: 600;
     color: #1e293b;
 }
+
+
+.investor-date-filter-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+.investor-date-picker {
+    border: 1px solid #926132;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-weight: 500;
+    min-width: 220px;
+}
+
+@media (max-width: 768px) {
+  .investor-date-filter-row {
+    justify-content: center;
+  }
+  .investor-date-picker {
+    width: 100%;
+  }
+}
+
 
 .flex-align-center {
     display: flex;
