@@ -1,211 +1,221 @@
-import React, { useState, useEffect } from 'react';
-import { Row, Col, Card, Button, Typography, DatePicker, Select, Space, Table, message, Tag } from 'antd';
-import { FileExcelOutlined, FilePdfOutlined, FilterOutlined } from '@ant-design/icons';
-import dayjs from 'dayjs';
-import isBetween from 'dayjs/plugin/isBetween';
-import '../../styles/admin.css';
-
-dayjs.extend(isBetween);
-
-const { Title, Text } = Typography;
-const { RangePicker } = DatePicker;
-const { Option } = Select;
-
-interface ReportItem {
-    key: string;
-    name: string;
-    date: string;
-    type: string;
-    category: string;
-    format: string;
-}
-
-const Reports: React.FC = () => {
-    const [isMobile, setIsMobile] = useState(false);
-    // State to hold filters
-    const [selectedType, setSelectedType] = useState('all');
-    const [selectedFormat, setSelectedFormat] = useState('all');
-    const [dateRange, setDateRange] = useState<[dayjs.Dayjs | null, dayjs.Dayjs | null] | null>(null);
-    const [activeDateRange, setActiveDateRange] = useState<[dayjs.Dayjs | null, dayjs.Dayjs | null] | null>(null);
-    const [loading] = useState(false);
+// import React, { useState, useEffect } from "react";
+// import apiClient from "../../utils/apiClient";
+// import {
+//   Row, Col, Card, Button, Typography, DatePicker, Select, Space, Table, message
+// } from "antd";
+// import { FilePdfOutlined, FileExcelOutlined , FilterOutlined } from "@ant-design/icons";
+// import dayjs from "dayjs";
+// import jsPDF from "jspdf";
+// import { Tag } from "antd";
 
 
+// const { Title, Text } = Typography;
+// const { RangePicker } = DatePicker;
+// const { Option } = Select;
 
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth <= 768);
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+// interface ReportItem {
+//   key: string;
+//   name: string;
+//   date: string;
+//   type: string;
+//   category: string;
+//   format: string;
+//   data: any;
+// }
 
-    const handleDownload = (record: ReportItem, format: 'pdf' | 'csv') => {
-        message.loading(`Generating ${format.toUpperCase()} for ${record.name}...`, 1.5)
-            .then(() => message.success(`${format.toUpperCase()} Downloaded Successfully`));
-    };
+// const Reports: React.FC = () => {
+//   const [reports, setReports] = useState<ReportItem[]>([]);
+//   const [filteredReports, setFilteredReports] = useState<ReportItem[]>([]);
+//   const [selectedType, setSelectedType] = useState("all");
+//   const [selectedFormat, setSelectedFormat] = useState("all");
+//   const [dateRange, setDateRange] = useState<any>(null);
+//   const [loading, setLoading] = useState(false);
 
-    const applyFilters = () => {
-        setActiveDateRange(dateRange);
-        message.info('Filters Applied');
-    };
+//   useEffect(() => {
+//     fetchReports();
+//   }, []);
 
-    const reportColumns = [
-        {
-            title: 'Report Name',
-            dataIndex: 'name',
-            key: 'name',
-            minWidth: 200,
-            render: (text: string) => <Text strong>{text}</Text>
-        },
-        { title: 'Date', dataIndex: 'date', key: 'date', width: 120 },
-        {
-            title: 'Type',
-            dataIndex: 'type',
-            key: 'type',
-            width: 180,
-            render: (type: string) => <Tag color="blue">{type}</Tag>
-        },
-        {
-            title: 'Format',
-            dataIndex: 'format',
-            key: 'format',
-            width: 100,
-            render: (format: string) => (
-                <Tag color={format === 'pdf' ? 'red' : 'green'}>
-                    {format.toUpperCase()}
-                </Tag>
-            )
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            width: 140,
-            fixed: (isMobile ? false : 'right') as boolean | 'right' | 'left',
-            render: (_: unknown, record: ReportItem) => (
-                <Space size="middle">
-                    {record.format === 'pdf' || record.format === 'all' ? (
-                        <Button
-                            type="text"
-                            icon={<FilePdfOutlined className="icon-pdf" />}
-                            onClick={() => handleDownload(record, 'pdf')}
-                        />
-                    ) : null}
-                    {record.format === 'csv' || record.format === 'all' ? (
-                        <Button
-                            type="text"
-                            icon={<FileExcelOutlined className="icon-excel" />}
-                            onClick={() => handleDownload(record, 'csv')}
-                        />
-                    ) : null}
-                </Space>
-            )
-        },
-    ];
+//   const fetchReports = async () => {
+//     setLoading(true);
+//     try {
+//       const investorsRes = await apiClient.get("/users/");
+//       const investmentsRes = await apiClient.get("/investments/");
+// const investors = investorsRes.data.map((i: any, idx: number) => ({
+//   key: `investor-${i.id || idx}`,
+//   name: `${i.First_Name} ${i.Last_Name || ""}`.trim(),
+//   date: i.createdAt, // real unique date
+//   type: "Investor Report",
+//   category: "investor",
+//   format: i.reportFormat || "pdf",
+//   data: i,
+// }));
 
-    // Mock data with format property
-    const allReportData: ReportItem[] = [
-        { key: '1', name: 'Q3 Investor Demographics', date: '2025-09-30', type: 'Investor Report', category: 'investor', format: 'pdf' },
-        { key: '2', name: 'New Investors - Nov 2025', date: '2025-11-30', type: 'Investor Report', category: 'investor', format: 'csv' },
-        { key: '3', name: 'Annual Investment Summary', date: '2025-12-15', type: 'Investments Report', category: 'investments', format: 'pdf' },
-        { key: '4', name: 'Portfolio Performance Q4', date: '2025-12-31', type: 'Investments Report', category: 'investments', format: 'csv' },
-        { key: '5', name: 'Investments Q1 Preview', date: '2026-03-15', type: 'Investments Report', category: 'investments', format: 'pdf' },
-    ];
+// const investments = investmentsRes.data.map((inv: any, idx: number) => ({
+//   key: `investment-${inv.id || idx}`,
+//   name: `Investment by ${inv.investorName || inv.userName || "Investor"} (ID: ${inv.id})`,
+//   date: inv.createdAt || inv.date || inv.investmentDate, // real unique date
+//   type: "Investment Report",
+//   category: "investments",
+//   format: inv.reportFormat || "pdf",
+//   data: inv,
+// }));
 
-    // Filter data based on selected type, format, and date range
-    const filteredData = allReportData.filter(item => {
-        const typeMatch = selectedType === 'all' || item.category === selectedType;
-        const formatMatch = selectedFormat === 'all' || item.format === selectedFormat;
 
-        // Date range filtering
-        let dateMatch = true;
-        if (activeDateRange && activeDateRange[0] && activeDateRange[1]) {
-            const itemDate = dayjs(item.date);
-            dateMatch = itemDate.isBetween(activeDateRange[0], activeDateRange[1], 'day', '[]');
-        }
 
-        return typeMatch && formatMatch && dateMatch;
-    });
 
-    return (
-        <div className="admin-reports-wrapper">
-            <div className="page-header-compact">
-                <div className="header-flex-row">
-                    <Title level={1} className="dashboard-main-title">Reports & Analytics</Title>
-                </div>
-            </div>
+// setReports([...investors, ...investments]);
+// setFilteredReports([...investors, ...investments]);
 
-            <Card className="fintech-chart-card mt-24" title="Generate New Report" bordered={false}>
-                <Space direction="vertical" size="large" className="reports-full-width-space">
-                    <Row gutter={[16, 16]}>
-                        <Col xs={24} md={8}>
-                            <Text strong>Report Type</Text>
-                            <Select
-                                defaultValue="all"
-                                className="reports-select-full"
-                                onChange={(value) => setSelectedType(value)}
-                                value={selectedType}
-                            >
-                                <Option value="all">All Reports</Option>
-                                <Option value="investor">Investor Report</Option>
-                                <Option value="investments">Investments Report</Option>
-                            </Select>
-                        </Col>
-                        <Col xs={24} md={8}>
-                            <Text strong>Date Range</Text>
-                            <div className="reports-range-picker-container">
-                                <RangePicker
-                                    className="reports-range-picker-full"
-                                    onChange={(dates) => setDateRange(dates as [dayjs.Dayjs | null, dayjs.Dayjs | null] | null)}
-                                />
-                            </div>
-                        </Col>
-                        <Col xs={24} md={8}>
-                            <Text strong>Format</Text>
-                            <div className="reports-format-select-container">
-                                <Select
-                                    defaultValue="all"
-                                    className="reports-format-select-full"
-                                    onChange={(value) => setSelectedFormat(value)}
-                                    value={selectedFormat}
-                                >
-                                    <Option value="all">All Formats</Option>
-                                    <Option value="pdf">PDF Document</Option>
-                                    <Option value="csv">Excel Spreadsheet (CSV)</Option>
-                                </Select>
-                            </div>
-                        </Col>
-                    </Row>
-                    <Button
-                        type="primary"
-                        icon={<FilterOutlined />}
-                        block
-                        size="large"
-                        className="reports-generate-btn"
-                        onClick={applyFilters}
-                    >
-                        Apply Filters
-                    </Button>
-                </Space>
-            </Card>
 
-            <Card
-                className="fintech-chart-card mt-24 reports-table-card"
-                title={`Results: ${filteredData.length} Reports Found`}
-                bordered={false}
-            >
-                <Table
-                    columns={reportColumns}
-                    dataSource={filteredData}
-                    loading={loading}
-                    pagination={{ pageSize: 5 }}
-                    scroll={{ x: 700 }}
-                    size={isMobile ? 'small' : 'middle'}
-                    locale={{
-                        emptyText: loading ? "Loading..." : "No reports found for these filters"
-                    }}
-                />
-            </Card>
-        </div>
-    );
-};
+//       const all = [...investors, ...investments];
+//       setReports(all);
+//       setFilteredReports(all);
+//       setFilteredReports(all);
+//       message.success("Backend data loaded successfully");
+//     } catch {
+//       message.error("Failed to load data");
+//     }
+//     setLoading(false);
+//   };
 
-export default Reports;
+//   const applyFilters = () => {
+//     const result = reports.filter(item => {
+//       const typeMatch = selectedType === "all" || item.category === selectedType;
+//       const formatMatch = selectedFormat === "all" || item.format === selectedFormat;
+//       let dateMatch = true;
+
+//       if (dateRange?.[0] && dateRange?.[1]) {
+//         const d = dayjs(item.date);
+//         dateMatch = (d as any).isBetween(dateRange[0], dateRange[1], "day", "[]");
+//       }
+
+//       return typeMatch && formatMatch && dateMatch;
+//     });
+
+//     setFilteredReports(result);
+//     message.success("Filters Applied");
+//   };
+
+//   const handleBulkDownloadPDF = () => {
+//   const doc = new jsPDF();
+//   doc.setFontSize(16);
+//   doc.text("Investors & Investments Report", 10, 10);
+
+//   let y = 20;
+//   filteredReports.forEach((r) => {
+//     doc.text(`${r.name} | ${dayjs(r.date).format("YYYY-MM-DD")} | ${r.type}`, 10, y);
+//     y += 8;
+//   });
+
+//   const url = URL.createObjectURL(doc.output("blob"));
+//   window.open(url);
+
+//   const a = document.createElement("a");
+//   a.href = url;
+//   a.download = "Reports.pdf";
+//   a.click();
+// };
+
+
+//   const handleBulkDownloadCSV = () => {
+//   const rows = filteredReports.map((r) => r.data);
+//   if (!rows.length) return message.info("No data to export");
+
+//   const headers = Object.keys(rows[0]).join(",");
+//   const csv = rows.map((r) => Object.values(r).join(",")).join("\n");
+
+//   const blob = new Blob([headers + "\n" + csv], { type: "text/csv" });
+//   const url = URL.createObjectURL(blob);
+//   const a = document.createElement("a");
+//   a.href = url;
+//   a.download = "Reports.csv";
+//   a.click();
+// };
+
+
+//  const reportColumns = [
+//   {
+//     title: "Report Name",
+//     dataIndex: "name",
+//     key: "name",
+//     render: (text: string) => <Text strong>{text}</Text>,
+//   },
+//   {
+//     title: "Date",
+//     dataIndex: "date",
+//     key: "date",
+//     render: (d: string) => dayjs(d).format("YYYY-MM-DD"), // unique for each row
+//   },
+//   {
+//     title: "Type",
+//     dataIndex: "type",
+//     key: "type",
+//     render: (t: string) => <Tag>{t}</Tag>,
+//   },
+//   {
+//     title: "Action",
+//     key: "action",
+//     fixed: "right" as "right",
+//     render: (_: any, record: ReportItem) => (
+//       <Space>
+//         <Button type="text" icon={<FilePdfOutlined />} onClick={() => handleBulkDownloadPDF()} />
+//         <Button type="text" icon={<FileExcelOutlined />} onClick={() => handleBulkDownloadCSV()} />
+//       </Space>
+//     ),
+//   },
+// ];
+
+
+//   return (
+//     <div className="admin-reports-wrapper">
+//       <Card bordered={false} className="mt-24" title={<Title level={4}>Generate New Report</Title>} extra={
+//         <Space>
+//           <Button icon={<FilePdfOutlined />} onClick={handleBulkDownloadPDF} />
+//           <Button icon={<FileExcelOutlined />} onClick={handleBulkDownloadCSV} />
+//         </Space>
+//       }>
+//         <Row gutter={[16,16]}>
+//           <Col xs={24} md={8}>
+//             <Text strong>Report Type</Text>
+//             <Select value={selectedType} onChange={v => setSelectedType(v)} className="reports-select-full">
+//               <Option value="all">All</Option>
+//               <Option value="investor">Investor Reports</Option>
+//               <Option value="investments">Investment Reports</Option>
+//             </Select>
+//           </Col>
+
+//           <Col xs={24} md={8}>
+//             <Text strong>Date Range</Text>
+//             <RangePicker onChange={v => setDateRange(v)} className="reports-range-picker-full"/>
+//           </Col>
+
+//           <Col xs={24} md={8}>
+//             <Text strong>Format</Text>
+//             <Select value={selectedFormat} onChange={v => setSelectedFormat(v)} className="reports-select-full">
+//               <Option value="all">All</Option>
+//               <Option value="pdf">PDF</Option>
+//               <Option value="csv">CSV</Option>
+//             </Select>
+//           </Col>
+//         </Row>
+
+//         <Button type="primary" block icon={<FilterOutlined/>} className="mt-16" onClick={applyFilters}>
+//           Apply Filters
+//         </Button>
+//       </Card>
+
+//       <Card bordered={false} className="mt-24">
+//         <Table
+//           columns={reportColumns}
+//           dataSource={filteredReports}
+//           loading={loading}
+//           pagination={{ pageSize: 5 }}
+//           scroll={{ x: 700 }}
+//           locale={{ emptyText: "No reports found for these filters" }}
+//         />
+//       </Card>
+//     </div>
+//   );
+// };
+
+// export default Reports;

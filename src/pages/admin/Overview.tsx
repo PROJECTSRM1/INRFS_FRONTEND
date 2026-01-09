@@ -228,7 +228,7 @@ const selectedTrend = trendMap[key] || [];
                             <Card
                                 className="fintech-stat-card compact clickable-stat-card"
                                 bordered={false}
-                                onClick={() => navigate('/admin/reports')}
+                                // onClick={() => navigate('/admin/reports')}
                             >
                                 <div className="stat-card-header compact">
                                     <div className="stat-icon-box orange compact">

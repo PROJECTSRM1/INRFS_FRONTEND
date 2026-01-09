@@ -75,11 +75,11 @@ const AdminLayout: React.FC = () => {
         //     label: <NavLink to="/admin/bonds" onClick={() => setDrawerVisible(false)}>Bonds</NavLink>,
         // },
 
-        {
-            key: '/admin/reports',
-            icon: <FileTextOutlined />,
-            label: <NavLink to="/admin/reports" onClick={() => setDrawerVisible(false)}>Reports</NavLink>,
-        },
+        // {
+        //     key: '/admin/reports',
+        //     icon: <FileTextOutlined />,
+        //     label: <NavLink to="/admin/reports" onClick={() => setDrawerVisible(false)}>Reports</NavLink>,
+        // },
         {
             key: '/admin/users',
             icon: <UserAddOutlined />,
