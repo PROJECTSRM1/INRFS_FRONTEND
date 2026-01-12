@@ -7,6 +7,7 @@ import { INVESTMENT_PLANS } from '../../data/mockData';
 import { fintechService } from '../../services/fintechService';
 import { plansService, type Plan } from '../../services/plansService';
 import { investmentService } from '../../services/investmentService';
+import { paymentService } from '../../services/paymentService';
 import PaymentModal from '../../components/PaymentModal';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -135,13 +136,29 @@ const CompleteInvestment: React.FC = () => {
                 maturityDate: investmentService.calculateMaturityDate(displayPlan.duration)
             };
 
+            // Call payment API with investment_id and amount
+            console.log('=== PAYMENT ORDER CREATION ===');
+
+            // Generate a temporary numeric investment ID
+            // Note: In production, you might want to create the investment first and use its database ID
+            const tempInvestmentId = Math.floor(100000 + Math.random() * 900000);
+
+            const paymentPayload = {
+                investment_id: tempInvestmentId, // Using numeric ID as required by API
+                amount: Number(amount)
+            };
+            console.log('Payment Payload:', paymentPayload);
+
+            const paymentResponse = await paymentService.createOrder(paymentPayload);
+            console.log('Payment Response:', paymentResponse);
+
             // Store bond data for later save
             setGeneratedBond(bondData);
 
             // Close payment modal and show bond certificate
             setIsPaymentModalVisible(false);
             setShowBondCertificate(true);
-            message.success('Payment successful! Your bond certificate is ready.');
+            message.success('Payment order created successfully! Your bond certificate is ready.');
         } catch (error: any) {
             console.error('Error processing payment:', error);
             const errorMessage = error.response?.data?.message || error.message || 'Failed to process payment';

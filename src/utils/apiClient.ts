@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 // Create axios instance with base configuration
-const API_URL = import.meta.env.DEV ? '/api' : 'https://inrfs-be.onrender.com';
+// Temporarily using direct backend URL to bypass proxy issues
+const API_URL = 'https://inrfs-be.onrender.com';
+// const API_URL = import.meta.env.DEV ? '/api' : 'https://inrfs-be.onrender.com';
 
 export const apiClient = axios.create({
     baseURL: API_URL,
