@@ -112,9 +112,15 @@ export const investmentService = {
             return response.data;
         } catch (error: any) {
             console.error('Error creating investment:', error);
-            console.error('Error response:', error.response?.data);
+            console.error('Error response data:', JSON.stringify(error.response?.data, null, 2));
             console.error('Error status:', error.response?.status);
-            console.error('Request config:', error.config);
+            console.error('Error headers:', error.response?.headers);
+
+            // Log detailed validation errors if present
+            if (error.response?.data?.detail) {
+                console.error('Validation errors:', JSON.stringify(error.response.data.detail, null, 2));
+            }
+
             throw error;
         }
     },

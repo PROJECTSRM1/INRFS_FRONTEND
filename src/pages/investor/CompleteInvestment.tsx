@@ -7,6 +7,7 @@ import { INVESTMENT_PLANS } from '../../data/mockData';
 import { fintechService } from '../../services/fintechService';
 import { plansService, type Plan } from '../../services/plansService';
 import { investmentService } from '../../services/investmentService';
+import { paymentService } from '../../services/paymentService';
 import PaymentModal from '../../components/PaymentModal';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -135,13 +136,29 @@ const CompleteInvestment: React.FC = () => {
                 maturityDate: investmentService.calculateMaturityDate(displayPlan.duration)
             };
 
+            // Call payment API with investment_id and amount
+            console.log('=== PAYMENT ORDER CREATION ===');
+
+            // Generate a temporary numeric investment ID
+            // Note: In production, you might want to create the investment first and use its database ID
+            const tempInvestmentId = Math.floor(100000 + Math.random() * 900000);
+
+            const paymentPayload = {
+                investment_id: tempInvestmentId, // Using numeric ID as required by API
+                amount: Number(amount)
+            };
+            console.log('Payment Payload:', paymentPayload);
+
+            const paymentResponse = await paymentService.createOrder(paymentPayload);
+            console.log('Payment Response:', paymentResponse);
+
             // Store bond data for later save
             setGeneratedBond(bondData);
 
             // Close payment modal and show bond certificate
             setIsPaymentModalVisible(false);
             setShowBondCertificate(true);
-            message.success('Payment successful! Your bond certificate is ready.');
+            message.success('Payment order created successfully! Your bond certificate is ready.');
         } catch (error: any) {
             console.error('Error processing payment:', error);
             const errorMessage = error.response?.data?.message || error.message || 'Failed to process payment';
@@ -158,14 +175,15 @@ const CompleteInvestment: React.FC = () => {
 
         try {
             const canvas = await html2canvas(certRef.current, {
-                scale: 3,
+                scale: 2, // Reduced from 3 for smaller file size
                 useCORS: true,
-                backgroundColor: '#ffffff'
+                backgroundColor: '#ffffff',
+                logging: false
             });
 
-            const imgData = canvas.toDataURL('image/png');
+            const imgData = canvas.toDataURL('image/jpeg', 0.85); // JPEG with 85% quality
             const pdf = new jsPDF('p', 'mm', 'a4');
-            pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
+            pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
             pdf.save(`${generatedBond.planName.replace(/\s+/g, '_')}_Certificate.pdf`);
             message.success('Certificate downloaded successfully');
         } catch (error) {
@@ -213,18 +231,20 @@ const CompleteInvestment: React.FC = () => {
                 // Generate PDF from bond certificate
                 console.log('Generating bond certificate PDF...');
                 const canvas = await html2canvas(certRef.current, {
-                    scale: 3,
+                    scale: 2, // Reduced from 3 to 2 for smaller file size
                     useCORS: true,
-                    backgroundColor: '#ffffff'
+                    backgroundColor: '#ffffff',
+                    logging: false // Disable logging for cleaner output
                 });
 
-                const imgData = canvas.toDataURL('image/png');
+                // Use JPEG with compression instead of PNG for smaller file size
+                const imgData = canvas.toDataURL('image/jpeg', 0.85); // 85% quality JPEG
                 const pdf = new jsPDF('p', 'mm', 'a4');
-                pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
+                pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
 
                 // Get PDF as blob
                 const pdfBlob = pdf.output('blob');
-                console.log('PDF generated, size:', pdfBlob.size, 'bytes');
+                console.log('PDF generated, size:', pdfBlob.size, 'bytes', `(${(pdfBlob.size / 1024 / 1024).toFixed(2)} MB)`);
 
                 // Create File object from blob
                 const pdfFile = new File(

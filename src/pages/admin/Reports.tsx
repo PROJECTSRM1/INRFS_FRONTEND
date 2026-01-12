@@ -8,7 +8,6 @@ import dayjs from "dayjs";
 import jsPDF from "jspdf";
 import { Tag } from "antd";
 
-
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
 const { Option } = Select;

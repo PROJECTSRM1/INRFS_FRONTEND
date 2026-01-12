@@ -3,6 +3,7 @@ import { Form, Input, Button, Card, Typography, message, Checkbox, Avatar } from
 import { UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
+import ForgotPasswordModal from '../../components/auth/ForgotPasswordModal';
 import '../../styles/theme.css';
 import '../../styles/auth-mobile.css';
 
@@ -13,6 +14,7 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [loading, setLoading] = useState(false);
+    const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
 
     interface LoginValues {
         id: string;
@@ -86,7 +88,16 @@ const Login: React.FC = () => {
 
                     <div className="auth-options-row">
                         <Checkbox><Text type="secondary">Remember me</Text></Checkbox>
-                        <Link to="#" className="brand-link">Forgot password?</Link>
+                        <a
+                            href="#"
+                            className="brand-link"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setForgotPasswordOpen(true);
+                            }}
+                        >
+                            Forgot password?
+                        </a>
                     </div>
 
                     <Button
@@ -105,6 +116,11 @@ const Login: React.FC = () => {
                     <Link to="/auth/register" className="brand-link">Register here</Link>
                 </div>
             </Card>
+
+            <ForgotPasswordModal
+                open={forgotPasswordOpen}
+                onCancel={() => setForgotPasswordOpen(false)}
+            />
         </div>
     );
 };

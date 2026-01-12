@@ -15,6 +15,7 @@ const AboutPage = lazy(() => import('../pages/public/AboutPage'));
 
 // Auth Pages
 const Register = lazy(() => import('../pages/auth/Register'));
+const ResetPassword = lazy(() => import('../pages/auth/ResetPassword'));
 
 // Investor Pages
 const InvestorDashboard = lazy(() => import('../pages/investor/Dashboard'));
@@ -52,7 +53,11 @@ const AppRoutes: React.FC = () => {
                 {/* Auth Routes */}
                 <Route path="/auth" element={<AuthLayout />}>
                     <Route path="register" element={<Register />} />
+                    <Route path="reset-password" element={<ResetPassword />} />
                 </Route>
+
+                {/* Reset Password Route (Public - accessed via email link) */}
+                <Route path="/reset-password" element={<ResetPassword />} />
 
 
                 {/* New Admin Routes (Unprotected for demo purposes as requested for development) */}
