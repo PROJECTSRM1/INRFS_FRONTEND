@@ -41,6 +41,15 @@
     margin-top: 32px;
 }
 
+.verification-error-inline {
+    background-color: #fff1f0;
+    border: 1px solid #ffa39e;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
 .login-form .ant-form-item-label>label {
     font-weight: 600;
     color: var(--text-main);

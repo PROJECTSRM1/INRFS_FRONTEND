@@ -8,7 +8,7 @@ import {
     HistoryOutlined
 } from '@ant-design/icons';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import type { TooltipProps } from 'recharts';
+// import type { TooltipProps } from 'recharts';
 import { fetchAdminDashboardById } from "../../utils/fetchAdminDashboardById";
 import '../../styles/admin.css';
 
@@ -24,19 +24,19 @@ interface PieDataItem {
     name: string;
     value: number;
     count: number;
-    color: string;
+    duration: string;
 }
 
-const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
+const CustomTooltip = ({ active, payload, label, period }: any) => {
     if (active && payload && payload.length) {
         return (
-            <div className="custom-tooltip" style={{ backgroundColor: '#fff', padding: '10px', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', border: '1px solid #f0f0f0' }}>
-                <p className="label" style={{ margin: 0, fontWeight: 600, color: '#1e293b' }}>{label}</p>
-                <p className="intro" style={{ margin: '4px 0 0', color: '#64748b', fontSize: '12px' }}>
-                    Invested: <span style={{ color: '#f24c52', fontWeight: 600 }}>₹{payload[0].value?.toLocaleString()}K</span>
+            <div className={`dashboard-tooltip ${period.toLowerCase()}`}>
+                <p className="label">{label}</p>
+                <p className="intro">
+                    Invested: <span className="value">₹{payload[0].value?.toLocaleString()}K</span>
                 </p>
-                <p className="desc" style={{ margin: 0, color: '#64748b', fontSize: '12px' }}>
-                    Investors: <span style={{ color: '#0f172a', fontWeight: 600 }}>{payload[0].payload.count}</span>
+                <p className="desc">
+                    Investors: <span className="value">{payload[0].payload.count}</span>
                 </p>
             </div>
         );
@@ -44,17 +44,17 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>)
     return null;
 };
 
-const CustomPieTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+const CustomPieTooltip = ({ active, payload, period }: any) => {
     if (active && payload && payload.length) {
-        const data = payload[0];
+        const d = payload[0];
         return (
-            <div className="custom-tooltip" style={{ backgroundColor: '#fff', padding: '10px', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', border: '1px solid #f0f0f0' }}>
-                <p className="label" style={{ margin: 0, fontWeight: 600, color: data.payload.color }}>{data.name}</p>
-                <p className="intro" style={{ margin: '4px 0 0', color: '#64748b', fontSize: '12px' }}>
-                    Amount: <span style={{ color: '#0f172a', fontWeight: 600 }}>₹{data.value ? (data.value / 1000).toFixed(0) : 0}K</span>
+            <div className={`dashboard-tooltip ${period.toLowerCase()}`}>
+                <p className="label">{d.name}</p>
+                <p className="intro">
+                    Amount: <span className="value">₹{(d.value/1000).toFixed(0)}K</span>
                 </p>
-                <p className="desc" style={{ margin: 0, color: '#64748b', fontSize: '12px' }}>
-                    Investors: <span style={{ color: '#0f172a', fontWeight: 600 }}>{data.payload.count}</span>
+                <p className="desc">
+                    Investors: <span className="value">{d.payload.count}</span>
                 </p>
             </div>
         );
@@ -77,60 +77,56 @@ const AdminOverview: React.FC = () => {
     const [pieData, setPieData] = useState<PieDataItem[]>([]);
     const [chartData, setChartData] = useState<ChartDataItem[]>([]);
 
+    const PIE_COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#f43f5e"];
+
     useEffect(() => {
         const loadData = async () => {
             setLoading(true);
             try {
-                // Determine planTypeId based on period
                 const planType =
                     period.toLowerCase() === "monthly" ? 1 :
-                        period.toLowerCase() === "quarterly" ? 2 :
-                            period.toLowerCase() === "half-yearly" ? 3 :
-                            period.toLowerCase() === "yearly" ?    4: //
-                                5; // Annually
+                    period.toLowerCase() === "quarterly" ? 2 :
+                    period.toLowerCase() === "half-yearly" ? 3 :
+                    period.toLowerCase() === "yearly" ? 4 : 5;
 
                 const data = await fetchAdminDashboardById(planType);
 
-                if (data) {
-                    setStats({
-                        totalInvestors: data.summary?.total_investors || 0,
-                        activeInvestments: data.summary?.active_investments || 0,
-                        totalInvested: data.summary?.total_invested || 0,
-                        interestPayable: data.summary?.interest_payable || 0,
-                    });
+                if (!data) {
+                    message.error("Failed to load dashboard data");
+                    return;
+                }
 
-                    if (data.plan_distribution) {
-                        setPieData(
-                            data.plan_distribution.map((p: any) => ({
-                                name: p.plan_type,
-                                value: p.total_invested || p.investment_count, // Use invested amount for pie value if available, else count
-                                count: p.investment_count,
-                                color: p.color || '#3b82f6'
-                            }))
-                        );
-                    }
+                setStats({
+                    totalInvestors: data.summary?.total_investors || 0,
+                    activeInvestments: data.summary?.active_investments || 0,
+                    totalInvested: data.summary?.total_invested || 0,
+                    interestPayable: data.summary?.interest_payable || 0,
+                });
 
-                    const trendMap = {
-  monthly: data.monthly_trend,
-  quarterly: data.quarterly_trend,
-  "half-yearly": data.half_yearly_trend,
-  yearly: data.annual_trend,
-};
-
-
-                    const key = period.toLowerCase() as 'monthly' | 'quarterly' | 'half-yearly' | 'yearly';
-const selectedTrend = trendMap[key] || [];
-
-                    setChartData(
-                        selectedTrend.map((t: any) => ({
-                            name: t.period,
-                            value: (t.total_invested || 0) / 1000, // Scale for chart
-                            count: t.investor_count || 0,
+                if (data.plan_distribution) {
+                    setPieData(
+                        data.plan_distribution.map((p:any) => ({
+                            name: p.plan_type,
+                            value: p.investment_count,
+                            count: p.investment_count,
+                            duration: p.duration
                         }))
                     );
-                } else {
-                    message.error("Failed to load dashboard data");
                 }
+
+                const selectedTrend = data.plan_distribution || [];
+
+                setChartData(
+                    selectedTrend.map((t:any) => ({
+                        name: t.duration,
+                        value: (t.investment_count || 0),
+                        count: t.investment_count || 0,
+                    }))
+                );
+
+                console.log("Dashboard API Response:", data);
+                console.log("Trend used for chart:", selectedTrend);
+
             } catch (err) {
                 console.error("Dashboard Load Error:", err);
                 message.error("An error occurred while loading dashboard data");
@@ -144,13 +140,10 @@ const selectedTrend = trendMap[key] || [];
 
     const periods = ['Monthly', 'Quarterly', 'Half-Yearly', 'Yearly'];
 
-
-
-
     return (
         <div className="dashboard-fixed-container">
             <Spin spinning={loading} tip="Loading Dashboard Data..." size="large">
-                {/* Header Section */}
+
                 <div className="dashboard-header-row">
                     <Title level={1} className="dashboard-main-title">Dashboard Overview</Title>
                     <div className="period-switcher">
@@ -167,20 +160,15 @@ const selectedTrend = trendMap[key] || [];
                     </div>
                 </div>
 
-                {/* Stats Row - Fixed Height */}
                 <div className="dashboard-stats-row">
                     <Row gutter={[16, 16]} className="h-100">
+
                         <Col xs={24} md={6} className="h-100">
-                            <Card
-                                className="fintech-stat-card compact clickable-stat-card"
-                                bordered={false}
-                                onClick={() => navigate('/admin/investors')}
-                            >
+                            <Card className="fintech-stat-card compact clickable-stat-card" bordered={false}
+                                onClick={() => navigate('/admin/investors')}>
                                 <div className="stat-card-header compact">
-                                    <div className="stat-icon-box blue compact">
-                                        <TeamOutlined />
-                                    </div>
-                                    <div className="stat-percent">+15%</div>
+                                    <div className="stat-icon-box blue compact"><TeamOutlined /></div>
+                                    <div className="stat-percent green">+15%</div>
                                 </div>
                                 <div className="stat-info-compact">
                                     <Text className="stat-label">Total Investors</Text>
@@ -188,17 +176,13 @@ const selectedTrend = trendMap[key] || [];
                                 </div>
                             </Card>
                         </Col>
+
                         <Col xs={24} md={6} className="h-100">
-                            <Card
-                                className="fintech-stat-card compact clickable-stat-card"
-                                bordered={false}
-                                onClick={() => navigate('/admin/investments', { state: { defaultStatus: 'Active' } })}
-                            >
+                            <Card className="fintech-stat-card compact clickable-stat-card" bordered={false}
+                                onClick={() => navigate('/admin/investments', { state: { defaultStatus: 'Active' } })}>
                                 <div className="stat-card-header compact">
-                                    <div className="stat-icon-box green compact">
-                                        <RiseOutlined />
-                                    </div>
-                                    <div className="stat-percent">+22%</div>
+                                    <div className="stat-icon-box green compact"><RiseOutlined /></div>
+                                    <div className="stat-percent green">+22%</div>  {/* green percent back */}
                                 </div>
                                 <div className="stat-info-compact">
                                     <Text className="stat-label">Active Investments</Text>
@@ -206,17 +190,13 @@ const selectedTrend = trendMap[key] || [];
                                 </div>
                             </Card>
                         </Col>
+
                         <Col xs={24} md={6} className="h-100">
-                            <Card
-                                className="fintech-stat-card compact clickable-stat-card"
-                                bordered={false}
-                                onClick={() => navigate('/admin/investments')}
-                            >
+                            <Card className="fintech-stat-card compact clickable-stat-card" bordered={false}
+                                onClick={() => navigate('/admin/investments')}>
                                 <div className="stat-card-header compact">
-                                    <div className="stat-icon-box purple compact">
-                                        <DollarCircleOutlined />
-                                    </div>
-                                    <div className="stat-percent">+18%</div>
+                                    <div className="stat-icon-box purple compact"><DollarCircleOutlined /></div>
+                                    <div className="stat-percent green">+18%</div>
                                 </div>
                                 <div className="stat-info-compact">
                                     <Text className="stat-label">Total Invested</Text>
@@ -224,17 +204,12 @@ const selectedTrend = trendMap[key] || [];
                                 </div>
                             </Card>
                         </Col>
+
                         <Col xs={24} md={6} className="h-100">
-                            <Card
-                                className="fintech-stat-card compact clickable-stat-card"
-                                bordered={false}
-                                // onClick={() => navigate('/admin/reports')}
-                            >
+                            <Card className="fintech-stat-card compact clickable-stat-card" bordered={false}>
                                 <div className="stat-card-header compact">
-                                    <div className="stat-icon-box orange compact">
-                                        <HistoryOutlined />
-                                    </div>
-                                    <div className="stat-percent">+12%</div>
+                                    <div className="stat-icon-box orange compact"><HistoryOutlined /></div>
+                                    <div className="stat-percent green">+12%</div>
                                 </div>
                                 <div className="stat-info-compact">
                                     <Text className="stat-label">Interest Payable</Text>
@@ -242,82 +217,57 @@ const selectedTrend = trendMap[key] || [];
                                 </div>
                             </Card>
                         </Col>
+
                     </Row>
                 </div>
 
-                {/* Main Content Area - Flexible Height */}
                 <div className="dashboard-main-content">
-                    <Row gutter={[16, 16]} className="h-100">
-                        {/* Left Column: Trend Chart (Top) + Activity (Bottom) */}
-                        <Col xs={24} lg={16} className="flex-col-gap-16">
+                    <Row gutter={[16, 16]}>
 
-                            {/* Trend Chart - Flex 1 */}
-                            <Card
-                                className="fintech-chart-card dashboard-card-container"
-                                bordered={false}
-                                bodyStyle={{ padding: 0, flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}
-                            >
+                        <Col xs={24} lg={16} className="h-100">
+                            <Card className="fintech-chart-card dashboard-card-container" bordered={false}>
                                 <div className="chart-card-header compact">
                                     <Title level={5} className="chart-title">Investment Trend</Title>
                                     <Text className="chart-period-label">{period.toLowerCase()}</Text>
                                 </div>
-                                <div className="chart-responsive-container flex-grow-chart">
-                                    <ResponsiveContainer width="100%" height="100%">
-                                        <LineChart data={chartData as ChartDataItem[]} margin={{ top: 20, right: 20, left: 10, bottom: 0 }}>
-                                            <CartesianGrid strokeDasharray="3 3" vertical={true} horizontal={true} stroke="#f0f0f0" />
-                                            <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#64748b' }} dy={10} />
-                                            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#64748b' }} tickFormatter={(val) => `₹${val}K`} dx={-10} />
-                                            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
-                                            <Line type="monotone" dataKey="value" stroke="#f24c52" strokeWidth={3} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                                <div className="chart-box">
+                                    <ResponsiveContainer width="100%" height={260}>
+                                        <LineChart data={chartData}>
+                                            <CartesianGrid strokeDasharray="3 3" />
+                                            <XAxis dataKey="name" />
+                                            <YAxis tickFormatter={(v) => `₹${v}K`} />
+                                            <Tooltip content={<CustomTooltip period={period} />} />
+                                            <Line type="monotone" dataKey="value" strokeWidth={3} dot={{ r: 3 }} activeDot={{ r: 5 }} />
                                         </LineChart>
                                     </ResponsiveContainer>
                                 </div>
                             </Card>
                         </Col>
 
-                        {/* Right Column: Pie Chart (Full Height) */}
                         <Col xs={24} lg={8} className="h-100">
-                            <Card
-                                className="fintech-chart-card dashboard-card-container"
-                                bordered={false}
-                                bodyStyle={{ padding: 0, flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}
-                            >
+                            <Card className="fintech-chart-card dashboard-card-container" bordered={false}>
                                 <div className="chart-card-header compact">
                                     <Title level={5} className="chart-title">Tenure Distribution</Title>
                                     <Text className="chart-period-label">{period.toLowerCase()}</Text>
                                 </div>
-                                <div className="pie-responsive-container flex-grow-pie">
-                                    <ResponsiveContainer width="100%" height="100%">
+                                <div className="pie-responsive-container">
+                                    <ResponsiveContainer width="100%" height={260}>
                                         <PieChart>
-                                            <Pie
-                                                data={pieData}
-                                                cx="50%"
-                                                cy="50%"
-                                                innerRadius={60}
-                                                outerRadius={80}
-                                                paddingAngle={2}
-                                                dataKey="value"
-                                            >
-                                                {pieData.map((entry: PieDataItem, index: number) => (
-                                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                            <Pie data={pieData} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={2} dataKey="value">
+                                                {pieData.map((_, i) => (
+                                                    <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
                                                 ))}
                                             </Pie>
-                                            <Tooltip content={<CustomPieTooltip />} />
+                                            <Tooltip content={<CustomPieTooltip period={period} />} />
                                         </PieChart>
                                     </ResponsiveContainer>
                                 </div>
-                                <div className="pie-legend-container horizontal compact">
-                                    {pieData.map((item: PieDataItem) => (
-                                        <div key={item.name} className="flex-align-center">
-                                            <div className="legend-dot" style={{ background: item.color }}></div>
-                                            <Text className="text-small-muted">{item.name}</Text>
-                                        </div>
-                                    ))}
-                                </div>
                             </Card>
                         </Col>
+
                     </Row>
                 </div>
+
             </Spin>
         </div>
     );

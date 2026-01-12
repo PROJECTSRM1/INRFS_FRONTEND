@@ -70,7 +70,6 @@ const AppRoutes: React.FC = () => {
                     <Route path="reports" element={<AdminReports />} />
                     <Route path="users" element={<Users />} />
                     <Route path="master" element={<Master />} />
-
                 </Route>
 
                 {/* Dashboard Routes (Original) */}

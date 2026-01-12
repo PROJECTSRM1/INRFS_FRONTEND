@@ -1,67 +1,23 @@
 import axios from 'axios';
 
-// Create axios instance with base configuration
-// Temporarily using direct backend URL to bypass proxy issues
-const API_URL = 'https://inrfs-be.onrender.com';
-// const API_URL = import.meta.env.DEV ? '/api' : 'https://inrfs-be.onrender.com';
+const API_URL = import.meta.env.DEV ? '/api' : 'https://inrfs-be.onrender.com';
 
 export const apiClient = axios.create({
-    baseURL: API_URL,
-    headers: {
-        'Content-Type': 'application/json',
-    },
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
-// Request interceptor to add auth token
 apiClient.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('access_token');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
+  (config) => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-);
-
-// Response interceptor to handle token refresh
-apiClient.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-        const originalRequest = error.config;
-
-        // If error is 401 and we haven't tried to refresh yet
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
-
-            try {
-                const refreshToken = localStorage.getItem('refresh_token');
-                if (refreshToken) {
-                    // Attempt to refresh the token
-                    const response = await axios.post(`${API_URL}/users/refresh`, {
-                        refresh_token: refreshToken
-                    });
-
-                    const { access_token } = response.data;
-                    localStorage.setItem('access_token', access_token);
-
-                    // Retry the original request with new token
-                    originalRequest.headers.Authorization = `Bearer ${access_token}`;
-                    return apiClient(originalRequest);
-                }
-            } catch (refreshError) {
-                // If refresh fails, clear tokens and redirect to login
-                localStorage.removeItem('access_token');
-                localStorage.removeItem('refresh_token');
-                window.location.href = '/';
-                return Promise.reject(refreshError);
-            }
-        }
-
-        return Promise.reject(error);
-    }
+    return config;
+  },
+  (error) => Promise.reject(error)
 );
 
 export default apiClient;
