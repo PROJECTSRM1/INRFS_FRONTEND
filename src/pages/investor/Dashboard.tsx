@@ -184,7 +184,19 @@ const Dashboard: React.FC = () => {
                         <Title level={4} className="section-header-margin">Quick Actions</Title>
                         <Row gutter={[24, 24]}>
                             <Col xs={24} sm={12} md={6}>
-                                <div className="quick-action-card-white" onClick={() => navigate('/dashboard/plans')}>
+                                <div
+  className="quick-action-card-white"
+  role="button"
+  tabIndex={0}
+  onClick={() => navigate('/dashboard/plans')}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      navigate('/dashboard/plans');
+    }
+  }}
+>
+
                                     <div className="quick-action-icon">
                                         <PlusCircleFilled />
                                     </div>
@@ -192,7 +204,19 @@ const Dashboard: React.FC = () => {
                                 </div>
                             </Col>
                             <Col xs={24} sm={12} md={6}>
-                                <div className="quick-action-card-white" onClick={() => navigate('/dashboard/my-investments')}>
+                              <div
+  className="quick-action-card-white"
+  role="button"
+  tabIndex={0}
+  onClick={() => navigate('/dashboard/my-investments')}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      navigate('/dashboard/my-investments');
+    }
+  }}
+>
+
                                     <div className="quick-action-icon">
                                         <UnorderedListOutlined />
                                     </div>
@@ -200,7 +224,19 @@ const Dashboard: React.FC = () => {
                                 </div>
                             </Col>
                             <Col xs={24} sm={12} md={6}>
-                                <div className="quick-action-card-white" onClick={() => navigate('/dashboard/my-investments')}>
+                              <div
+  className="quick-action-card-white"
+  role="button"
+  tabIndex={0}
+  onClick={() => navigate('/dashboard/my-investments')}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      navigate('/dashboard/my-investments');
+    }
+  }}
+>
+
                                     <div className="quick-action-icon">
                                         <CloudDownloadOutlined />
                                     </div>
@@ -208,7 +244,19 @@ const Dashboard: React.FC = () => {
                                 </div>
                             </Col>
                             <Col xs={24} sm={12} md={6}>
-                                <div className="quick-action-card-white" onClick={() => navigate('/dashboard/profile')}>
+                             <div
+  className="quick-action-card-white"
+  role="button"
+  tabIndex={0}
+  onClick={() => navigate('/dashboard/profile')}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      navigate('/dashboard/profile');
+    }
+  }}
+>
+
                                     <div className="quick-action-icon">
                                         <UserOutlined />
                                     </div>

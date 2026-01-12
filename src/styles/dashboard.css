@@ -230,6 +230,12 @@
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
     transform: translateY(-4px);
 }
+.quick-action-card-white:focus-visible {
+  outline: 3px solid #1677ff;
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
 
 .quick-action-icon {
     width: 48px !important;
