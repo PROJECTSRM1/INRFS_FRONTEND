@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Menu, Button, Typography, Space, Drawer, Switch, Avatar, Badge, } from 'antd';
+import { Layout, Menu, Button, Avatar, Typography, Space, Drawer, Switch } from 'antd';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
     DashboardOutlined,
     TeamOutlined,
     LineChartOutlined,
-    FileTextOutlined,
-    BellOutlined,
+    // FileTextOutlined,
+
+    // BellOutlined,
     LogoutOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -68,11 +69,11 @@ const AdminLayout: React.FC = () => {
             icon: <LineChartOutlined />,
             label: <NavLink to="/admin/investments" onClick={() => setDrawerVisible(false)}>Investments</NavLink>,
         },
-        {
-            key: '/admin/reports',
-            icon: <FileTextOutlined />,
-            label: <NavLink to="/admin/reports" onClick={() => setDrawerVisible(false)}>Reports</NavLink>,
-        },
+        // {
+        //     key: '/admin/reports',
+        //     icon: <FileTextOutlined />,
+        //     label: <NavLink to="/admin/reports" onClick={() => setDrawerVisible(false)}>Reports</NavLink>,
+        // },
         {
             key: '/admin/users',
             icon: <UserAddOutlined />,
@@ -166,12 +167,10 @@ const AdminLayout: React.FC = () => {
                                 checked={darkMode}
                                 onChange={toggleDarkMode}
                             />
-
-                            <Badge count={2} size="small" offset={[2, 2]}>
+                            {/* <Badge count={5} size="small" offset={[2, 2]}>
                                 <Button type="text" icon={<BellOutlined />} className="icon-btn" />
-                            </Badge>
-
-                            <div className="user-profile-compact" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            </Badge> */}
+                            <div className="user-profile-compact">
                                 <Avatar
                                     icon={<UserOutlined />}
                                     size="small"
