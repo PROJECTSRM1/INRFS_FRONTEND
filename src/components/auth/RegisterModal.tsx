@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Modal, Row, Col, Checkbox, message, Typography, DatePicker, Select } from 'antd';
+import { Form, Input, Button, Modal, Row, Col, Checkbox, message, Typography, DatePicker, Select, Alert } from 'antd';
 import dayjs from 'dayjs';
 import { authService } from '../../services/authService';
 import '../../styles/theme.css';
+import '../../styles/register-modal.css';
 
 
 const { Title, Text, Paragraph } = Typography;
@@ -31,7 +32,8 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
     const [otp, setOtp] = useState('');
     const [verifyingEmail, setVerifyingEmail] = useState('');
     const [submittable, setSubmittable] = useState(false);
-    const [tempRegisterResponse, setTempRegisterResponse] = useState<{ inv_reg_id?: string; user_id?: number } | null>(null); // Store register response temporarily
+    const [tempRegisterResponse, setTempRegisterResponse] = useState<{ inv_reg_id?: string; user_id?: number } | null>(null);
+    const [resendCooldown, setResendCooldown] = useState(0);
     const [form] = Form.useForm();
 
     // Watch all values to trigger validation check
@@ -44,6 +46,24 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                 () => setSubmittable(false),
             );
     }, [values, form]);
+
+    useEffect(() => {
+        if (!open) {
+            form.resetFields();
+            setIsOtpVisible(false);
+            setOtp('');
+        }
+    }, [open, form]);
+
+    useEffect(() => {
+        let timer: ReturnType<typeof setInterval>;
+        if (resendCooldown > 0) {
+            timer = setInterval(() => {
+                setResendCooldown((prev) => prev - 1);
+            }, 1000);
+        }
+        return () => clearInterval(timer);
+    }, [resendCooldown]);
 
     const handleVerifyOtp = async () => {
         if (!otp || otp.length !== 6) {
@@ -70,6 +90,12 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                             <Title level={2} className="registration-success-id">{tempRegisterResponse?.inv_reg_id}</Title>
                             <Text type="secondary" className="registration-success-user-id">User ID: {tempRegisterResponse?.user_id}</Text>
                         </div>
+                        <Alert
+                            message="Do not share your Investor ID with anyone."
+                            type="warning"
+                            showIcon
+                            style={{ marginBottom: '16px' }}
+                        />
                         <Text strong>Please use your email to login.</Text>
                     </div>
                 ),
@@ -89,6 +115,27 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
             setLoading(false);
         }
     };
+
+    const handleResendOtp = async () => {
+        if (resendCooldown > 0) return;
+        if (!verifyingEmail) {
+            message.error('Email not found. Please try again.');
+            return;
+        }
+        setLoading(true);
+        try {
+            await authService.sendOTP(verifyingEmail);
+            message.success('OTP sent successfully!');
+            setResendCooldown(60);
+        } catch (error: any) {
+            console.error('Resend OTP Error:', error);
+            const detail = error.response?.data?.detail || error.response?.data?.message || error.message;
+            message.error(`Failed to resend OTP: ${detail}`);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const onFinishInfo = async (values: RegisterFormValues) => {
         setLoading(true);
         try {
@@ -123,7 +170,8 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
             setTempRegisterResponse(response);
             setVerifyingEmail(values.email);
             setIsOtpVisible(true);
-            message.success('Registration initiated. OTP sent to your email!');
+            setResendCooldown(60);
+            message.success('OTP sent successfully!');
 
         } catch (error: unknown) {
             console.error('Registration Error:', error);
@@ -164,7 +212,6 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                     layout="vertical"
                     form={form}
                     onFinish={onFinishInfo}
-                    requiredMark={false}
                     className="auth-form-v2"
                 >
                     <Row gutter={16}>
@@ -180,7 +227,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                         </Col>
                     </Row>
 
-                    <Form.Item label={<Text strong>Email Address</Text>} name="email" rules={[{ required: true, type: 'email', message: 'Enter a valid email' }]}>
+                    <Form.Item label={<Text strong>Email Address</Text>} name="email" rules={[{ required: true, type: 'email', message: 'Please enter a valid email address' }]}>
                         <Input
                             placeholder="john.doe@example.com"
                             size="large"
@@ -188,8 +235,26 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                         />
                     </Form.Item>
 
-                    <Form.Item label={<Text strong>Mobile Number</Text>} name="mobile" rules={[{ required: true, message: 'Required' }]}>
-                        <Input placeholder="+1 234 567 8900" size="large" className="minimal-input" />
+                    <Form.Item
+                        label={<Text strong>Mobile Number</Text>}
+                        name="mobile"
+                        rules={[
+                            { required: true, message: 'Required' },
+                            { pattern: /^[0-9]{10}$/, message: 'Please enter a valid 10-digit mobile number' }
+                        ]}
+                    >
+                        <Input
+                            addonBefore="+91"
+                            placeholder="9876543210"
+                            size="large"
+                            className="minimal-input"
+                            maxLength={10}
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault();
+                                }
+                            }}
+                        />
                     </Form.Item>
 
                     <Row gutter={16}>
@@ -211,12 +276,34 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
 
                     <Row gutter={16}>
                         <Col xs={24} sm={12}>
-                            <Form.Item label={<Text strong>Password</Text>} name="password" rules={[{ required: true, message: 'Required' }]}>
+                            <Form.Item
+                                label={<Text strong>Password</Text>}
+                                name="password"
+                                rules={[
+                                    { required: true, message: 'Required' },
+                                    { min: 6, message: 'Minimum 6 characters' }
+                                ]}
+                            >
                                 <Input.Password placeholder="••••••••" size="large" className="minimal-input" />
                             </Form.Item>
                         </Col>
                         <Col xs={24} sm={12}>
-                            <Form.Item label={<Text strong>Confirm Password</Text>} name="confirm" rules={[{ required: true, message: 'Required' }]}>
+                            <Form.Item
+                                label={<Text strong>Confirm Password</Text>}
+                                name="confirm"
+                                dependencies={['password']}
+                                rules={[
+                                    { required: true, message: 'Required' },
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                            if (!value || getFieldValue('password') === value) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(new Error('Passwords do not match'));
+                                        },
+                                    }),
+                                ]}
+                            >
                                 <Input.Password placeholder="••••••••" size="large" className="minimal-input" />
                             </Form.Item>
                         </Col>
@@ -265,20 +352,34 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
 
                         <div className="otp-button-group">
                             <Button
-                                type="primary"
                                 block
-                                loading={loading}
+                                type="primary"
                                 onClick={handleVerifyOtp}
-                                className="btn-solid-primary"
+                                loading={loading}
                                 size="large"
+                                className="otp-verify-btn"
                             >
                                 Verify Email
                             </Button>
+
+                            <div className="otp-helpers" style={{ marginTop: '16px', textAlign: 'center' }}>
+                                <Text type="secondary">Didn't receive email? </Text>
+                                <Button
+                                    type="link"
+                                    onClick={handleResendOtp}
+                                    disabled={resendCooldown > 0}
+                                    style={{ padding: 0 }}
+                                    className="otp-resend-link"
+                                >
+                                    {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend Verification Email'}
+                                </Button>
+                            </div>
+
                             <Button
                                 block
                                 onClick={() => setIsOtpVisible(false)}
-                                className="btn-hero-ghost-dark otp-cancel-button"
                                 size="large"
+                                style={{ marginTop: '16px' }}
                             >
                                 Cancel
                             </Button>

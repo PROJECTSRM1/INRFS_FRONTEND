@@ -232,6 +232,141 @@ body {
     opacity: 0.7;
 }
 
+.user-profile-compact.clickable {
+    cursor: pointer;
+    padding: 4px 12px;
+}
+
+.user-profile-compact.clickable:hover {
+    background: rgba(146, 97, 50, 0.05);
+}
+
+/* --- Dropdown Visual Refinement --- */
+.admin-notification-dropdown {
+    background: #fff;
+    width: 340px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f1f5f9;
+    overflow: hidden;
+}
+
+.dark-theme .admin-notification-dropdown {
+    background: #1e293b;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+.admin-notification-dropdown .dropdown-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dark-theme .admin-notification-dropdown .dropdown-header {
+    border-color: #334155;
+}
+
+.notification-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    padding: 12px 20px !important;
+    transition: background 0.2s;
+    cursor: pointer;
+    border-bottom: 1px solid #f8fafc !important;
+}
+
+.dark-theme .notification-item {
+    border-color: #334155 !important;
+}
+
+.notification-item:hover {
+    background: #f8fafc;
+}
+
+.dark-theme .notification-item:hover {
+    background: #334155;
+}
+
+.notification-item.unread {
+    background: rgba(146, 97, 50, 0.03);
+}
+
+.notification-item.unread:hover {
+    background: rgba(146, 97, 50, 0.06);
+}
+
+.note-time {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-left: auto;
+}
+
+.note-desc {
+    font-size: 12px !important;
+    display: block;
+    margin-top: 2px;
+}
+
+.note-title-wrap {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.note-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.note-icon.investment {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.note-icon.withdrawal {
+    color: #f43f5e;
+    background: rgba(244, 63, 94, 0.1);
+}
+
+.note-icon.user {
+    color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.note-icon.system {
+    color: #94a3b8;
+    background: rgba(148, 163, 184, 0.1);
+}
+
+.admin-notification-dropdown .dropdown-footer {
+    padding: 8px;
+    border-top: 1px solid #f1f5f9;
+    background: #fafafa;
+}
+
+.dark-theme .admin-notification-dropdown .dropdown-footer {
+    background: #1e293b;
+    border-top-color: #334155;
+}
+
+/* Mobile Adjustments for Dropdowns */
+@media (max-width: 576px) {
+    .admin-notification-dropdown {
+        width: calc(100vw - 32px);
+        position: fixed;
+        left: 16px;
+        right: 16px;
+        top: 70px;
+    }
+}
+
 /* --- Content Scroll System --- */
 .admin-main-layout {
     flex: 1;
@@ -1578,31 +1713,37 @@ a:hover {
 
 
 .users-loading-overlay {
-  position: absolute;
-  inset: 0; /* covers full card */
-  background: rgba(255,255,255,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
+    position: absolute;
+    inset: 0;
+    /* covers full card */
+    background: rgba(255, 255, 255, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
 }
 
 .users-spinner-circle {
-  width: 42px;
-  height: 42px;
-  border: 4px solid #c1c1c1;
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: usersRotate 0.7s linear infinite;
+    width: 42px;
+    height: 42px;
+    border: 4px solid #c1c1c1;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: usersRotate 0.7s linear infinite;
 }
 
 @keyframes usersRotate {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Important — make card position relative via class, not inline */
 .users-table-card {
-  position: relative;
-  overflow: hidden;
+    position: relative;
+    overflow: hidden;
 }
