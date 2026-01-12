@@ -15,12 +15,22 @@ interface StatMiniCardProps {
 
 const StatMiniCard: React.FC<StatMiniCardProps> = ({ title, value, icon, colorClass, trend, onClick }) => {
     return (
-        <Card
-            className={`stat-card-refined ${colorClass}`}
-            bordered={false}
-            onClick={onClick}
-            style={{ cursor: onClick ? 'pointer' : 'default' }}
-        >
+       <Card
+    className={`stat-card-refined ${colorClass}`}
+    bordered={false}
+    onClick={onClick}
+    tabIndex={onClick ? 0 : -1}
+    role={onClick ? 'button' : undefined}
+    onKeyDown={(e) => {
+        if (!onClick) return;
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onClick();
+        }
+    }}
+    style={{ cursor: onClick ? 'pointer' : 'default' }}
+>
+
             <div className="stat-card-content">
                 <div className="stat-header-row">
                     <div className="stat-icon-box">

@@ -73,6 +73,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
         setLoading(true);
         try {
             await authService.verifyOTP(verifyingEmail, otp);
+            message.success('OTP verified successfully');
             setIsOtpVisible(false);
             setOtp('');
 
@@ -212,16 +213,20 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                     layout="vertical"
                     form={form}
                     onFinish={onFinishInfo}
+                     onFinishFailed={() => {
+    message.error('Please fill all mandatory fields');
+  }}
                     className="auth-form-v2"
+                     requiredMark
                 >
                     <Row gutter={16}>
                         <Col xs={24} sm={12}>
-                            <Form.Item label={<Text strong>First Name</Text>} name="firstName" rules={[{ required: true, message: 'Required' }]}>
+                            <Form.Item label={<Text strong>First Name</Text>} name="firstName"   normalize={(value) => value?.trim()} rules={[{ required: true, message: 'Required' }]}>
                                 <Input placeholder="John" size="large" className="minimal-input" />
                             </Form.Item>
                         </Col>
                         <Col xs={24} sm={12}>
-                            <Form.Item label={<Text strong>Last Name</Text>} name="lastName" rules={[{ required: true, message: 'Required' }]}>
+                            <Form.Item label={<Text strong>Last Name</Text>} name="lastName"  normalize={(value) => value?.trim()}  rules={[{ required: true, message: 'Required' }]}>
                                 <Input placeholder="Doe" size="large" className="minimal-input" />
                             </Form.Item>
                         </Col>
@@ -309,11 +314,27 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                         </Col>
                     </Row>
 
-                    <Form.Item name="agree" valuePropName="checked" rules={[{ validator: (_, value) => value ? Promise.resolve() : Promise.reject('Please agree to T&C') }]}>
-                        <Checkbox>
-                            <Text type="secondary" className="compact-text">I agree to the Terms & Conditions and Privacy Policy</Text>
-                        </Checkbox>
-                    </Form.Item>
+                <Form.Item
+  name="agree"
+  valuePropName="checked"
+  rules={[
+    {
+      validator: (_, value) =>
+        value
+          ? Promise.resolve()
+          : Promise.reject(
+              new Error('Please accept the Terms & Conditions to proceed')
+            ),
+    },
+  ]}
+>
+  <Checkbox>
+    <Text type="secondary" className="compact-text">
+      I agree to the Terms & Conditions and Privacy Policy
+    </Text>
+  </Checkbox>
+</Form.Item>
+
 
                     <Button
                         type="primary"
