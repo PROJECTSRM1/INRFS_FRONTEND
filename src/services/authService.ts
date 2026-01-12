@@ -117,24 +117,5 @@ export const authService = {
         } catch (error) {
             throw error;
         }
-    },
-    forgotPassword: async (email: string) => {
-        try {
-            const response = await axios.post(`${API_URL}/users/forgot-password`, { email });
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
-    },
-    resetPassword: async (token: string, newPassword: string) => {
-        try {
-            const response = await axios.post(`${API_URL}/users/reset-password`, {
-                token,
-                new_password: newPassword
-            });
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
     }
 };
