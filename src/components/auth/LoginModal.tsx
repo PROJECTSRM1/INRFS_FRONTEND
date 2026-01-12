@@ -23,15 +23,21 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible, onClose, openRegister,
     const [loading, setLoading] = useState(false);
     const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
     const [form] = Form.useForm();
+    const [verificationError, setVerificationError] = useState<string | null>(null);
 
     React.useEffect(() => {
         if (visible && initialEmail) {
             form.setFieldsValue({ email: initialEmail });
         }
+        if (!visible) {
+            setVerificationError(null);
+            form.resetFields();
+        }
     }, [visible, initialEmail, form]);
 
     const handleLogin = async (values: { email: string; password: string; remember: boolean }) => {
         setLoading(true);
+        setVerificationError(null);
         try {
             const response = await authService.loginUser({
                 email: values.email,
@@ -60,7 +66,12 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible, onClose, openRegister,
             const errorMsg = error.response?.data?.detail
                 || error.response?.data?.message
                 || 'Login failed. Please check your credentials.';
-            message.error(errorMsg);
+
+            if (errorMsg.toLowerCase().includes('verify') || errorMsg.toLowerCase().includes('verified')) {
+                setVerificationError('Your email is not verified. Please verify your email to login.');
+            } else {
+                message.error(errorMsg);
+            }
         } finally {
             setLoading(false);
         }
@@ -74,6 +85,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible, onClose, openRegister,
             width={480}
             centered
             className="login-modal"
+            destroyOnClose
         >
             <div className="login-modal-content">
                 <div className="login-header">
@@ -90,6 +102,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible, onClose, openRegister,
                     className="login-form"
                     initialValues={{ remember: true }}
                 >
+                    {verificationError && (
+                        <div className="verification-error-inline">
+                            <Text type="danger">{verificationError}</Text>
+                        </div>
+                    )}
                     <Form.Item
                         name="email"
                         label="Email"

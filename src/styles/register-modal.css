@@ -1,0 +1,19 @@
+/* OTP Modal Gold Branding */
+.otp-verify-btn {
+    background-color: var(--brand-gold) !important;
+    border-color: var(--brand-gold) !important;
+}
+
+.otp-verify-btn:hover,
+.otp-verify-btn:focus {
+    background-color: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
+}
+
+.otp-resend-link {
+    color: var(--brand-gold) !important;
+}
+
+.otp-resend-link:hover {
+    color: var(--primary-hover) !important;
+}

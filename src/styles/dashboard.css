@@ -76,6 +76,20 @@
     letter-spacing: 0.5px !important;
 }
 
+.security-notice-box {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.security-notice-text {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #d97706 !important;
+    /* Slightly darker orange for better readability */
+    letter-spacing: 0.3px;
+}
+
 /* --- KPI Stat Cards --- */
 .kpi-row {
     margin-bottom: 24px !important;
@@ -364,9 +378,23 @@
 
 /* Mobile Portait (≤480px) - 2 Column Grid */
 @media (max-width: 480px) {
+
+    .investor-dashboard-refined,
+    .profile-page-container {
+        padding: 95px 16px 24px 16px !important;
+    }
+
     .investor-dashboard-refined {
-        padding: 85px 12px 24px 12px !important;
         background: linear-gradient(135deg, var(--brand-light-blue) 0%, var(--brand-light-blue) 50%, #ffffff 50%, #ffffff 100%);
+    }
+
+    .greeting-text {
+        font-size: 26px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .welcome-header {
+        margin-bottom: 36px;
     }
 
     .kpi-row {
@@ -504,7 +532,7 @@
     .investor-dashboard-refined {
         overflow-x: hidden !important;
         max-width: 100vw !important;
-        padding: 85px 12px 24px 12px !important;
+        padding: 95px 16px 24px 16px !important;
         background: linear-gradient(135deg, var(--brand-light-blue) 0%, var(--brand-light-blue) 50%, #ffffff 50%, #ffffff 100%) !important;
     }
 
@@ -937,6 +965,18 @@
 .cert-preview-container {
     padding: 30px;
     background: white;
+}
+
+/* --- Dashboard Loading State --- */
+.dashboard-loading-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+    margin: 20px 0;
 }
 
 .cert-modal-header {
@@ -2013,7 +2053,7 @@
     padding: 20px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     border: 1px solid #e2e8f0;
-    height: 94%;
+    height: auto !important;
 }
 
 .card-section-title {
@@ -2024,7 +2064,7 @@
 }
 
 .h-full {
-    height: 86%;
+    height: auto !important;
 }
 
 /* Input Styling */
@@ -2132,12 +2172,17 @@
 
 .total-maturity-bar {
     background: #f8fafc;
-    padding: 20px 24px;
+    padding: 16px 20px;
     border-radius: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border: 1px solid #f1f5f9;
+    width: auto !important;
+    box-sizing: border-box;
+    margin: 24px 0 0 0 !important;
+    transform: none !important;
+    position: relative !important;
 }
 
 .tm-label {
@@ -2227,9 +2272,12 @@
     }
 
     .total-maturity-bar {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
         gap: 8px;
+        width: auto !important;
+        padding: 16px !important;
     }
 
     .action-buttons-container {

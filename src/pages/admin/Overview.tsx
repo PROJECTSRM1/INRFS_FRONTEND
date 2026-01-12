@@ -101,6 +101,7 @@ const AdminOverview: React.FC = () => {
 
                     if (data.plan_distribution) {
                         setPieData(
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             data.plan_distribution.map((p: any) => ({
                                 name: p.plan_type,
                                 value: p.total_invested || p.investment_count, // Use invested amount for pie value if available, else count
@@ -122,6 +123,7 @@ const AdminOverview: React.FC = () => {
 const selectedTrend = trendMap[key] || [];
 
                     setChartData(
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         selectedTrend.map((t: any) => ({
                             name: t.period,
                             value: (t.total_invested || 0) / 1000, // Scale for chart

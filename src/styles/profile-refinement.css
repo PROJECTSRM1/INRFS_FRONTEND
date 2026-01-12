@@ -1,0 +1,259 @@
+/* Profile Page Industry Standard Refinements */
+.profile-page-container {
+    padding: 24px 48px;
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.btn-back-refined {
+    margin-bottom: 24px !important;
+    margin-left: 12px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    font-weight: 600 !important;
+    color: #475569 !important;
+    padding: 8px 18px !important;
+    height: auto !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 50px !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    cursor: pointer;
+}
+
+.btn-back-refined:hover {
+    color: #1a1a1a !important;
+    background: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    transform: translateX(-4px);
+}
+
+.btn-back-refined .anticon {
+    margin-right: 6px;
+    font-size: 14px;
+}
+
+.page-main-title {
+    margin-left: 12px !important;
+    /* Perfect Alignment with Cards (matching Col gutter) */
+    margin-bottom: 24px !important;
+    font-weight: 700 !important;
+}
+
+.profile-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    height: 100%;
+    border: 1px solid #eef2f6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-section-title {
+    margin-bottom: 24px !important;
+    color: #1a1a1a !important;
+}
+
+.profile-avatar-placeholder {
+    width: 80px;
+    height: 80px;
+    background: #f1f5f9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: #94a3b8;
+    margin-bottom: 24px;
+    align-self: center;
+}
+
+.profile-field-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+}
+
+.profile-field-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.profile-label {
+    font-size: 12px;
+    color: #64748b;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.profile-value {
+    font-size: 15px;
+    font-weight: 500;
+    color: #0f172a;
+    word-break: normal;
+}
+
+.profile-value-wrap {
+    word-break: break-all;
+    overflow-wrap: anywhere;
+}
+
+.profile-value-highlight {
+    color: #2563eb !important;
+}
+
+.profile-icon-brown {
+    width: 40px;
+    height: 40px;
+    background: rgba(146, 97, 50, 0.1);
+    color: #926132;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+/* Security Warning */
+.profile-security-warning {
+    padding-left: 56px;
+    margin-top: -12px;
+    margin-bottom: 24px;
+}
+
+.profile-security-text {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: #d97706 !important;
+    background: #fffbeb;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* Bank Header Styling */
+.profile-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.profile-card-header-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.support-link {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.support-link:hover {
+    text-decoration: underline;
+}
+
+/* Premium Alert Section */
+.premium-alert {
+    border-radius: 12px !important;
+    margin-bottom: 24px;
+    border: 1px solid #ffedd5 !important;
+    background-color: #fffaf5 !important;
+    padding: 16px !important;
+}
+
+/* Responsive Table & Mobile Layouts (Up to 991px) */
+@media (max-width: 991px) {
+    .profile-page-container {
+        padding: 100px 16px 24px 16px !important;
+        /* Prevent header overlap */
+    }
+
+    .page-main-title {
+        margin-left: 0 !important;
+        margin-bottom: 32px !important;
+    }
+
+    .btn-back-refined {
+        margin-left: 0 !important;
+        margin-bottom: 20px !important;
+        padding: 6px 14px !important;
+        font-size: 13px !important;
+    }
+
+    .profile-card {
+        margin-bottom: 24px;
+        min-height: auto !important;
+    }
+
+    .profile-card-header {
+        align-items: center;
+        gap: 12px;
+    }
+
+    .profile-section-title {
+        font-size: 18px !important;
+        white-space: normal !important;
+        margin-bottom: 0 !important;
+    }
+}
+
+/* Specific Mobile Stacking Adjustments (Up to 767px) */
+@media (max-width: 767px) {
+    .profile-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .profile-card-header-actions {
+        width: 100%;
+    }
+
+    .profile-card-header-actions .ant-btn {
+        flex: 1;
+    }
+}
+
+/* Small Device Optimizations (Up to 480px) */
+@media (max-width: 480px) {
+    .profile-card {
+        padding: 24px 16px;
+    }
+
+    .profile-security-warning {
+        padding-left: 0;
+        margin-top: 0;
+    }
+
+    .profile-avatar-placeholder {
+        width: 64px;
+        height: 64px;
+        font-size: 24px;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}

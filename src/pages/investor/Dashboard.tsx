@@ -123,8 +123,8 @@ const Dashboard: React.FC = () => {
     return (
         <div className="investor-dashboard-refined">
             {loading ? (
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
-                    <Spin size="large" tip="Loading dashboard..." />
+                <div className="dashboard-loading-overlay">
+                    <Spin size="large" tip="Loading your dashboard..." />
                 </div>
             ) : (
                 <>
