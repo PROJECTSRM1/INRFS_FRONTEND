@@ -182,4 +182,3 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ open, onCance
 };
 
 export default ForgotPasswordModal;
-

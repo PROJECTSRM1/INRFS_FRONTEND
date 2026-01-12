@@ -53,6 +53,7 @@ const AppRoutes: React.FC = () => {
                 {/* Auth Routes */}
                 <Route path="/auth" element={<AuthLayout />}>
                     <Route path="register" element={<Register />} />
+                    <Route path="reset-password" element={<ResetPassword />} />
                 </Route>
 
                 {/* Reset Password Route (Public - accessed via email link) */}
