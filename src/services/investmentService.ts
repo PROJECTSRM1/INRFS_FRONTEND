@@ -23,6 +23,9 @@ export interface InvestmentApiResponse {
     interest_rate?: number;
     duration_months?: number;
     plan_name?: string;
+    message?: string; // Success message with user email
+    customer_id?: number; // Customer ID from response
+    investment_id?: number; // Investment ID from response
     // Email status fields
     email_sent?: boolean;
     email_status?: 'sent' | 'failed' | 'pending';

@@ -301,33 +301,18 @@ const CompleteInvestment: React.FC = () => {
                 // Add to local context for immediate UI update
                 addInvestment(updatedBondData);
 
-                // Check if email was sent successfully
-                const emailSent = response.email_sent !== false && response.email_status !== 'failed';
+                // Display the success message from API response
+                // The message includes the user's email address
+                const successMessage = response.message ||
+                    'Investment created successfully! A confirmation email has been sent to your registered email address.';
 
-                if (emailSent) {
-                    // Email sent successfully
-                    message.success({
-                        content: 'Investment created successfully! A confirmation email with your bond certificate has been sent to your registered email address.',
-                        duration: 5,
-                        style: {
-                            marginTop: '20vh',
-                        }
-                    });
-                } else {
-                    // Email failed but investment created
-                    message.warning({
-                        content: 'Investment created successfully! However, the confirmation email could not be sent at this time. You can download your bond certificate from My Investments page.',
-                        duration: 8,
-                        style: {
-                            marginTop: '20vh',
-                        }
-                    });
-
-                    // Log email error for debugging
-                    if (response.email_error) {
-                        console.warn('Email delivery failed:', response.email_error);
+                message.success({
+                    content: successMessage,
+                    duration: 6,
+                    style: {
+                        marginTop: '20vh',
                     }
-                }
+                });
 
                 // Navigate to my-investments page after a brief delay
                 setTimeout(() => {

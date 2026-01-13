@@ -17,8 +17,12 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ open, onCance
     const [form] = Form.useForm();
 
     const handleSubmit = async () => {
+        console.log('🔵 [ForgotPassword] handleSubmit called');
+        console.log('🔵 [ForgotPassword] Email value:', email);
+
         // Validate email
         if (!email) {
+            console.log('🔴 [ForgotPassword] Validation failed: Email is empty');
             message.error('Please enter your email address');
             return;
         }
@@ -26,16 +30,22 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ open, onCance
         // Basic email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
+            console.log('🔴 [ForgotPassword] Validation failed: Invalid email format');
             message.error('Please enter a valid email address');
             return;
         }
 
+        console.log('✅ [ForgotPassword] Validation passed, making API call...');
         setLoading(true);
 
         try {
-            console.log('Sending forgot password request for:', email);
+            console.log('🚀 [ForgotPassword] Calling authService.forgotPassword with email:', email);
+            console.log('🚀 [ForgotPassword] Check Network tab now! Look for: /api/users/forgot-password');
+
             const response = await authService.forgotPassword(email);
-            console.log('Forgot password response:', response);
+
+            console.log('✅ [ForgotPassword] API call successful!');
+            console.log('✅ [ForgotPassword] Response:', response);
 
             message.success({
                 content: 'Password reset link has been sent to your email!',
@@ -47,7 +57,9 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ open, onCance
             form.resetFields();
             onCancel();
         } catch (error: any) {
-            console.error('Forgot password error:', error);
+            console.error('❌ [ForgotPassword] API call failed!');
+            console.error('❌ [ForgotPassword] Error details:', error);
+            console.error('❌ [ForgotPassword] Error response:', error.response);
 
             const errorMessage = error.response?.data?.message
                 || error.response?.data?.detail
@@ -56,6 +68,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ open, onCance
             message.error(errorMessage);
         } finally {
             setLoading(false);
+            console.log('🔵 [ForgotPassword] Request completed, loading state reset');
         }
     };
 

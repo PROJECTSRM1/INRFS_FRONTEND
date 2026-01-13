@@ -12,10 +12,46 @@ const axiosInstance = axios.create({
     },
 });
 
+// Add request interceptor for debugging
+axiosInstance.interceptors.request.use(
+    (config) => {
+        console.log('🌐 [HTTP Request]', {
+            method: config.method?.toUpperCase(),
+            url: config.url,
+            baseURL: config.baseURL,
+            fullURL: `${config.baseURL}${config.url}`,
+            data: config.data,
+            headers: config.headers
+        });
+        return config;
+    },
+    (error) => {
+        console.error('🔴 [HTTP Request Error]', error);
+        return Promise.reject(error);
+    }
+);
+
 // Add response interceptor for better error handling
 axiosInstance.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        console.log('✅ [HTTP Response]', {
+            status: response.status,
+            statusText: response.statusText,
+            url: response.config.url,
+            data: response.data
+        });
+        return response;
+    },
     (error) => {
+        console.error('❌ [HTTP Response Error]', {
+            message: error.message,
+            code: error.code,
+            url: error.config?.url,
+            status: error.response?.status,
+            statusText: error.response?.statusText,
+            data: error.response?.data
+        });
+
         if (error.code === 'ECONNABORTED') {
             console.error('Request timeout - backend might be sleeping or slow');
             error.message = 'Request timeout. The server might be starting up. Please try again.';
