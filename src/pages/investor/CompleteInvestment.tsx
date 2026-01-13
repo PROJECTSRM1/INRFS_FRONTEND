@@ -14,6 +14,11 @@ import jsPDF from 'jspdf';
 import '../../styles/dashboard.css';
 
 const { Title, Text } = Typography;
+const formatWithCommas = (value: number | '') => {
+  if (value === '') return '';
+  return value.toLocaleString('en-IN'); 
+};
+
 
 const CompleteInvestment: React.FC = () => {
     const { planId } = useParams<{ planId: string }>();
@@ -84,23 +89,21 @@ const CompleteInvestment: React.FC = () => {
     const returns = calculation.interest;
     const totalMaturity = calculation.maturityAmount;
 
-    const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const rawValue = e.target.value.replace(/,/g, '');
 
-        // Allow empty input
-        if (value === '') {
-            setAmount('');
-            return;
-        }
+  if (rawValue === '') {
+    setAmount('');
+    return;
+  }
 
-        // Only allow digits (whole numbers only for investment amounts)
-        if (/^\d+$/.test(value)) {
-            const numValue = parseInt(value, 10);
-            if (!isNaN(numValue) && numValue >= 0) {
-                setAmount(numValue);
-            }
-        }
-    };
+  if (/^\d+$/.test(rawValue)) {
+    const numValue = parseInt(rawValue, 10);
+    if (!isNaN(numValue)) {
+      setAmount(numValue);
+    }
+  }
+};
 
     const handleProceed = () => {
         if (!amount || amount < displayPlan.minAmount) {
@@ -401,14 +404,15 @@ const CompleteInvestment: React.FC = () => {
                 <Col xs={24} md={12}>
                     <div className="content-card-refined h-full">
                         <Title level={4} className="card-section-title">Investment Amount</Title>
-                        <Input
-                            prefix="₹"
-                            type="text"
-                            placeholder="0"
-                            className="investment-amount-input large-input"
-                            value={amount}
-                            onChange={handleAmountChange}
-                        />
+                      <Input
+  prefix="₹"
+  type="text"
+  placeholder="0"
+  className="investment-amount-input large-input"
+  value={formatWithCommas(amount)}
+  onChange={handleAmountChange}
+/>
+
                         <Text type="secondary" className="input-helper-text">
                             Minimum: {fintechService.formatCurrency(displayPlan.minAmount)} | Maximum: ₹1,000,000
                         </Text>

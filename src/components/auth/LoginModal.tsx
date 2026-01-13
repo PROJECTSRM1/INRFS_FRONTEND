@@ -34,6 +34,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible, onClose, openRegister,
             form.resetFields();
         }
     }, [visible, initialEmail, form]);
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
 
     const handleLogin = async (values: { email: string; password: string; remember: boolean }) => {
         setLoading(true);
@@ -133,6 +135,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible, onClose, openRegister,
                             placeholder="Enter your password"
                             size="large"
                             className="login-input"
+                            visibilityToggle={{
+      visible: passwordVisible,
+      onVisibleChange: setPasswordVisible,
+    }}
+      onBlur={() => setPasswordVisible(false)}
                         />
                     </Form.Item>
 
