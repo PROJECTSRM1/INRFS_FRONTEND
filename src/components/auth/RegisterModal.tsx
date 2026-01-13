@@ -32,7 +32,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
     const [otp, setOtp] = useState('');
     const [verifyingEmail, setVerifyingEmail] = useState('');
     const [submittable, setSubmittable] = useState(false);
-    const [tempRegisterResponse, setTempRegisterResponse] = useState<{ inv_reg_id?: string; user_id?: number } | null>(null);
+
     const [resendCooldown, setResendCooldown] = useState(0);
     const [form] = Form.useForm();
 
@@ -72,10 +72,25 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
         }
         setLoading(true);
         try {
-            await authService.verifyOTP(verifyingEmail, otp);
+            // The OTP verification response contains the user_id and inv_reg_id
+            const verifyResponse = await authService.verifyOTP(verifyingEmail, otp);
+
+            console.log('✅ OTP Verification Response:', JSON.stringify(verifyResponse, null, 2));
+            console.log('📋 Investor ID from OTP response:', verifyResponse.inv_reg_id);
+            console.log('👤 User ID from OTP response:', verifyResponse.user_id);
+
             message.success('OTP verified successfully');
             setIsOtpVisible(false);
             setOtp('');
+
+            // Use the OTP verification response (which contains the IDs)
+            const registrationData = verifyResponse;
+            console.log('📋 Using OTP response data for modal:', JSON.stringify(registrationData, null, 2));
+
+            if (!registrationData || !registrationData.inv_reg_id || !registrationData.user_id) {
+                console.error('❌ ERROR: OTP verification response missing expected fields!');
+                console.error('Response:', verifyResponse);
+            }
 
             // Show Success Modal after OTP verification
             onCancel();
@@ -88,8 +103,8 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                         <Paragraph>Welcome to INRFS. Your account has been created successfully.</Paragraph>
                         <div className="registration-success-info-box">
                             <Text type="secondary" className="registration-success-label">Your Investor ID:</Text>
-                            <Title level={2} className="registration-success-id">{tempRegisterResponse?.inv_reg_id}</Title>
-                            <Text type="secondary" className="registration-success-user-id">User ID: {tempRegisterResponse?.user_id}</Text>
+                            <Title level={2} className="registration-success-id">{registrationData?.inv_reg_id || 'N/A'}</Title>
+                            <Text type="secondary" className="registration-success-user-id">User ID: {registrationData?.user_id || 'N/A'}</Text>
                         </div>
                         <Alert
                             message="Do not share your Investor ID with anyone."
@@ -167,8 +182,9 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
 
             const response = await authService.registerUser(payload);
 
+            console.log('✅ Registration successful:', response.message);
+
             // Registration successful (OTP sent), now show OTP modal
-            setTempRegisterResponse(response);
             setVerifyingEmail(values.email);
             setIsOtpVisible(true);
             setResendCooldown(60);
@@ -213,20 +229,20 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                     layout="vertical"
                     form={form}
                     onFinish={onFinishInfo}
-                     onFinishFailed={() => {
-    message.error('Please fill all mandatory fields');
-  }}
+                    onFinishFailed={() => {
+                        message.error('Please fill all mandatory fields');
+                    }}
                     className="auth-form-v2"
-                     requiredMark
+                    requiredMark
                 >
                     <Row gutter={16}>
                         <Col xs={24} sm={12}>
-                            <Form.Item label={<Text strong>First Name</Text>} name="firstName"   normalize={(value) => value?.trim()} rules={[{ required: true, message: 'Required' }]}>
+                            <Form.Item label={<Text strong>First Name</Text>} name="firstName" normalize={(value) => value?.trim()} rules={[{ required: true, message: 'Required' }]}>
                                 <Input placeholder="John" size="large" className="minimal-input" />
                             </Form.Item>
                         </Col>
                         <Col xs={24} sm={12}>
-                            <Form.Item label={<Text strong>Last Name</Text>} name="lastName"  normalize={(value) => value?.trim()}  rules={[{ required: true, message: 'Required' }]}>
+                            <Form.Item label={<Text strong>Last Name</Text>} name="lastName" normalize={(value) => value?.trim()} rules={[{ required: true, message: 'Required' }]}>
                                 <Input placeholder="Doe" size="large" className="minimal-input" />
                             </Form.Item>
                         </Col>
@@ -314,26 +330,26 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                         </Col>
                     </Row>
 
-                <Form.Item
-  name="agree"
-  valuePropName="checked"
-  rules={[
-    {
-      validator: (_, value) =>
-        value
-          ? Promise.resolve()
-          : Promise.reject(
-              new Error('Please accept the Terms & Conditions to proceed')
-            ),
-    },
-  ]}
->
-  <Checkbox>
-    <Text type="secondary" className="compact-text">
-      I agree to the Terms & Conditions and Privacy Policy
-    </Text>
-  </Checkbox>
-</Form.Item>
+                    <Form.Item
+                        name="agree"
+                        valuePropName="checked"
+                        rules={[
+                            {
+                                validator: (_, value) =>
+                                    value
+                                        ? Promise.resolve()
+                                        : Promise.reject(
+                                            new Error('Please accept the Terms & Conditions to proceed')
+                                        ),
+                            },
+                        ]}
+                    >
+                        <Checkbox>
+                            <Text type="secondary" className="compact-text">
+                                I agree to the Terms & Conditions and Privacy Policy
+                            </Text>
+                        </Checkbox>
+                    </Form.Item>
 
 
                     <Button

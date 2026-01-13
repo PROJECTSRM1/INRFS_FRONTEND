@@ -127,7 +127,7 @@ export const authService = {
             throw error;
         }
     },
-    verifyOTP: async (email: string, otp: string) => {
+    verifyOTP: async (email: string, otp: string): Promise<RegisterResponse> => {
         try {
             const response = await axiosInstance.post('/users/verify-otp', { email, otp });
             return response.data;
