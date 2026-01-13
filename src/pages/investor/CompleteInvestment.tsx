@@ -97,6 +97,11 @@ const CompleteInvestment: React.FC = () => {
         if (/^\d+$/.test(value)) {
             const numValue = parseInt(value, 10);
             if (!isNaN(numValue) && numValue >= 0) {
+                // Block input if it exceeds maximum amount
+                if (numValue > displayPlan.maxAmount) {
+                    message.warning(`Maximum investment amount is ${fintechService.formatCurrency(displayPlan.maxAmount)}`);
+                    return;
+                }
                 setAmount(numValue);
             }
         }
@@ -105,6 +110,10 @@ const CompleteInvestment: React.FC = () => {
     const handleProceed = () => {
         if (!amount || amount < displayPlan.minAmount) {
             message.error(`Minimum investment amount is ${fintechService.formatCurrency(displayPlan.minAmount)}`);
+            return;
+        }
+        if (amount > displayPlan.maxAmount) {
+            message.error(`Maximum investment amount is ${fintechService.formatCurrency(displayPlan.maxAmount)}`);
             return;
         }
         if (!agreed) {
