@@ -35,6 +35,9 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
 
     const [resendCooldown, setResendCooldown] = useState(0);
     const [form] = Form.useForm();
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+
 
     // Watch all values to trigger validation check
     const values = Form.useWatch([], form);
@@ -237,12 +240,34 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                 >
                     <Row gutter={16}>
                         <Col xs={24} sm={12}>
-                            <Form.Item label={<Text strong>First Name</Text>} name="firstName" normalize={(value) => value?.trim()} rules={[{ required: true, message: 'Required' }]}>
+                            <Form.Item
+                                label={<Text strong>First Name</Text>}
+                                name="firstName"
+                                normalize={(value) => value?.trim()}
+                                rules={[
+                                    { required: true, message: 'Required' },
+                                    {
+                                        pattern: /^[A-Za-z\s]+$/,
+                                        message: 'First name should contain only letters',
+                                    },
+                                ]}
+                            >
                                 <Input placeholder="John" size="large" className="minimal-input" />
                             </Form.Item>
                         </Col>
                         <Col xs={24} sm={12}>
-                            <Form.Item label={<Text strong>Last Name</Text>} name="lastName" normalize={(value) => value?.trim()} rules={[{ required: true, message: 'Required' }]}>
+                            <Form.Item
+                                label={<Text strong>Last Name</Text>}
+                                name="lastName"
+                                normalize={(value) => value?.trim()}
+                                rules={[
+                                    { required: true, message: 'Required' },
+                                    {
+                                        pattern: /^[A-Za-z\s]+$/,
+                                        message: 'Last name should contain only letters',
+                                    },
+                                ]}
+                            >
                                 <Input placeholder="Doe" size="large" className="minimal-input" />
                             </Form.Item>
                         </Col>
@@ -281,7 +306,13 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                     <Row gutter={16}>
                         <Col xs={24} sm={12}>
                             <Form.Item label={<Text strong>Date of Birth</Text>} name="dob" rules={[{ required: true, message: 'Required' }]}>
-                                <DatePicker style={{ width: '100%' }} size="large" className="minimal-input" />
+                                <DatePicker
+                                    style={{ width: '100%' }}
+                                    size="large"
+                                    className="minimal-input"
+                                    disabledDate={(current) => current && current > dayjs().endOf('day')}
+                                />
+
                             </Form.Item>
                         </Col>
                         <Col xs={24} sm={12}>
@@ -302,10 +333,16 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                                 name="password"
                                 rules={[
                                     { required: true, message: 'Required' },
-                                    { min: 6, message: 'Minimum 6 characters' }
+                                    {
+                                        pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@#$!%*?&]{6,}$/,
+                                        message: 'Password must be at least 6 characters and contain letters and numbers',
+                                    },
                                 ]}
                             >
-                                <Input.Password placeholder="••••••••" size="large" className="minimal-input" />
+                                <Input.Password placeholder="••••••••" size="large" className="minimal-input" visibilityToggle={{
+                                    visible: passwordVisible,
+                                    onVisibleChange: setPasswordVisible,
+                                }} onBlur={() => setPasswordVisible(false)} />
                             </Form.Item>
                         </Col>
                         <Col xs={24} sm={12}>
@@ -325,7 +362,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                                     }),
                                 ]}
                             >
-                                <Input.Password placeholder="••••••••" size="large" className="minimal-input" />
+                                <Input.Password placeholder="••••••••" size="large" className="minimal-input" visibilityToggle={{ visible: confirmPasswordVisible, onVisibleChange: setConfirmPasswordVisible, }} onBlur={() => setConfirmPasswordVisible(false)} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -414,7 +451,10 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
 
                             <Button
                                 block
-                                onClick={() => setIsOtpVisible(false)}
+                                onClick={() => {
+                                    setOtp('');
+                                    setIsOtpVisible(false);
+                                }}
                                 size="large"
                                 style={{ marginTop: '16px' }}
                             >

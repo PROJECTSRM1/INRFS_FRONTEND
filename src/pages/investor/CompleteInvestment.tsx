@@ -14,6 +14,11 @@ import jsPDF from 'jspdf';
 import '../../styles/dashboard.css';
 
 const { Title, Text } = Typography;
+const formatWithCommas = (value: number | '') => {
+    if (value === '') return '';
+    return value.toLocaleString('en-IN');
+};
+
 
 const CompleteInvestment: React.FC = () => {
     const { planId } = useParams<{ planId: string }>();
@@ -85,23 +90,16 @@ const CompleteInvestment: React.FC = () => {
     const totalMaturity = calculation.maturityAmount;
 
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
+        const rawValue = e.target.value.replace(/,/g, '');
 
-        // Allow empty input
-        if (value === '') {
+        if (rawValue === '') {
             setAmount('');
             return;
         }
 
-        // Only allow digits (whole numbers only for investment amounts)
-        if (/^\d+$/.test(value)) {
-            const numValue = parseInt(value, 10);
-            if (!isNaN(numValue) && numValue >= 0) {
-                // Block input if it exceeds maximum amount
-                if (numValue > displayPlan.maxAmount) {
-                    message.warning(`Maximum investment amount is ${fintechService.formatCurrency(displayPlan.maxAmount)}`);
-                    return;
-                }
+        if (/^\d+$/.test(rawValue)) {
+            const numValue = parseInt(rawValue, 10);
+            if (!isNaN(numValue)) {
                 setAmount(numValue);
             }
         }
@@ -415,9 +413,10 @@ const CompleteInvestment: React.FC = () => {
                             type="text"
                             placeholder="0"
                             className="investment-amount-input large-input"
-                            value={amount}
+                            value={formatWithCommas(amount)}
                             onChange={handleAmountChange}
                         />
+
                         <Text type="secondary" className="input-helper-text">
                             Minimum: {fintechService.formatCurrency(displayPlan.minAmount)} | Maximum: ₹1,000,000
                         </Text>
