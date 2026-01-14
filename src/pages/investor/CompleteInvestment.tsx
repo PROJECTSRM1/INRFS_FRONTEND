@@ -15,8 +15,8 @@ import '../../styles/dashboard.css';
 
 const { Title, Text } = Typography;
 const formatWithCommas = (value: number | '') => {
-  if (value === '') return '';
-  return value.toLocaleString('en-IN'); 
+    if (value === '') return '';
+    return value.toLocaleString('en-IN');
 };
 
 
@@ -89,25 +89,29 @@ const CompleteInvestment: React.FC = () => {
     const returns = calculation.interest;
     const totalMaturity = calculation.maturityAmount;
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const rawValue = e.target.value.replace(/,/g, '');
+    const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const rawValue = e.target.value.replace(/,/g, '');
 
-  if (rawValue === '') {
-    setAmount('');
-    return;
-  }
+        if (rawValue === '') {
+            setAmount('');
+            return;
+        }
 
-  if (/^\d+$/.test(rawValue)) {
-    const numValue = parseInt(rawValue, 10);
-    if (!isNaN(numValue)) {
-      setAmount(numValue);
-    }
-  }
-};
+        if (/^\d+$/.test(rawValue)) {
+            const numValue = parseInt(rawValue, 10);
+            if (!isNaN(numValue)) {
+                setAmount(numValue);
+            }
+        }
+    };
 
     const handleProceed = () => {
         if (!amount || amount < displayPlan.minAmount) {
             message.error(`Minimum investment amount is ${fintechService.formatCurrency(displayPlan.minAmount)}`);
+            return;
+        }
+        if (amount > displayPlan.maxAmount) {
+            message.error(`Maximum investment amount is ${fintechService.formatCurrency(displayPlan.maxAmount)}`);
             return;
         }
         if (!agreed) {
@@ -404,14 +408,14 @@ const CompleteInvestment: React.FC = () => {
                 <Col xs={24} md={12}>
                     <div className="content-card-refined h-full">
                         <Title level={4} className="card-section-title">Investment Amount</Title>
-                      <Input
-  prefix="₹"
-  type="text"
-  placeholder="0"
-  className="investment-amount-input large-input"
-  value={formatWithCommas(amount)}
-  onChange={handleAmountChange}
-/>
+                        <Input
+                            prefix="₹"
+                            type="text"
+                            placeholder="0"
+                            className="investment-amount-input large-input"
+                            value={formatWithCommas(amount)}
+                            onChange={handleAmountChange}
+                        />
 
                         <Text type="secondary" className="input-helper-text">
                             Minimum: {fintechService.formatCurrency(displayPlan.minAmount)} | Maximum: ₹1,000,000

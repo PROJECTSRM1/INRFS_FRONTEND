@@ -1,7 +1,6 @@
 import type { InvestmentPlan, Investment, DashboardStats, Activity } from '../types';
 
 export const INVESTMENT_PLANS: InvestmentPlan[] = [
-    // ... existing plans (I'll keep them as is in the replacement content)
     {
         id: 'p1',
         name: 'Short-Term Starter',
@@ -10,6 +9,7 @@ export const INVESTMENT_PLANS: InvestmentPlan[] = [
         roi: 6.5,
         duration: 1,
         minAmount: 1000,
+        maxAmount: 1000000,
         description: 'Perfect for testing the platform with a 1-month plan.',
         highlights: ['Monthly Interest', 'Low Entry Point', 'Institutional Grade'],
         infrcPrefix: 'ST-1M'
@@ -22,6 +22,7 @@ export const INVESTMENT_PLANS: InvestmentPlan[] = [
         roi: 9.2,
         duration: 3,
         minAmount: 5000,
+        maxAmount: 1000000,
         description: 'Steady growth for your 3-month goals.',
         highlights: ['Quarterly Payouts', 'High Returns', 'Secure Bond'],
         infrcPrefix: 'QB-3M'
@@ -34,6 +35,7 @@ export const INVESTMENT_PLANS: InvestmentPlan[] = [
         roi: 12.5,
         duration: 6,
         minAmount: 10000,
+        maxAmount: 1000000,
         description: 'Competitive returns for a 6-month tenure.',
         highlights: ['High Yield', 'Verified Portfolio', 'Priority Support'],
         infrcPrefix: 'GA-6M'
@@ -46,6 +48,7 @@ export const INVESTMENT_PLANS: InvestmentPlan[] = [
         roi: 15.8,
         duration: 12,
         minAmount: 25000,
+        maxAmount: 1000000,
         description: 'Maximize your wealth with our premium yearly plan.',
         highlights: ['Max Yield', 'Annual Compounding', 'VIP Advisory'],
         infrcPrefix: 'WM-1Y'

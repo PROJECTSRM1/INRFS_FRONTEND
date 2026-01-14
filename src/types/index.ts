@@ -19,6 +19,7 @@ export interface InvestmentPlan {
     roi: number; // e.g., 12.5 for 12.5%
     duration: number; // in months
     minAmount: number;
+    maxAmount: number; // Maximum investment amount
     description: string;
     highlights: string[];
     infrcPrefix: string;
@@ -44,15 +45,15 @@ export interface Investment {
 }
 
 export interface Investor {
-  id: number;
-  inv_reg_id?: string;  // optional
-  name: string;         // this is what table uses
-  email: string;
-  mobile: string;
-  status?: string;
-  totalInvested?: number;
-  activeInvestments?: number;
-  customerId: string;   // keep this since you use it in UI
+    id: number;
+    inv_reg_id?: string;  // optional
+    name: string;         // this is what table uses
+    email: string;
+    mobile: string;
+    status?: string;
+    totalInvested?: number;
+    activeInvestments?: number;
+    customerId: string;   // keep this since you use it in UI
 }
 
 
