@@ -153,5 +153,13 @@ export const authService = {
         } catch (error) {
             throw error;
         }
+    },
+    resendOTP: async (email: string) => {
+        try {
+            const response = await axiosInstance.post(`/users/resend-otp?email=${encodeURIComponent(email)}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
     }
 };
