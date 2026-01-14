@@ -119,6 +119,9 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
                     </div>
                 ),
                 okText: "Go to Login",
+                okButtonProps: {
+                    className: 'btn-hero-primary'
+                },
                 onOk: () => {
                     if (onSuccess) {
                         onSuccess(verifyingEmail);
@@ -143,7 +146,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onCancel, onSuccess
         }
         setLoading(true);
         try {
-            await authService.sendOTP(verifyingEmail);
+            await authService.resendOTP(verifyingEmail);
             message.success('OTP sent successfully!');
             setResendCooldown(60);
         } catch (error: any) {
