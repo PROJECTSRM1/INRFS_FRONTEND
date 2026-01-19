@@ -5,7 +5,7 @@ export interface User {
     name: string;
     email: string;
     role: UserRole;
-    customerId?: string; // Format: I1234
+    customerId?: string;
 }
 
 export type PlanCategory = 'Short-Term' | 'Long-Term';
@@ -16,17 +16,17 @@ export interface InvestmentPlan {
     name: string;
     category: PlanCategory;
     type: PlanType;
-    roi: number; // e.g., 12.5 for 12.5%
-    duration: number; // in months
+    roi: number;
+    duration: number;
     minAmount: number;
-    maxAmount: number; // Maximum investment amount
+    maxAmount: number;
     description: string;
     highlights: string[];
     infrcPrefix: string;
 }
 
 export interface Investment {
-    id: string; // Format: INV-2024-001
+    id: string;
     planId: string;
     planName: string;
     amount: number;
@@ -46,14 +46,14 @@ export interface Investment {
 
 export interface Investor {
     id: number;
-    inv_reg_id?: string;  // optional
-    name: string;         // this is what table uses
+    inv_reg_id?: string;
+    name: string;
     email: string;
     mobile: string;
     status?: string;
     totalInvested?: number;
     activeInvestments?: number;
-    customerId: string;   // keep this since you use it in UI
+    customerId: string;
 }
 
 
