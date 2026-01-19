@@ -93,6 +93,7 @@ export interface LoginResponse {
     message: string;
     "Customer-ID": string;
     First_Name: string;
+    role_id: number;
     access_token: string;
     refresh_token: string;
     token_type: string;

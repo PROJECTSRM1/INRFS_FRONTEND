@@ -4,6 +4,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
 import ForgotPasswordModal from '../../components/auth/ForgotPasswordModal';
+import { authService } from '../../services/authService';
 import '../../styles/theme.css';
 import '../../styles/auth-mobile.css';
 
@@ -21,21 +22,51 @@ const Login: React.FC = () => {
         password?: string;
     }
 
-    const onFinish = (values: LoginValues) => {
+    const onFinish = async (values: LoginValues) => {
         setLoading(true);
-        setTimeout(() => {
-            const derivedId = values.id.includes('@') ? 'I4829' : values.id;
+        try {
+            const response = await authService.loginUser({
+                email: values.id.includes('@') ? values.id : undefined,
+                inv_reg_id: !values.id.includes('@') ? values.id : undefined,
+                password: values.password || ''
+            });
+
+            // Store tokens in localStorage
+            localStorage.setItem('access_token', response.access_token);
+            localStorage.setItem('refresh_token', response.refresh_token);
+            localStorage.setItem('role_id', response.role_id.toString());
+
+            // Determine user role based on role_id
+            const userRole: 'investor' | 'admin' = response.role_id === 1 ? 'investor' : 'admin';
 
             setUser({
-                id: '1',
-                name: 'Alex Johnson',
-                email: 'user@investpro.com',
-                role: 'investor',
-                customerId: derivedId
+                id: response["Customer-ID"],
+                name: response.First_Name,
+                email: values.id.includes('@') ? values.id : '',
+                role: userRole,
+                customerId: response["Customer-ID"]
             });
+
             message.success('Authenticated Successfully');
-            navigate('/dashboard');
-        }, 1000);
+
+            // Navigate based on role_id
+            if (response.role_id === 1) {
+                navigate('/dashboard');
+            } else if (response.role_id === 2 || response.role_id === 3) {
+                navigate('/admin/dashboard');
+            } else {
+                message.warning('Unknown role. Redirecting to home.');
+                navigate('/');
+            }
+        } catch (error: any) {
+            console.error(error);
+            const errorMsg = error.response?.data?.detail
+                || error.response?.data?.message
+                || 'Login failed. Please check your credentials.';
+            message.error(errorMsg);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (

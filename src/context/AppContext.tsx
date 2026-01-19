@@ -25,6 +25,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const logout = () => {
         setUserState(null);
         setInvestments([]);
+        // Clear all auth-related data from localStorage
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('role_id');
     };
 
     const toggleDarkMode = () => setDarkMode(!darkMode);

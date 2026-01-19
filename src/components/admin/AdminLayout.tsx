@@ -50,7 +50,7 @@ const AdminLayout: React.FC = () => {
     }, []);
 
     const handleLogout = () => {
-        navigate('/admin/login');
+        navigate('/landing');
     };
 
     const menuItems = [
