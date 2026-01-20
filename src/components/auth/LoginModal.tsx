@@ -49,20 +49,38 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible, onClose, openRegister,
             // Store tokens in localStorage
             localStorage.setItem('access_token', response.access_token);
             localStorage.setItem('refresh_token', response.refresh_token);
+            localStorage.setItem('role_id', response.role_id.toString());
+
+            // Determine user role based on role_id
+            // role_id 1 = Investor
+            // role_id 2, 3 = Admin
+            const userRole: 'investor' | 'admin' = response.role_id === 1 ? 'investor' : 'admin';
 
             // Map response to user context using the correct field names
             setUser({
                 id: response["Customer-ID"],
                 name: response.First_Name,
                 email: values.email,
-                role: 'investor',
+                role: userRole,
                 customerId: response["Customer-ID"]
             });
 
             message.success(response.message || 'Login Successful!');
             form.resetFields();
             onClose();
-            navigate('/dashboard');
+
+            // Navigate based on role_id
+            if (response.role_id === 1) {
+                // Investor - navigate to investor dashboard
+                navigate('/dashboard');
+            } else if (response.role_id === 2 || response.role_id === 3) {
+                // Admin - navigate to admin dashboard
+                navigate('/admin/dashboard');
+            } else {
+                // Fallback for unknown role_id
+                message.warning('Unknown role. Redirecting to home.');
+                navigate('/');
+            }
         } catch (error: any) {
             console.error(error);
             const errorMsg = error.response?.data?.detail
@@ -136,10 +154,10 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible, onClose, openRegister,
                             size="large"
                             className="login-input"
                             visibilityToggle={{
-      visible: passwordVisible,
-      onVisibleChange: setPasswordVisible,
-    }}
-      onBlur={() => setPasswordVisible(false)}
+                                visible: passwordVisible,
+                                onVisibleChange: setPasswordVisible,
+                            }}
+                            onBlur={() => setPasswordVisible(false)}
                         />
                     </Form.Item>
 
